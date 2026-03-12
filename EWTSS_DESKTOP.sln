@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EWTSS-DESKTOP", "EWTSS-DESKTOP.csproj", "{EF23BEE2-C94D-56CD-BA85-7CACF0A55284}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF23BEE2-C94D-56CD-BA85-7CACF0A55284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF23BEE2-C94D-56CD-BA85-7CACF0A55284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF23BEE2-C94D-56CD-BA85-7CACF0A55284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF23BEE2-C94D-56CD-BA85-7CACF0A55284}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {709C9A99-F705-41A0-AD2D-077A8CA7DBCC}
+	EndGlobalSection
+EndGlobal
