@@ -1,0 +1,127 @@
+﻿<Window x:Class="EWTSS_DESKTOP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:EWTSS_DESKTOP.Presentation.ViewModels"
+        Title="EWTSS"
+        MinHeight="400"
+        MinWidth="600"
+        Background="#031929"
+        WindowStartupLocation="CenterScreen">
+
+	<Window.DataContext>
+		<vm:LoginViewModel/>
+	</Window.DataContext>
+
+	<Grid>
+
+		<!-- ROWS -->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- TOP TITLE -->
+		<Border Grid.Row="0" Padding="15">
+			<TextBlock Text="ELECTRONIC WARFARE TRAINING SIMULATOR SYSTEM"
+                       Foreground="White"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+		</Border>
+
+		<!-- MAIN AREA -->
+		<Grid Grid.Row="1">
+
+			<!-- 3 COLUMNS -->
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<!-- LEFT SIDE -->
+			<StackPanel Grid.Column="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+				<!-- RECTANGLE LOGO -->
+				<Border Width="250"
+                    Height="100"
+						Background="#031929"
+                    CornerRadius="5">
+
+					<Image Source="C:\Users\Admin\Downloads\white.png"
+						   Stretch="Uniform"/>
+
+				</Border>
+
+				
+
+			</StackPanel>
+
+			<!-- VERTICAL LINE -->
+			<Border Grid.Column="1"
+                    Width="2"
+                    Background="White"
+                    Margin="0 40 0 40"/>
+
+			<!-- RIGHT SIDE LOGIN -->
+			<Border Grid.Column="2"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+
+				<StackPanel Width="300">
+
+					<TextBlock Text="HELLO!"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"/>
+
+					<TextBlock Text="Login to your account to continue"
+                               FontSize="14"
+                               Foreground="White"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               Margin="0 5 0 20"/>
+
+					<TextBlock Text="Username"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               Margin="0 0 0 5"/>
+
+					<TextBox Height="35"
+                             Margin="0 0 0 15"
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"/>
+
+					<TextBlock Text="Password"
+                               Foreground="White"
+                               FontWeight="Bold"
+                               Margin="0 0 0 5"/>
+
+					<PasswordBox Height="35"
+                                 Margin="0 0 0 20"
+                                 VerticalContentAlignment="Center"/>
+
+					<Button Content="Login"
+                            Height="35"
+                            Background="#0c8e7e"
+                            Foreground="White"
+                            Command="{Binding LoginCommand}"/>
+
+					<TextBlock Text="Forgot Password?"
+                               Foreground="White"
+                               Margin="0 15 0 0"
+                               HorizontalAlignment="Center"
+                               Cursor="Hand"/>
+
+				</StackPanel>
+
+			</Border>
+
+		</Grid>
+
+	</Grid>
+
+</Window>
