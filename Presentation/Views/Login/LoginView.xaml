@@ -104,13 +104,14 @@
             Background="Transparent"
             BorderBrush="{x:Null}"
             Click="BtnTogglePassword_Click">
-        <Image Source="C:\Users\Admin\Downloads\eye.png"/>
+        <Image Source="C:\Users\Admin\Downloads\eye2.png"/>
     </Button>
 </Grid>
 
                 <!-- LOGIN BUTTON -->
                 <Button Content="Login"
                         Height="35"
+                        Cursor="Hand"
                         Background="#0c8e7e"
                         Foreground="White"
                         Command="{Binding LoginCommand}"/>
