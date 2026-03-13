@@ -4,6 +4,7 @@ using EWTSS_DESKTOP.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EWTSS_DESKTOP.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260313061415_SeedSetup")]
+    partial class SeedSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,68 +123,6 @@ namespace EWTSS_DESKTOP.Migrations
                     b.ToTable("RolePermissions");
                 });
 
-            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.TrScenario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<TimeSpan?>("Duration")
-                        .HasColumnType("time(6)");
-
-                    b.Property<DateTime?>("ExecuteDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ExecuteRun")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan?>("ExecuteTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ScenarioStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ScenarioType")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("StartStop")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan?>("StartTime")
-                        .HasColumnType("time(6)");
-
-                    b.Property<DateTime>("UpdatedOn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Scenarios");
-                });
-
             modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -247,17 +188,6 @@ namespace EWTSS_DESKTOP.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.TrScenario", b =>
-                {
-                    b.HasOne("EWTSS_DESKTOP.Core.Models.User", "User")
-                        .WithMany("Scenarios")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.User", b =>
                 {
                     b.HasOne("EWTSS_DESKTOP.Core.Models.Role", "Role")
@@ -279,11 +209,6 @@ namespace EWTSS_DESKTOP.Migrations
                     b.Navigation("Permissions");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.User", b =>
-                {
-                    b.Navigation("Scenarios");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,8 +4,9 @@ using EWTSS_DESKTOP.Infrastructure.Services;
 using EWTSS_DESKTOP.Infrastructure.Data;
 using EWTSS_DESKTOP.Presentation.ViewModels;
 using EWTSS_DESKTOP.Presentation.Views.Login;
-using EWTSS_DESKTOP.Presentation.Views.Dashboard;
+using EWTSS_DESKTOP.Presentation.Views;
 using EWTSS_DESKTOP.Core.Models;
+using EWTSS_DESKTOP.Presentation.Views.Scenario;
 
 namespace EWTSS_DESKTOP
 {
@@ -23,7 +24,7 @@ namespace EWTSS_DESKTOP
 
             loginVM.LoginSucceeded += (user) =>
             {
-                var dashboard = new DashboardPage(user);
+                var dashboard = new ScenarioDashboardView(user);
                 MainFrame.Navigate(dashboard);
             };
 

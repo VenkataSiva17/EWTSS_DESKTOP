@@ -1,16 +1,20 @@
 ﻿using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using EWTSS_DESKTOP.Infrastructure.Data;
-using EWTSS_DESKTOP.Core.Models;
 
-public partial class App : Application
+namespace EWTSS_DESKTOP
 {
-    protected override void OnStartup(StartupEventArgs e)
+    public partial class App : Application
     {
-        using (var db = new AppDbContext())
+        protected override void OnStartup(StartupEventArgs e)
         {
-            db.Database.EnsureCreated();
-        }
+            using (var db = new AppDbContext())
+            {
+                db.Database.Migrate();
+                DbSeeder.Seed(db);
+            }
 
-        base.OnStartup(e);
+            base.OnStartup(e);
+        }
     }
 }

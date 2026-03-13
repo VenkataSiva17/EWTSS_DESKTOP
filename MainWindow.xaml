@@ -1,6 +1,7 @@
 ﻿<Window x:Class="EWTSS_DESKTOP.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowState="Maximized"
         Title="EWTSS"
         MinHeight="400"
         MinWidth="600"

@@ -29,6 +29,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
             if (user != null)
             {
+                UserSession.CurrentUser = user;
                 LoginSucceeded?.Invoke(user);
             }
             else

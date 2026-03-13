@@ -1,0 +1,377 @@
+<Page x:Class="EWTSS_DESKTOP.Presentation.Views.Scenario.ScenarioDashboardView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:models="clr-namespace:EWTSS_DESKTOP.Core.Models"
+      mc:Ignorable="d"
+      Background="#021522"
+      Title="ScenarioDashboardView">
+
+    <Page.Resources>
+        <Style x:Key="ActionIconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Background" Value="#21B3AE"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT SIDEBAR -->
+        <Border Grid.Column="0" Background="#03111C">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="80"/>
+                </Grid.RowDefinitions>
+
+                <!-- Logo -->
+                <Border Grid.Row="0"
+                        BorderBrush="#1C3242"
+                        BorderThickness="0,0,0,1"
+                        Padding="10">
+                    <Image Source="C:\Users\Admin\Downloads\white.png"
+                           Width="220"
+                           Height="50"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Menu -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="12,10,12,10">
+                        <Button Content="HOME"
+                                Height="36"
+                                Margin="0,0,0,12"
+                                Background="#169C96"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"/>
+
+                        <Button Content="USER MANAGEMENT"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+
+                        <Button Content="DB MANAGEMENT"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+
+                        <Button Content="LOG MANAGEMENT"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+
+                        <Button Content="EMITTER LIBRARY"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+
+                        <Button Content="REPORT"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+
+                        <Button Content="REPLAY"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+
+                        <Button Content="IP CONFIGURATION"
+                                Height="36"
+                                Margin="0,0,0,10"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                HorizontalContentAlignment="Left"/>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- Fixed Bottom New Scenario Button -->
+                <Border Grid.Row="2" Padding="8">
+                    <Button Content="+ NEW SCENARIO"
+                            Height="40"
+                            Margin="0,0,0,10"
+                            Background="#21B3AE"
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding NewScenarioCommand}"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- RIGHT CONTENT -->
+        <Grid Grid.Column="1" Background="#021522">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- TOP HEADER -->
+            <Grid Grid.Row="0" Background="#062235">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Scenario Generator - EWTSS"
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,15,0">
+                    <TextBlock Text="{Binding LoggedInUserName}"
+                               Foreground="White"
+                               FontSize="14"
+                               VerticalAlignment="Center"
+                               Margin="0,0,10,0"/>
+                    <Ellipse Width="24"
+                             Height="24"
+                             Fill="#B9C37A"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- BODY -->
+            <Grid Grid.Row="1" Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="EWTSS USER STATION | SCENARIOS LISTING"
+                           Foreground="White"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Margin="0,0,0,16"/>
+
+                <!-- Search / Filter -->
+                <Grid Grid.Row="1" Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="460"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="300"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0"
+                             Height="34"
+                             Background="#021522"
+                             Foreground="White"
+                             BorderBrush="#607080"
+                             BorderThickness="1"
+                             Padding="10,0"
+                             VerticalContentAlignment="Center"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Button Grid.Column="1"
+                            Height="34"
+                            Margin="2,0,0,0"
+                            Content="⌕"
+                            Background="#021522"
+                            Foreground="White"
+                            BorderBrush="#607080"
+                            Command="{Binding SearchCommand}"/>
+
+                    <ComboBox Grid.Column="3"
+                              Height="34"
+                              Width="220"
+                              Background="#021522"
+                              Foreground="White"
+                              BorderBrush="#607080"
+                              BorderThickness="1"
+                              Padding="8,0,8,0"
+                              SelectedItem="{Binding SelectedStatus}"
+                              ItemsSource="{Binding StatusOptions}">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Background" Value="#021522"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderBrush" Value="#607080"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Style>
+                        </ComboBox.Style>
+
+                        <ComboBox.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#021522"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#169C96"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#021522"/>
+
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Background" Value="#021522"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Padding" Value="8,4"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsHighlighted" Value="True">
+                                        <Setter Property="Background" Value="#169C96"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#169C96"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Resources>
+                    </ComboBox>
+                </Grid>
+
+                <!-- Cards -->
+                <ScrollViewer Grid.Row="2"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding FilteredScenarios}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="{x:Type models:TrScenario}">
+                                <Border Width="270"
+                                        Height="185"
+                                        Margin="0,0,16,16"
+                                        Background="#032238"
+                                        CornerRadius="2">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="34"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="48"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Top strip -->
+                                        <Grid Grid.Row="0" Margin="10,8,10,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Background="#BBC3CA"
+                                                    CornerRadius="2"
+                                                    Padding="10,3">
+                                                <TextBlock Text="{Binding ScenarioStatus}"
+                                                           Foreground="White"
+                                                           FontWeight="Bold"
+                                                           FontSize="11"/>
+                                            </Border>
+
+                                            <TextBlock Grid.Column="1"
+                                                       HorizontalAlignment="Right"
+                                                       Foreground="#15A05D"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"
+                                                       Text="{Binding StartDate, StringFormat={}{0:dd-MM-yyyy}}"/>
+                                        </Grid>
+
+                                        <!-- Body -->
+                                        <StackPanel Grid.Row="1" Margin="16,8,16,0">
+                                            <TextBlock Text="{Binding Name}"
+                                                       Foreground="White"
+                                                       FontSize="18"
+                                                       FontWeight="SemiBold"
+                                                       TextTrimming="CharacterEllipsis"/>
+
+                                            <TextBlock Text="{Binding ScenarioType}"
+                                                       Foreground="#16A05F"
+                                                       FontSize="13"
+                                                       FontWeight="Bold"
+                                                       Margin="0,6,0,18"/>
+
+                                            <TextBlock Text="{Binding User.UserName}"
+                                                       Foreground="#B9C6D2"
+                                                       FontSize="14"
+                                                       FontWeight="SemiBold"/>
+                                        </StackPanel>
+
+                                        <!-- Action Buttons -->
+                                        <StackPanel Grid.Row="2"
+                                                    Orientation="Horizontal"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,12,8">
+                                            <!-- Copy -->
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    ToolTip="Copy"
+                                                    Command="{Binding DataContext.DuplicateScenarioCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}">
+                                                <TextBlock Text="&#xE8C8;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Button>
+
+                                            <!-- Edit -->
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    ToolTip="Edit"
+                                                    Command="{Binding DataContext.EditScenarioCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}">
+                                                <TextBlock Text="&#xE70F;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Button>
+
+                                            <!-- Delete -->
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    Margin="0"
+                                                    ToolTip="Delete"
+                                                    Command="{Binding DataContext.DeleteScenarioCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                                    CommandParameter="{Binding}">
+                                                <TextBlock Text="&#xE74D;"
+                                                           FontFamily="Segoe MDL2 Assets"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
