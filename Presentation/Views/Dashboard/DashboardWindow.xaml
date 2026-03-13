@@ -1,0 +1,11 @@
+<Window x:Class="EWTSS_DESKTOP.Presentation.Views.Dashboard.DashboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dashboard"
+        Width="1000" Height="600"
+        Background="#031929">
+    
+    <Frame x:Name="MainFrame"
+           NavigationUIVisibility="Hidden"
+           Background="#031929"/>
+</Window>

@@ -16,8 +16,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
         public ICommand LoginCommand { get; }
 
         public event Action<User> LoginSucceeded;
-
-        public LoginViewModel(UserService userService)
+            public LoginViewModel(UserService userService)
         {
             _userService = userService;
             LoginCommand = new RelayCommand(Login);
