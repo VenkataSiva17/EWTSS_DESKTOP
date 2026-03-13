@@ -14,7 +14,7 @@ namespace EWTSS_DESKTOP.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            var connectionString = "server=localhost;database=ewtss_db;user=root;password=admin@123";
+            var connectionString = "server=localhost;database=ewtss_db;user=root;password=DDD12";
 
             options.UseMySql(
                 connectionString,
