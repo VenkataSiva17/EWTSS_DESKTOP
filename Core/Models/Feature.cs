@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EWTSS_DESKTOP.Models
+namespace EWTSS_DESKTOP.Core.Models
 {
     public class Feature : BaseEntity
     {

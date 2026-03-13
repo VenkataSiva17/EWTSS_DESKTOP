@@ -1,6 +1,6 @@
 ﻿using System.Windows;
-
-using EWTSS_DESKTOP.Data;
+using EWTSS_DESKTOP.Infrastructure.Data;
+using EWTSS_DESKTOP.Core.Models;
 
 public partial class App : Application
 {

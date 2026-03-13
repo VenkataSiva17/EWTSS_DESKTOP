@@ -1,4 +1,4 @@
-using EWTSS_DESKTOP.Models;
+using EWTSS_DESKTOP.Core.Models;
 using EWTSS_DESKTOP.Infrastructure.Repositories;
 
 namespace EWTSS_DESKTOP.Infrastructure.Services
@@ -12,9 +12,9 @@ namespace EWTSS_DESKTOP.Infrastructure.Services
             _repo = repo;
         }
 
-        public async Task<User?> AuthenticateAsync(string username, string password)
+        public User ValidateUser(string username, string password)
         {
-            return await _repo.GetUserAsync(username, password);
+            return _repo.GetUser(username, password);
         }
     }
 }

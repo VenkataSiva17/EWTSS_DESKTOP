@@ -1,46 +1,39 @@
-// LoginViewModel.cs
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using EWTSS_DESKTOP.Models;                    // for User
-using EWTSS_DESKTOP.Infrastructure.Services;  // for UserService
-using EWTSS_DESKTOP.Commands;                 // for RelayCommand
-using EWTSS_DESKTOP.Presentation.ViewModels;  // for BaseViewModel
+using EWTSS_DESKTOP.Infrastructure.Services;
+using EWTSS_DESKTOP.Core.Models;
+using EWTSS_DESKTOP.Commands;
 
 namespace EWTSS_DESKTOP.Presentation.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel
     {
         private readonly UserService _userService;
 
-        public string UserName { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public string Username { get; set; }
+        public string Password { get; set; }
 
         public ICommand LoginCommand { get; }
 
-        public event Action<User>? LoginSucceeded;
+        public event Action<User> LoginSucceeded;
 
         public LoginViewModel(UserService userService)
         {
             _userService = userService;
-            LoginCommand = new RelayCommand(async _ => await LoginAsync());
+            LoginCommand = new RelayCommand(Login);
         }
 
-        private async Task LoginAsync()
+        private void Login()
         {
-            var user = await _userService.AuthenticateAsync(UserName, Password);
+            var user = _userService.ValidateUser(Username, Password);
+
             if (user != null)
             {
                 LoginSucceeded?.Invoke(user);
             }
             else
             {
-                System.Windows.MessageBox.Show(
-                    "Invalid username or password",
-                    "Login Failed",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Warning
-                );
+                System.Windows.MessageBox.Show("Invalid username or password");
             }
         }
     }

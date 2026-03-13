@@ -1,43 +1,33 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using EWTSS_DESKTOP.Infrastructure.Repositories;
 using EWTSS_DESKTOP.Infrastructure.Services;
+using EWTSS_DESKTOP.Infrastructure.Data;
 using EWTSS_DESKTOP.Presentation.ViewModels;
-using EWTSS_DESKTOP.Presentation.Views;
+using EWTSS_DESKTOP.Presentation.Views.Login;
 using EWTSS_DESKTOP.Presentation.Views.Dashboard;
-using EWTSS_DESKTOP.Data;
-namespace EWTSS_DESKTOP;
+using EWTSS_DESKTOP.Core.Models;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+namespace EWTSS_DESKTOP
 {
-    public MainWindow()
+    public partial class MainWindow : Window
     {
-        InitializeComponent();
-
-        var db = new AppDbContext();
-        var userService = new UserService(new UserRepository(db));
-
-        var loginVM = new LoginViewModel(userService);
-        var loginPage = new LoginView { DataContext = loginVM };
-
-        loginVM.LoginSucceeded += (user) =>
+        public MainWindow()
         {
-            // Navigate to DashboardPage inside MainFrame
-            var dashboardPage = new DashboardPage(user);
-            MainFrame.Navigate(dashboardPage);
-        };
+            InitializeComponent();
 
-        MainFrame.Navigate(loginPage);
+            var db = new AppDbContext();
+            var userService = new UserService(new UserRepository(db));
+
+            var loginVM = new LoginViewModel(userService);
+            var loginPage = new LoginView { DataContext = loginVM };
+
+            loginVM.LoginSucceeded += (user) =>
+            {
+                var dashboard = new DashboardPage(user);
+                MainFrame.Navigate(dashboard);
+            };
+
+            MainFrame.Navigate(loginPage);
+        }
     }
 }

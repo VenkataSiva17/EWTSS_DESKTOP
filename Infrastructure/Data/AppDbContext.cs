@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using EWTSS_DESKTOP.Models;
+using EWTSS_DESKTOP.Core.Models;
 
-namespace EWTSS_DESKTOP.Data
+namespace EWTSS_DESKTOP.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {

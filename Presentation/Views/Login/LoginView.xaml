@@ -1,46 +1,130 @@
-<Window x:Class="EWTSS_DESKTOP.Presentation.Views.LoginView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Login"
-        Height="300"
-        Width="400"
-        WindowStartupLocation="CenterScreen">
+<Page x:Class="EWTSS_DESKTOP.Presentation.Views.Login.LoginView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#031929">
 
-    <Grid Background="#F4F6F9">
-        <Border Background="White"
-                Width="300"
-                Height="200"
-                CornerRadius="10"
-                Padding="20"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+    <Grid>
 
-            <StackPanel>
+        <!-- ROW STRUCTURE -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <TextBlock Text="EWTSS Login"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0 0 0 20"/>
+        <!-- TOP TITLE -->
+        <Border Grid.Row="0" Padding="15">
+            <TextBlock Text="ELECTRONIC WARFARE TRAINING SIMULATOR SYSTEM"
+                       Foreground="White"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Margin="0,20,0,0"
+                       HorizontalAlignment="Center"/>
+        </Border>
 
-                <TextBox
-                    Margin="0 0 0 10"
-                    Height="30"
-                    Text="{Binding Username}" />
+        <!-- MAIN CONTENT -->
+        <Grid Grid.Row="1">
 
-                <PasswordBox
-                    Height="30"
-                    Margin="0 0 0 15"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <Button
-                    Content="Login"
-                    Height="35"
-                    Background="#007ACC"
-                    Foreground="White"
-                    Command="{Binding LoginCommand}"/>
+            <!-- LEFT LOGO -->
+            <StackPanel Grid.Column="0"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                <Image Source="C:\Users\Admin\Downloads\white.png"
+                       Width="250"
+                       Height="100"
+                       Stretch="Uniform"/>
 
             </StackPanel>
 
-        </Border>
+            <!-- CENTER LINE -->
+            <Border Grid.Column="1"
+                    Width="2"
+                    Background="White"
+                    Margin="0 70 0 70"/>
+
+            <!-- RIGHT LOGIN -->
+            <StackPanel Grid.Column="2"
+                        Width="300"
+                        
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                <TextBlock Text="HELLO!"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="White"/>
+
+                <TextBlock Text="Login to your account to continue"
+                           FontSize="14"
+                           Foreground="White"
+                           Margin="0 5 0 20"/>
+
+                <!-- USERNAME -->
+                <TextBlock Text="Username"
+                           Foreground="White"
+                           FontWeight="Bold"/>
+
+                <TextBox Height="35"
+                         Margin="0 5 0 15"
+                         VerticalContentAlignment="Center"
+                         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!-- PASSWORD -->
+                <!-- PASSWORD -->
+<TextBlock Text="Password"
+           Foreground="White"
+           FontWeight="Bold"/>
+
+<Grid Height="35" Margin="0 5 0 20">
+    <!-- PasswordBox -->
+    <PasswordBox x:Name="PasswordBox"
+                 VerticalContentAlignment="Center"
+                 Padding="0,0,35,0"
+                 PasswordChanged="PasswordBox_PasswordChanged"/>
+
+    <!-- TextBox for showing password -->
+    <TextBox x:Name="TextBoxVisible"
+             VerticalContentAlignment="Center"
+             Padding="0,0,35,0"
+             Visibility="Collapsed"/>
+
+    <!-- Eye button -->
+    <Button x:Name="BtnTogglePassword"
+            Width="30"
+            Height="30"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Margin="0 0 5 0"
+            Background="Transparent"
+            BorderBrush="{x:Null}"
+            Click="BtnTogglePassword_Click">
+        <Image Source="C:\Users\Admin\Downloads\eye.png"/>
+    </Button>
+</Grid>
+
+                <!-- LOGIN BUTTON -->
+                <Button Content="Login"
+                        Height="35"
+                        Background="#0c8e7e"
+                        Foreground="White"
+                        Command="{Binding LoginCommand}"/>
+                <TextBlock Text="Forgot Password?"
+                               Foreground="White"
+                               Margin="0 15 0 0"
+                               HorizontalAlignment="Center"
+                               Cursor="Hand"/>
+
+
+            </StackPanel>
+
+        </Grid>
+
     </Grid>
-</Window>
+
+</Page>

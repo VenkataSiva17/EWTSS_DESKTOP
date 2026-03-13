@@ -1,4 +1,4 @@
-namespace EWTSS_DESKTOP.Models
+namespace EWTSS_DESKTOP.Core.Models
 {
     public class User : BaseEntity
     {
