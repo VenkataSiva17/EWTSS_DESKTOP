@@ -123,7 +123,7 @@ namespace EWTSS_DESKTOP.Migrations
                     b.ToTable("RolePermissions");
                 });
 
-            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.TrScenario", b =>
+            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.Scenario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -250,7 +250,7 @@ namespace EWTSS_DESKTOP.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.TrScenario", b =>
+            modelBuilder.Entity("EWTSS_DESKTOP.Core.Models.Scenario", b =>
                 {
                     b.HasOne("EWTSS_DESKTOP.Core.Models.User", "User")
                         .WithMany("Scenarios")

@@ -46,7 +46,7 @@
                            Width="220"
                            Height="50"
                            Stretch="Uniform"
-                           HorizontalAlignment="Left"
+                           HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
                 </Border>
 
@@ -217,6 +217,7 @@
                               Height="34"
                               Width="220"
                               Background="#021522"
+                              
                               Foreground="White"
                               BorderBrush="#607080"
                               BorderThickness="1"
@@ -268,7 +269,7 @@
                         </ItemsControl.ItemsPanel>
 
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type models:TrScenario}">
+                            <DataTemplate DataType="{x:Type models:Scenario}">
                                 <Border Width="270"
                                         Height="185"
                                         Margin="0,0,16,16"

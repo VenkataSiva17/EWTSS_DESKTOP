@@ -25,7 +25,7 @@ namespace EWTSS_DESKTOP.Core.Models
         STOP
     }
 
-    public class TrScenario : BaseEntity
+    public class Scenario : BaseEntity
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -45,5 +45,7 @@ namespace EWTSS_DESKTOP.Core.Models
 
         public ExecuteRun ExecuteRun { get; set; } = ExecuteRun.EXECUTE;
         public StartStop StartStop { get; set; } = StartStop.START;
+
+        public ICollection<AreaOperation> AreaOperations { get; set; } = new List<AreaOperation>();
     }
 }

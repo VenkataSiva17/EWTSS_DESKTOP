@@ -17,8 +17,8 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
     {
         private readonly User _loggedInUser;
 
-        public ObservableCollection<TrScenario> AllScenarios { get; set; } = new();
-        public ObservableCollection<TrScenario> FilteredScenarios { get; set; } = new();
+        public ObservableCollection<Scenario> AllScenarios { get; set; } = new();
+        public ObservableCollection<Scenario> FilteredScenarios { get; set; } = new();
 
         public ObservableCollection<string> StatusOptions { get; set; } = new()
         {
@@ -139,7 +139,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
             {
                 using var db = new AppDbContext();
 
-                var scenario = new TrScenario
+                var scenario = new Scenario
                 {
                     Name = dialog.ScenarioName,
                     Description = dialog.ScenarioDescription,
@@ -164,12 +164,12 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         private void DuplicateScenario(object parameter)
         {
-            if (parameter is not TrScenario sourceScenario)
+            if (parameter is not Scenario sourceScenario)
                 return;
 
             using var db = new AppDbContext();
 
-            var duplicate = new TrScenario
+            var duplicate = new Scenario
             {
                 Name = $"{sourceScenario.Name}_copy1",
                 Description = sourceScenario.Description,
@@ -192,7 +192,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         private void DeleteScenario(object parameter)
         {
-            if (parameter is not TrScenario scenario)
+            if (parameter is not Scenario scenario)
                 return;
 
             var result = MessageBox.Show(
@@ -218,7 +218,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         private void EditScenario(object parameter)
         {
-            if (parameter is not TrScenario scenario)
+            if (parameter is not Scenario scenario)
                 return;
 
             MessageBox.Show($"Edit scenario: {scenario.Name}");
