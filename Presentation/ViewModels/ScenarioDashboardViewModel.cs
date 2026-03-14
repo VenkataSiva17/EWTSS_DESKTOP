@@ -1,21 +1,23 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using EWTSS_DESKTOP.Commands;
 using EWTSS_DESKTOP.Core.Models;
-using EWTSS_DESKTOP.Presentation.Views.Scenario;
 using EWTSS_DESKTOP.Infrastructure.Data;
-using System;
-using System.Windows;
+using EWTSS_DESKTOP.Infrastructure.Services;
+using EWTSS_DESKTOP.Presentation.Views.Scenario;
 
 namespace EWTSS_DESKTOP.Presentation.ViewModels
 {
     public class ScenarioDashboardViewModel : INotifyPropertyChanged
     {
         private readonly User _loggedInUser;
+        private readonly StkEngineService _stkEngineService;
 
         public ObservableCollection<Scenario> AllScenarios { get; set; } = new();
         public ObservableCollection<Scenario> FilteredScenarios { get; set; } = new();
@@ -65,16 +67,17 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         public ICommand SearchCommand { get; }
         public ICommand NewScenarioCommand { get; }
-
         public ICommand DuplicateScenarioCommand { get; }
         public ICommand EditScenarioCommand { get; }
         public ICommand DeleteScenarioCommand { get; }
 
-        public ScenarioDashboardViewModel(User user)
+        public ScenarioDashboardViewModel(User user, StkEngineService stkEngineService)
         {
             _loggedInUser = user;
+            _stkEngineService = stkEngineService;
 
             LoggedInUserName = $"{user.FirstName} {user.LastName}";
+
             SearchCommand = new RelayCommand(() => ApplyFilters());
             NewScenarioCommand = new RelayCommand(() => OpenNewScenario());
             DuplicateScenarioCommand = new RelayCommand(DuplicateScenario);
@@ -135,31 +138,48 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
             var result = dialog.ShowDialog();
 
-            if (result == true)
+            if (result != true)
+                return;
+
+            using var db = new AppDbContext();
+
+            var startUtc = DateTime.UtcNow;
+            var duration = new TimeSpan(12, 0, 0);
+
+            var scenario = new Scenario
             {
-                using var db = new AppDbContext();
+                Name = dialog.ScenarioName?.Trim(),
+                Description = dialog.ScenarioDescription?.Trim(),
+                StartDate = startUtc,
+                StartTime = startUtc.TimeOfDay,
+                Duration = duration,
+                ScenarioType = ScenarioType.ORIGINAL,
+                ScenarioStatus = ScenarioStatus.PLANNED,
+                UserId = _loggedInUser.Id,
+                ExecuteDate = startUtc,
+                ExecuteTime = startUtc.TimeOfDay,
+                ExecuteRun = ExecuteRun.EXECUTE,
+                StartStop = StartStop.START
+            };
 
-                var scenario = new Scenario
-                {
-                    Name = dialog.ScenarioName,
-                    Description = dialog.ScenarioDescription,
-                    StartDate = DateTime.Now,
-                    StartTime = DateTime.Now.TimeOfDay,
-                    Duration = TimeSpan.Zero,
-                    ScenarioType = ScenarioType.ORIGINAL,
-                    ScenarioStatus = ScenarioStatus.PLANNED,
-                    UserId = _loggedInUser.Id,
-                    ExecuteDate = DateTime.Now,
-                    ExecuteTime = DateTime.Now.TimeOfDay,
-                    ExecuteRun = ExecuteRun.EXECUTE,
-                    StartStop = StartStop.START
-                };
+            db.Scenarios.Add(scenario);
+            db.SaveChanges();
 
-                db.Scenarios.Add(scenario);
-                db.SaveChanges();
-
-                LoadScenarios();
+            try
+            {
+                _stkEngineService.CreateScenario(scenario.Name, startUtc, duration);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Scenario saved to database, but STK could not start.\n\n{ex.Message}",
+                    "STK Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+            }
+
+            LoadScenarios();
+            NavigateToEditor(scenario.Id);
         }
 
         private void DuplicateScenario(object parameter)
@@ -169,6 +189,11 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
             using var db = new AppDbContext();
 
+            var startUtc = DateTime.UtcNow;
+            var duration = sourceScenario.Duration == TimeSpan.Zero
+                ? new TimeSpan(12, 0, 0)
+                : sourceScenario.Duration;
+
             var duplicate = new Scenario
             {
                 Name = $"{sourceScenario.Name}_copy1",
@@ -176,10 +201,11 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
                 UserId = _loggedInUser.Id,
                 ScenarioType = ScenarioType.DUPLICATE,
                 ScenarioStatus = ScenarioStatus.PLANNED,
-                StartDate = DateTime.Now,
-                StartTime = DateTime.Now.TimeOfDay,
-                ExecuteDate = DateTime.Now,
-                ExecuteTime = DateTime.Now.TimeOfDay,
+                StartDate = startUtc,
+                StartTime = startUtc.TimeOfDay,
+                Duration = duration,
+                ExecuteDate = startUtc,
+                ExecuteTime = startUtc.TimeOfDay,
                 ExecuteRun = ExecuteRun.EXECUTE,
                 StartStop = StartStop.START
             };
@@ -221,8 +247,18 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
             if (parameter is not Scenario scenario)
                 return;
 
-            MessageBox.Show($"Edit scenario: {scenario.Name}");
+            NavigateToEditor(scenario.Id);
         }
+
+        private void NavigateToEditor(int scenarioId)
+        {
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                var editorPage = new ScenarioEditorPage(scenarioId, _stkEngineService);
+                mainWindow.NavigateTo(editorPage);
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)

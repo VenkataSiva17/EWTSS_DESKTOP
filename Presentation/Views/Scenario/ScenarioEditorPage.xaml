@@ -1,0 +1,96 @@
+<Page x:Class="EWTSS_DESKTOP.Presentation.Views.Scenario.ScenarioEditorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#021522"
+      Title="ScenarioEditorPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="380"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT TREE -->
+        <Border Grid.Column="0" Background="#03111C" BorderBrush="#1C3242" BorderThickness="0,0,1,0">
+            <StackPanel Margin="10">
+                <TextBlock Text="TREE STRUCTURE"
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                <TreeView x:Name="ScenarioTree"
+                          Background="#03111C"
+                          Foreground="White"
+                          BorderBrush="{x:Null}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- MIDDLE DETAILS -->
+        <Border Grid.Column="1" Background="#021522" BorderBrush="#1C3242" BorderThickness="0,0,1,0">
+            <StackPanel Margin="12">
+                <TextBlock Text="SCENARIO DETAILS"
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           Margin="0,0,0,12"/>
+
+                <TextBlock Text="SCENARIO NAME"
+                           Foreground="White"
+                           Margin="0,0,0,5"/>
+                <TextBox x:Name="ScenarioNameTextBox"
+                         Height="34"
+                         Background="#021522"
+                         Foreground="White"
+                         BorderBrush="#607080"
+                         Margin="0,0,0,12"/>
+
+                <TextBlock Text="DESCRIPTION"
+                           Foreground="White"
+                           Margin="0,0,0,5"/>
+                <TextBox x:Name="ScenarioDescriptionTextBox"
+                         Height="100"
+                         AcceptsReturn="True"
+                         TextWrapping="Wrap"
+                         Background="#021522"
+                         Foreground="White"
+                         BorderBrush="#607080"
+                         Margin="0,0,0,12"/>
+
+                <Button Content="UPDATE"
+                        Height="36"
+                        Background="#169C96"
+                        Foreground="White"
+                        BorderBrush="{x:Null}"
+                        Click="UpdateScenario_Click"/>
+            </StackPanel>
+        </Border>
+
+        <!-- RIGHT STK PLACEHOLDER -->
+        <Grid Grid.Column="2" Background="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="260"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="Black" BorderBrush="#1C3242" BorderThickness="0,0,0,1">
+                <TextBlock Text="3D VISUALIZATION"
+                           Foreground="White"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+
+            <Border Grid.Row="1" Background="#0A0A0A">
+                <TextBlock Text="2D VISUALIZATION"
+                           Foreground="White"
+                           FontSize="16"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
