@@ -8,21 +8,7 @@
         Background="#031929"
         WindowStartupLocation="CenterScreen">
 
-    <Grid>
-
-        <!-- ROWS -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        
-        <!-- MAIN NAVIGATION FRAME -->
-        <Frame x:Name="MainFrame"
-               Grid.Row="1"
-               NavigationUIVisibility="Hidden"
-               Background="#031929"/>
-
-    </Grid>
-
+    <Frame x:Name="MainFrame"
+           NavigationUIVisibility="Hidden"
+           Background="#031929"/>
 </Window>

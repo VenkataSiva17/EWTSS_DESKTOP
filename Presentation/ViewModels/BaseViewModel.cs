@@ -1,6 +1,5 @@
-// BaseViewModel.cs
 using System.ComponentModel;
-using System.Runtime.CompilerServices; // CallerMemberName
+using System.Runtime.CompilerServices;
 
 namespace EWTSS_DESKTOP.Presentation.ViewModels
 {

@@ -4,9 +4,8 @@ using EWTSS_DESKTOP.Infrastructure.Services;
 using EWTSS_DESKTOP.Infrastructure.Data;
 using EWTSS_DESKTOP.Presentation.ViewModels;
 using EWTSS_DESKTOP.Presentation.Views.Login;
-using EWTSS_DESKTOP.Presentation.Views;
-using EWTSS_DESKTOP.Core.Models;
-using EWTSS_DESKTOP.Presentation.Views.Scenario;
+using EWTSS_DESKTOP.Presentation.Views.Dashboard;
+using System.Windows.Controls;
 
 namespace EWTSS_DESKTOP
 {
@@ -29,6 +28,10 @@ namespace EWTSS_DESKTOP
             };
 
             MainFrame.Navigate(loginPage);
+        }
+        public void NavigateTo(Page page)
+        {
+            MainFrame.Navigate(page);
         }
     }
 }

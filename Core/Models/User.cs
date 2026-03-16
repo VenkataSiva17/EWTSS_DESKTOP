@@ -10,6 +10,6 @@ namespace EWTSS_DESKTOP.Core.Models
     public int RoleId { get; set; }
     public Role Role { get; set; }
 
-    public ICollection<TrScenario> Scenarios { get; set; }
+    public ICollection<Scenario> CreatedScenarios { get; set; } = new List<Scenario>();
 }
 }
