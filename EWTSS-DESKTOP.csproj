@@ -8,10 +8,28 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="UserSession.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AGI.STKObjects.Interop">
+      <HintPath>..\..\..\Program Files\AGI\STK 12\bin\Primary Interop Assemblies\AGI.STKObjects.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="AGI.STKUtil.Interop">
+      <HintPath>..\..\..\Program Files\AGI\STK 12\bin\Primary Interop Assemblies\AGI.STKUtil.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="AGI.STKVgt.Interop">
+      <HintPath>..\..\..\Program Files\AGI\STK 12\bin\Primary Interop Assemblies\AGI.STKVgt.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="AGI.STKX.Interop">
+      <HintPath>..\..\..\Program Files\AGI\STK 12\bin\Primary Interop Assemblies\AGI.STKX.Interop.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
