@@ -33,5 +33,6 @@ namespace EWTSS_DESKTOP
         {
             MainFrame.Navigate(page);
         }
+        
     }
 }
