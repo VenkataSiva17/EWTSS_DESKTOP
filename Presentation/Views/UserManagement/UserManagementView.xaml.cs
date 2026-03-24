@@ -2,17 +2,21 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using EWTSS_DESKTOP.Helpers;
+using EWTSS_DESKTOP.Presentation.ViewModels;
 
 namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
 {
     public partial class UserManagementView : Page
     {
-        private bool _isPasswordVisible = false;
         private readonly DispatcherTimer _clockTimer;
+        private readonly UserManagementViewModel _viewModel;
 
         public UserManagementView()
         {
             InitializeComponent();
+
+            _viewModel = new UserManagementViewModel();
+            DataContext = _viewModel;
 
             FirstNameTextBox.GotFocus += RemovePlaceholder;
             LastNameTextBox.GotFocus += RemovePlaceholder;
@@ -23,6 +27,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
             UserNameTextBox.LostFocus += AddPlaceholder;
 
             _clockTimer = ClockHelper.StartClock(TimeText);
+            this.Unloaded += UserManagementView_Unloaded; 
         }
 
         private void CreateNew_Click(object sender, RoutedEventArgs e)
@@ -39,15 +44,15 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
         {
             MessageBox.Show("User created successfully");
 
-            FirstNameTextBox.Text = "Enter your first name";
-            LastNameTextBox.Text = "Enter your last name";
-            UserNameTextBox.Text = "Enter your user name";
+            FirstNameTextBox.Text = _viewModel.FirstNamePlaceholder;
+            LastNameTextBox.Text = _viewModel.LastNamePlaceholder;
+            UserNameTextBox.Text = _viewModel.UserNamePlaceholder;
             PasswordInput.Password = "";
             PasswordVisibleTextBox.Text = "";
             PasswordVisibleTextBox.Visibility = Visibility.Collapsed;
             PasswordInput.Visibility = Visibility.Visible;
-            TogglePasswordButton.Content = "\uE722";
-            _isPasswordVisible = false;
+            TogglePasswordButton.Content = _viewModel.GetShowPasswordIcon();
+            _viewModel.IsPasswordVisible = false;
             RoleComboBox.SelectedIndex = 0;
 
             CreateUserOverlay.Visibility = Visibility.Collapsed;
@@ -57,9 +62,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
         {
             if (sender is TextBox tb)
             {
-                if (tb.Text == "Enter your first name" ||
-                    tb.Text == "Enter your last name" ||
-                    tb.Text == "Enter your user name")
+                if (_viewModel.IsPlaceholderText(tb.Text))
                 {
                     tb.Text = "";
                 }
@@ -70,38 +73,33 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
         {
             if (sender is TextBox tb && string.IsNullOrWhiteSpace(tb.Text))
             {
-                if (tb.Name == "FirstNameTextBox")
-                    tb.Text = "Enter your first name";
-                else if (tb.Name == "LastNameTextBox")
-                    tb.Text = "Enter your last name";
-                else if (tb.Name == "UserNameTextBox")
-                    tb.Text = "Enter your user name";
+                tb.Text = _viewModel.GetPlaceholderByName(tb.Name);
             }
         }
 
         private void TogglePasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_isPasswordVisible)
+            if (_viewModel.IsPasswordVisible)
             {
                 PasswordInput.Password = PasswordVisibleTextBox.Text;
                 PasswordVisibleTextBox.Visibility = Visibility.Collapsed;
                 PasswordInput.Visibility = Visibility.Visible;
-                TogglePasswordButton.Content = "\uE722";
-                _isPasswordVisible = false;
+                TogglePasswordButton.Content = _viewModel.GetShowPasswordIcon();
+                _viewModel.IsPasswordVisible = false;
             }
             else
             {
                 PasswordVisibleTextBox.Text = PasswordInput.Password;
                 PasswordInput.Visibility = Visibility.Collapsed;
                 PasswordVisibleTextBox.Visibility = Visibility.Visible;
-                TogglePasswordButton.Content = "\uE711";
-                _isPasswordVisible = true;
+                TogglePasswordButton.Content = _viewModel.GetHidePasswordIcon();
+                _viewModel.IsPasswordVisible = true;
             }
         }
 
         private void PasswordInput_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (!_isPasswordVisible)
+            if (!_viewModel.IsPasswordVisible)
             {
                 PasswordVisibleTextBox.Text = PasswordInput.Password;
             }
@@ -109,10 +107,15 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
 
         private void PasswordVisibleTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_isPasswordVisible)
+            if (_viewModel.IsPasswordVisible)
             {
                 PasswordInput.Password = PasswordVisibleTextBox.Text;
             }
+        }
+
+        private void UserManagementView_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _clockTimer.Stop();
         }
     }
 }
