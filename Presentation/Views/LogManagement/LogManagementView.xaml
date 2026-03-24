@@ -4,21 +4,72 @@
       Background="#021522"
       Title="LogManagementView">
 
+    <Page.Resources>
+        <Style x:Key="TopTabButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="#179C96"/>
+            <Setter Property="Foreground" Value="Black"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#27B7AE"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1F9F98"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="70"/>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- TITLE -->
-        <TextBlock Text="LOG MANAGEMENT"
-                   Foreground="White"
-                   FontSize="16"
-                   FontWeight="Bold"
-                   Margin="0,10,0,20"/>
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="LOG MANAGEMENT"
+                       Foreground="White"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="1"
+                       x:Name="TimeText"
+                       Foreground="White"
+                       FontSize="16"
+                       Margin="20,0,0,0"
+                       VerticalAlignment="Center"/>
+        </Grid>
 
         <!-- TOP TABS -->
         <Grid Grid.Row="1" Margin="0,0,0,18">
@@ -29,38 +80,39 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="#257874" BorderBrush="White" BorderThickness="1">
-                <TextBlock Text="USER"
-                           Foreground="White"
-                           FontSize="16"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-            </Border>
+            <Button x:Name="UserTab"
+                    Grid.Column="0"
+                    Content="USER"
+                    Style="{StaticResource TopTabButtonStyle}"
+                    Background="#27B7AE"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    
+                    Click="UserTab_Click"/>
 
-            <Border Grid.Column="1" Background="#179C96" BorderBrush="White" BorderThickness="1">
-                <TextBlock Text="SENT TO DRS"
-                           Foreground="Black"
-                           FontSize="16"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-            </Border>
+            <Button x:Name="SentToDrsTab"
+                    Grid.Column="1"
+                    Content="SENT TO DRS"
+                    Style="{StaticResource TopTabButtonStyle}"
+                    Background="#179C96"
+                    Foreground="Black"
+                    Click="SentToDrsTab_Click"/>
 
-            <Border Grid.Column="2" Background="#179C96" BorderBrush="White" BorderThickness="1">
-                <TextBlock Text="RECEIVED FROM DRS"
-                           Foreground="Black"
-                           FontSize="16"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-            </Border>
+            <Button x:Name="ReceivedFromDrsTab"
+                    Grid.Column="2"
+                    Content="RECEIVED FROM DRS"
+                    Style="{StaticResource TopTabButtonStyle}"
+                    Background="#179C96"
+                    Foreground="Black"
+                    Click="ReceivedFromDrsTab_Click"/>
 
-            <Border Grid.Column="3" Background="#179C96" BorderBrush="White" BorderThickness="1">
-                <TextBlock Text="SYSTEM"
-                           Foreground="Black"
-                           FontSize="16"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-            </Border>
+            <Button x:Name="SystemTab"
+                    Grid.Column="3"
+                    Content="SYSTEM"
+                    Style="{StaticResource TopTabButtonStyle}"
+                    Background="#179C96"
+                    Foreground="Black"
+                    Click="SystemTab_Click"/>
         </Grid>
 
         <!-- SEARCH + REFRESH -->
@@ -75,12 +127,12 @@
             <!-- SEARCH BOX WITH PLACEHOLDER -->
             <Grid Grid.Column="0">
                 <TextBox x:Name="SearchBox"
-                         Height="48"
+                         Height="34"
                          Background="#0E1C2A"
                          Foreground="White"
                          BorderBrush="#607080"
                          BorderThickness="1"
-                         Padding="20,0"
+                         Padding="5,0"
                          VerticalContentAlignment="Center"
                          FontSize="14"
                          TextChanged="SearchBox_TextChanged"/>
@@ -95,7 +147,7 @@
 
             <!-- SEARCH BUTTON -->
             <Button Grid.Column="1"
-                    Height="48"
+                    Height="34"
                     Background="#0E1C2A"
                     BorderBrush="#607080"
                     Foreground="White"
@@ -104,17 +156,19 @@
 
             <!-- REFRESH BUTTON -->
             <Button Grid.Column="3"
-                    Height="48"
+                    Height="34"
                     Background="#179C96"
                     Foreground="White"
                     BorderBrush="{x:Null}"
                     FontSize="14"
                     FontWeight="Bold"
+                    Cursor="Hand"
+                
                     Content="REFRESH LOG DATA"/>
         </Grid>
 
         <!-- TABLE HEADER -->
-        <Grid Grid.Row="3" Background="#179C96" Margin="0,0,0,12">
+        <Grid Grid.Row="3" Background="#179C96" Height="40" Margin="0,0,0,12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="180"/>
@@ -173,7 +227,5 @@
                        VerticalAlignment="Center"/>
         </Grid>
 
-        <!-- BODY -->
-        
     </Grid>
 </Page>

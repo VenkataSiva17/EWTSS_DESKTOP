@@ -23,17 +23,35 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="EWTSS USER STATION | SCENARIOS LISTING"
-                   Foreground="White"
-                   FontSize="22"
-                   FontWeight="Bold"
-                   Margin="0,0,0,16"/>
+        <!-- Title -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <TextBlock Grid.Column="0"
+               Text="EWTSS USER STATION | SCENARIOS LISTING"
+               Foreground="White"
+               FontSize="22"
+               FontWeight="Bold"
+               VerticalAlignment="Center" />
+
+    <TextBlock Grid.Column="1"
+               x:Name="TimeText"
+               Foreground="White"
+               FontSize="16"
+               Margin="20,0,0,0"
+               VerticalAlignment="Center" />
+</Grid>
+        
 
         <!-- Search / Filter -->
-        <Grid Grid.Row="1" Margin="0,0,0,16">
+        <Grid Grid.Row="1" Margin="0,0,0,12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="460"/>
                 <ColumnDefinition Width="50"/>
@@ -50,6 +68,8 @@
                      Padding="10,0"
                      VerticalContentAlignment="Center"
                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            
+
 
             <Button Grid.Column="1"
                     Height="34"
@@ -60,51 +80,118 @@
                     BorderBrush="#607080"
                     Command="{Binding SearchCommand}"/>
 
-            <ComboBox Grid.Column="3"
-                      Height="34"
-                      Width="220"
-                      Background="#021522"
-                      Foreground="White"
-                      BorderBrush="#607080"
-                      BorderThickness="1"
-                      Padding="8,0,8,0"
-                      SelectedItem="{Binding SelectedStatus}"
-                      ItemsSource="{Binding StatusOptions}">
-                <ComboBox.Style>
-                    <Style TargetType="ComboBox">
-                        <Setter Property="Background" Value="#021522"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="BorderBrush" Value="#607080"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                    </Style>
-                </ComboBox.Style>
+        <ComboBox Grid.Column="3"
+          Width="220"
+          Height="38"
+          SelectedItem="{Binding SelectedStatus}"
+          ItemsSource="{Binding StatusOptions}"
+          Foreground="White"
+          BorderBrush="#607080"
+          BorderThickness="1">
 
-                <ComboBox.Resources>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#021522"/>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#169C96"/>
-                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#021522"/>
+    <ComboBox.Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#021522"/>
+            <Setter Property="BorderBrush" Value="#607080"/>
+            <Setter Property="BorderThickness" Value="1"/>
 
-                    <Style TargetType="ComboBoxItem">
-                        <Setter Property="Background" Value="#021522"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Padding" Value="8,4"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsHighlighted" Value="True">
-                                <Setter Property="Background" Value="#169C96"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#169C96"/>
-                                <Setter Property="Foreground" Value="White"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </ComboBox.Resources>
-            </ComboBox>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- TOP SELECTED BOX -->
+                            <Border x:Name="ComboBorder"
+                                    Background="#021522"
+                                    BorderBrush="#607080"
+                                    BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="35"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ContentPresenter Grid.Column="0"
+                                                      Margin="10,0,0,0"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Left"
+                                                      Content="{TemplateBinding SelectionBoxItem}"/>
+
+                                    <ToggleButton Grid.Column="1"
+                                                  Focusable="False"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  ClickMode="Press">
+                                        <TextBlock Text="▼"
+                                                   Foreground="White"
+                                                   FontSize="10"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+                                    </ToggleButton>
+                                </Grid>
+                            </Border>
+
+                            <!-- DROPDOWN -->
+                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Border Background="#021522"
+                                        BorderBrush="#607080"
+                                        BorderThickness="1"
+                                        Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ScrollViewer>
+                                        <StackPanel IsItemsHost="True"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ComboBox.Style>
+
+    <ComboBox.Resources>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Background" Value="#021522"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10,8"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="#0E3A5A"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#169C96"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </ComboBox.Resources>
+</ComboBox>
         </Grid>
 
+        <!-- SCENARIOS Button -->
+        <Border Grid.Row="2"
+        Width="105"
+        Height="36"
+        Background="#179C96"
+        Cursor="Hand"
+        HorizontalAlignment="Left"
+        CornerRadius="2"
+        Margin="0,0,0,16">
+
+    <TextBlock Text="SCENARIOS"
+               Foreground="White"
+               FontWeight="Bold"
+               FontSize="14"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
+    </Border>
         <!-- Cards -->
-        <ScrollViewer Grid.Row="2"
+        <ScrollViewer Grid.Row="3"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
             <ItemsControl ItemsSource="{Binding FilteredScenarios}">

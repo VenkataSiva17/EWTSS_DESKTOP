@@ -4,6 +4,53 @@
       Background="#021522"
       Title="UserManagementView">
 
+    <Page.Resources>
+        <Style x:Key="PopupLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+
+        <Style x:Key="PopupTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#D6E2EA"/>
+            <Setter Property="Background" Value="#08263B"/>
+            <Setter Property="BorderBrush" Value="#5E7385"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="PopupPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#D6E2EA"/>
+            <Setter Property="Background" Value="#08263B"/>
+            <Setter Property="BorderBrush" Value="#5E7385"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="DarkComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#08263B"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="#2D6FD2"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#2D6FD2"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,11 +59,26 @@
         </Grid.RowDefinitions>
 
         <!-- TITLE -->
-        <TextBlock Text="USER MANAGEMENT"
-                   Foreground="White"
-                   FontSize="16"
-                   FontWeight="Bold"
-                   Margin="0,10,0,20"/>
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       Text="USER MANAGEMENT"
+                       Foreground="White"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
+
+            <TextBlock Grid.Column="1"
+                       x:Name="TimeText"
+                       Foreground="White"
+                       FontSize="16"
+                       Margin="20,0,0,0"
+                       VerticalAlignment="Center"/>
+        </Grid>
 
         <!-- CREATE BUTTON -->
         <Button Grid.Row="1"
@@ -29,16 +91,17 @@
                 BorderBrush="{x:Null}"
                 FontSize="14"
                 FontWeight="Bold"
-                Margin="0,0,0,12"/>
+                Margin="0,0,0,12"
+                Cursor="Hand"
+                Click="CreateNew_Click"/>
 
         <!-- TABLE -->
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- HEADER -->
             <Grid Grid.Row="0" Background="#179C96">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80"/>
@@ -59,7 +122,6 @@
                 <TextBlock Grid.Column="6" Text="ACTION" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Grid>
 
-            <!-- BODY -->
             <Border Grid.Row="1"
                     Background="Transparent"
                     BorderBrush="#1C3242"
@@ -68,6 +130,202 @@
                            Foreground="White"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"/>
+            </Border>
+        </Grid>
+
+        <!-- POPUP OVERLAY -->
+        <Grid x:Name="CreateUserOverlay"
+              Grid.RowSpan="3"
+              Background="#66000000"
+              Visibility="Collapsed"
+              Panel.ZIndex="100">
+
+            <Border Width="640"
+                    Height="365"
+                    Background="#031E30"
+                    BorderBrush="#00D7D7"
+                    BorderThickness="1.5"
+                    CornerRadius="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                <Grid Margin="22">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- POPUP TITLE -->
+                    <TextBlock Grid.Row="0"
+                               Text="CREATE USER"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,22"/>
+
+                    <!-- FIRST ROW -->
+                    <Grid Grid.Row="1" Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="22"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Style="{StaticResource PopupLabelStyle}">
+                                <Run Text="FIRST NAME "/>
+                                <Run Text="*" Foreground="Red"/>
+                            </TextBlock>
+                            <TextBox x:Name="FirstNameTextBox"
+                                     Style="{StaticResource PopupTextBoxStyle}"
+                                     Text="Enter your first name"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Style="{StaticResource PopupLabelStyle}" Text="LAST NAME"/>
+                            <TextBox x:Name="LastNameTextBox"
+                                     Style="{StaticResource PopupTextBoxStyle}"
+                                     Text="Enter your last name"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- SECOND ROW -->
+                    <Grid Grid.Row="2" Margin="0,0,0,18">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="22"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Style="{StaticResource PopupLabelStyle}">
+                                <Run Text="USER NAME "/>
+                                <Run Text="*" Foreground="Red"/>
+                            </TextBlock>
+                            <TextBox x:Name="UserNameTextBox"
+                                     Style="{StaticResource PopupTextBoxStyle}"
+                                     Text="Enter your user name"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+    <TextBlock Foreground="White"
+               FontSize="14"
+               Margin="0,0,0,8">
+        <Run Text="PASSWORD "/>
+        <Run Text="*" Foreground="Red"/>
+    </TextBlock>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="42"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Hidden password -->
+        <PasswordBox x:Name="PasswordInput"
+                     Grid.Column="0"
+                     Height="32"
+                     Foreground="White"
+                     Background="#08263B"
+                     BorderBrush="#5E7385"
+                     BorderThickness="1"
+                     Padding="10,0,10,0"
+                     VerticalContentAlignment="Center"
+                     PasswordChanged="PasswordInput_PasswordChanged"/>
+
+        <!-- Visible password -->
+        <TextBox x:Name="PasswordVisibleTextBox"
+                 Grid.Column="0"
+                 Height="32"
+                 Foreground="White"
+                 Background="#08263B"
+                 BorderBrush="#5E7385"
+                 BorderThickness="1"
+                 Padding="10,0,10,0"
+                 VerticalContentAlignment="Center"
+                 Visibility="Collapsed"
+                 TextChanged="PasswordVisibleTextBox_TextChanged"/>
+
+        <!-- Eye button -->
+        <Button x:Name="TogglePasswordButton"
+        Grid.Column="1"
+        Width="42"
+        Height="32"
+        Background="#08263B"
+        BorderBrush="#5E7385"
+        BorderThickness="1"
+        Click="TogglePasswordButton_Click">
+
+    <TextBlock x:Name="TogglePasswordIcon"
+               Text="&#xE722;"
+               FontFamily="Segoe MDL2 Assets"
+               FontSize="16"
+               Foreground="#98A7B4"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
+</Button>
+    </Grid>
+</StackPanel>
+</Grid>
+
+                    <!-- ROLE -->
+                    <StackPanel Grid.Row="3" Margin="0,0,0,20">
+                        <TextBlock Style="{StaticResource PopupLabelStyle}" Text="ROLE"/>
+
+                        <ComboBox x:Name="RoleComboBox"
+                                  Height="35"
+                                  FontSize="14"
+                                  Foreground="#08263B"
+                                  Background="#D6E2EA"
+                                  BorderBrush="#5E7385"
+                                  BorderThickness="1"
+                                  VerticalContentAlignment="Center"
+                                  Padding="8,0,8,0"
+                                  SelectedIndex="0">
+
+                            <ComboBox.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#08263B"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#08263B"/>
+                            </ComboBox.Resources>
+
+                            <ComboBox.ItemContainerStyle>
+                                <StaticResource ResourceKey="DarkComboBoxItemStyle"/>
+                            </ComboBox.ItemContainerStyle>
+
+                            <ComboBoxItem Content="Operator"/>
+                            <ComboBoxItem Content="Instructor"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- BUTTONS -->
+                    <StackPanel Grid.Row="4"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom">
+                        <Button Content="CANCEL"
+                                Width="96"
+                                Height="32"
+                                Margin="0,0,12,0"
+                                Foreground="White"
+                                Background="#667085"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="CloseCreateUser_Click"/>
+
+                        <Button Content="CREATE"
+                                Width="96"
+                                Height="32"
+                                Foreground="White"
+                                Background="#179C96"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="SaveUser_Click"/>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Grid>

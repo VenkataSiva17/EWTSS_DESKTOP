@@ -19,6 +19,8 @@ namespace EWTSS_DESKTOP.Infrastructure.Data
         public DbSet<EntityPolygon> EntityPolygons { get; set; }
         public DbSet<Emitter> Emitters { get; set; }
 
+        public DbSet<LogManagement> LogManagements { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             var connectionString = "server=localhost;database=ewtss_db_march;user=root;password=DDD12";

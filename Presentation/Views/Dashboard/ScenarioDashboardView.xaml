@@ -44,6 +44,7 @@
                                 Background="#169C96"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
+                                Cursor="Hand"
                                 HorizontalContentAlignment="Left"
                                 Click="Home_Click"/>
 
@@ -54,6 +55,7 @@
                                 Background="Transparent"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
+                                Cursor="Hand"
                                 HorizontalContentAlignment="Left"
                                 Click="UserManagement_Click"/>
 
@@ -64,6 +66,7 @@
                                 Background="Transparent"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
+                                Cursor="Hand"
                                 HorizontalContentAlignment="Left"
                                 Click="DbManagement_Click"/>
 
@@ -72,57 +75,74 @@
                                 Height="36"
                                 Margin="0,0,0,10"
                                 Background="Transparent"
+                                Cursor="Hand"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
                                 HorizontalContentAlignment="Left"
                                 Click="LogManagement_Click"/>
 
-                        <Button Content="EMITTER LIBRARY"
+                        <Button x:Name="EmitterLibraryButton"
+                                Content="EMITTER LIBRARY"
                                 Height="36"
                                 Margin="0,0,0,10"
                                 Background="Transparent"
+                                Cursor="Hand"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
-                                HorizontalContentAlignment="Left"/>
+                                HorizontalContentAlignment="Left"
+                                Click="EmitterLibrary_Click"/>
 
-                        <Button Content="REPORT"
+                        <Button x:Name="ReportButton"
+                                Content="REPORT"
                                 Height="36"
                                 Margin="0,0,0,10"
                                 Background="Transparent"
+                                Cursor="Hand"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
-                                HorizontalContentAlignment="Left"/>
+                                HorizontalContentAlignment="Left"
+                                Click="Report_Click"/>
 
-                        <Button Content="REPLAY"
+                        <Button x:Name="ReplayButton"
+                                Content="REPLAY"
                                 Height="36"
                                 Margin="0,0,0,10"
                                 Background="Transparent"
+                                Cursor="Hand"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
-                                HorizontalContentAlignment="Left"/>
+                                HorizontalContentAlignment="Left"
+                                Click="Replay_Click"/>
 
-                        <Button Content="IP CONFIGURATION"
+                        <Button x:Name="IpConfigurationButton"
+                                Content="IP CONFIGURATION"
                                 Height="36"
                                 Margin="0,0,0,10"
                                 Background="Transparent"
+                                Cursor="Hand"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
-                                HorizontalContentAlignment="Left"/>
-                    </StackPanel>
-                </ScrollViewer>
-
-                <!-- BOTTOM BUTTON -->
-                <Border Grid.Row="2" Padding="8">
-                    <Button Content="+ NEW SCENARIO"
+                                HorizontalContentAlignment="Left"
+                                Click="IpConfiguration_Click"/>
+                        
+                        <Border  Padding="8">
+                         <Button Content="+ NEW SCENARIO"
                             Height="40"
                             Margin="0,0,0,10"
                             Background="#21B3AE"
                             Foreground="Black"
                             FontWeight="Bold"
                             BorderBrush="{x:Null}"
+                            Cursor="Hand"
                             Command="{Binding NewScenarioCommand}"/>
                 </Border>
+                        
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
+
+               
+                
         </Border>
 
         <!-- RIGHT CONTENT -->
@@ -141,7 +161,7 @@
 
                 <TextBlock Text="Scenario Generator - EWTSS"
                            Foreground="White"
-                           FontSize="16"
+                           FontSize="20"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
