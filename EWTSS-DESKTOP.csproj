@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
@@ -7,7 +7,9 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="UserSession.cs" />
   </ItemGroup>
@@ -30,6 +32,10 @@
     </Reference>
     <Reference Include="AGI.STKX.Interop">
       <HintPath>..\..\..\Program Files\AGI\STK 12\bin\Primary Interop Assemblies\AGI.STKX.Interop.dll</HintPath>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="AGI.STKX.Controls.Interop">
+      <HintPath>..\..\..\Program Files\AGI\STK 12\bin\Primary Interop Assemblies\AGI.STKX.Controls.Interop.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

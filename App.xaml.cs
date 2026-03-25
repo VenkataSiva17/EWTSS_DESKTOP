@@ -10,7 +10,7 @@ namespace EWTSS_DESKTOP
         {
             using (var db = new AppDbContext())
             {
-                db.Database.Migrate();
+                db.Database.Migrate();       
                 DbSeeder.Seed(db);
             }
 

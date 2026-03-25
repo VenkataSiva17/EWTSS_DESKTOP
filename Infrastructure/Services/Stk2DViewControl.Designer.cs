@@ -1,14 +1,15 @@
-namespace EWTSS_DESKTOP.Infrastructure.Services;
 using AGI.STKObjects;
 using AGI.STKUtil;
 using AGI.STKX;
-using AGI.AxAGI;
+
+
+namespace EWTSS_DESKTOP.Infrastructure.Services
 
 {
     partial class Stk2DViewControl
     {
         private System.ComponentModel.IContainer components = null;
-        private AxAGI.Ui.Ax2DCntrl axAgUiAx2DCntrl1;
+        private AGI.STKX.axAgUiAx2DCntrl1 axAgUiAx2DCntrl1;
 
         protected override void Dispose(bool disposing)
         {
