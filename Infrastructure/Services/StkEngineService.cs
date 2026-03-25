@@ -28,7 +28,7 @@ namespace EWTSS_DESKTOP.Infrastructure.Services
                 // Check required feature (you can change this if needed)
                 if (!stkxApp.IsFeatureAvailable(AgEFeatureCodes.eFeatureCodeGlobeControl))
                 {
-                    MessageBox.Show(
+                    System.Windows.MessageBox.Show(
                         "Required STK license is not available.",
                         "License Error",
                         MessageBoxButton.OK,
@@ -49,7 +49,7 @@ namespace EWTSS_DESKTOP.Infrastructure.Services
                         "Could not initialize STK Engine.\n\n" +
                         "Please ensure STK / STK Engine 64-bit is installed.";
 
-                    MessageBox.Show(
+                    System.Windows.MessageBox.Show(
                         errorMessage,
                         "STK Engine Error",
                         MessageBoxButton.OK,

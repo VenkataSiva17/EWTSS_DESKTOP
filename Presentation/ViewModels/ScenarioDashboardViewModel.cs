@@ -135,7 +135,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
         {
             var dialog = new CreateScenarioWindow
             {
-                Owner = Application.Current.MainWindow
+                Owner =  System.Windows.Application.Current.MainWindow
             };
 
             var result = dialog.ShowDialog();
@@ -207,7 +207,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
             if (parameter is not Scenario scenario)
                 return;
 
-            var result = MessageBox.Show(
+            var result =  System.Windows.MessageBox.Show(
                 $"Delete scenario '{scenario.Name}'?",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
@@ -238,7 +238,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         private void NavigateToEditor(int scenarioId)
         {
-            if (Application.Current.MainWindow is MainWindow mainWindow)
+            if ( System.Windows.Application.Current.MainWindow is MainWindow mainWindow)
             {
                 var editorPage = new ScenarioEditorPage(scenarioId, _stkEngineService);
                 mainWindow.NavigateTo(editorPage);

@@ -1,12 +1,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using EWTSS_DESKTOP.Helpers;
 using System.Windows.Threading;
 
-using Button = System.Windows.Controls.Button;
-using Brushes = System.Windows.Media.Brushes;
+using WpfButton = System.Windows.Controls.Button;
+using WpfBrushes = System.Windows.Media.Brushes;
+using WpfRectangle = System.Windows.Shapes.Rectangle;
 
 namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
 {
@@ -18,18 +18,16 @@ namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
         {
             InitializeComponent();
             _clockTimer = ClockHelper.StartClock(TimeText);
-
-            
         }
 
         private void UploadButton_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button)
+            if (sender is WpfButton button)
             {
-                var border = button.Template.FindName("UploadBorder", button) as Rectangle;
+                var border = button.Template.FindName("UploadBorder", button) as WpfRectangle;
                 if (border != null)
                 {
-                    border.Stroke = Brushes.DeepSkyBlue;
+                    border.Stroke = WpfBrushes.DeepSkyBlue;
                 }
             }
         }
