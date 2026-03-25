@@ -42,7 +42,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
 
         private void SaveUser_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("User created successfully");
+            System.Windows.Forms.MessageBox.Show("User created successfully");
 
             FirstNameTextBox.Text = _viewModel.FirstNamePlaceholder;
             LastNameTextBox.Text = _viewModel.LastNamePlaceholder;
@@ -60,7 +60,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
 
         private void RemovePlaceholder(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBox tb)
+            if (sender is System.Windows.Controls.TextBox tb)
             {
                 if (_viewModel.IsPlaceholderText(tb.Text))
                 {
@@ -71,7 +71,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.UserManagement
 
         private void AddPlaceholder(object sender, RoutedEventArgs e)
         {
-            if (sender is TextBox tb && string.IsNullOrWhiteSpace(tb.Text))
+            if (sender is System.Windows.Controls.TextBox tb && string.IsNullOrWhiteSpace(tb.Text))
             {
                 tb.Text = _viewModel.GetPlaceholderByName(tb.Name);
             }

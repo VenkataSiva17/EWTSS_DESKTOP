@@ -28,7 +28,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
         {
             if (string.IsNullOrWhiteSpace(TxtName.Text))
             {
-                MessageBox.Show("Scenario name is required.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show("Scenario name is required.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

@@ -5,7 +5,8 @@ using System.Windows.Shapes;
 using EWTSS_DESKTOP.Helpers;
 using System.Windows.Threading;
 
-
+using Button = System.Windows.Controls.Button;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
 {

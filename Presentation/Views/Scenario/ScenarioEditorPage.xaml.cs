@@ -10,6 +10,8 @@ using EWTSS_DESKTOP.Infrastructure.Services;
 using EWTSS_DESKTOP.Core.Models;
 using ScenarioModel = EWTSS_DESKTOP.Core.Models.Scenario;
 
+using MessageBox = System.Windows.MessageBox;
+
 namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 {
     public partial class ScenarioEditorPage : Page
@@ -83,7 +85,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                System.Windows.MessageBox.Show(
                     $"STK visualization could not be initialized.\n\n{ex.Message}",
                     "STK Error",
                     MessageBoxButton.OK,
