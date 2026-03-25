@@ -8,6 +8,7 @@ using EWTSS_DESKTOP.Commands;
 using EWTSS_DESKTOP.Core.Models;
 using EWTSS_DESKTOP.Presentation.Views.Scenario;
 using EWTSS_DESKTOP.Infrastructure.Data;
+using EWTSS_DESKTOP.Infrastructure.Services;
 using System;
 using System.Windows;
 
@@ -16,6 +17,8 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
     public class ScenarioDashboardViewModel : INotifyPropertyChanged
     {
         private readonly User _loggedInUser;
+
+        private readonly StkEngineService stkEngineService;
 
         public ObservableCollection<Scenario> AllScenarios { get; set; } = new();
         public ObservableCollection<Scenario> FilteredScenarios { get; set; } = new();
@@ -157,6 +160,11 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
                 db.Scenarios.Add(scenario);
                 db.SaveChanges();
+                // Console.Write("dfjghdkfhgjkdfhg");
+
+               
+                // stkEngineService.CreateScenario(scenario.Name, DateTime.Now, TimeSpan.FromMinutes(20));
+                
 
                 LoadScenarios();
             }
@@ -186,6 +194,8 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
             db.Scenarios.Add(duplicate);
             db.SaveChanges();
+            
+
 
             LoadScenarios();
         }
