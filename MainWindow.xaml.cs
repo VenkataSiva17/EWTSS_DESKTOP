@@ -13,39 +13,33 @@ namespace EWTSS_DESKTOP
     public partial class MainWindow : Window
     {
         private readonly StkEngineService _stkEngineService;
+        private readonly AppDbContext _db;
+
+        public StkEngineService StkEngineService => _stkEngineService;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Console.WriteLine("App started");
+            WindowState = WindowState.Maximized;
 
-            // ✅ Create SINGLE instance
             _stkEngineService = new StkEngineService();
 
-            // ✅ Check license FIRST
             if (!_stkEngineService.CheckLicense())
             {
-                Application.Current.Shutdown();
+                System.Windows.Application.Current.Shutdown();
                 return;
             }
 
-            // DB + Services
-            var db = new AppDbContext();
-            var userService = new UserService(new UserRepository(db));
+            _db = new AppDbContext();
+            var userService = new UserService(new UserRepository(_db));
 
-            // Login setup
             var loginVM = new LoginViewModel(userService);
             var loginPage = new LoginView { DataContext = loginVM };
 
-            // ✅ Navigate after login
             loginVM.LoginSucceeded += (user) =>
             {
                 var dashboard = new ScenarioDashboardView(user, _stkEngineService);
-
-                // OPTIONAL: pass STK service to dashboard if needed
-                // var dashboard = new ScenarioDashboardView(user, _stkEngineService);
-
                 MainFrame.Navigate(dashboard);
             };
 
@@ -57,12 +51,12 @@ namespace EWTSS_DESKTOP
             MainFrame.Navigate(page);
         }
 
-        // ✅ Clean up STK when app closes
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
 
             _stkEngineService?.Dispose();
+            _db?.Dispose();
         }
     }
 }
