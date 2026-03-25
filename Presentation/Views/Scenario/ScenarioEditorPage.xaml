@@ -401,37 +401,65 @@
             <!-- RIGHT VISUALIZATION -->
             <Grid Grid.Column="2" Background="Black">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="36"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="70"/>
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0" Background="#21B3AE">
+                <!-- TOP MAP BAR -->
+                <Grid Grid.Row="0" Background="#21B3AE">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+
                     <TextBlock Text="MAP VISUALIZATION"
                                Foreground="White"
                                FontSize="14"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
-                </Border>
 
+                    <Button Grid.Column="1"
+                            x:Name="Btn3D"
+                            Content="3D"
+                            Margin="5,3"
+                            Background="#062235"
+                            Foreground="White"
+                            BorderBrush="{x:Null}"
+                            FontWeight="Bold"
+                            Click="Btn3D_Click"/>
+
+                    <Button Grid.Column="2"
+                            x:Name="Btn2D"
+                            Content="2D"
+                            Margin="5,3,10,3"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="{x:Null}"
+                            FontWeight="Bold"
+                            Click="Btn2D_Click"/>
+                </Grid>
+
+                <!-- SAME VISUAL AREA, SWITCH 3D / 2D -->
                 <Grid Grid.Row="1" Background="Black">
-                    <!-- left fake map toolbar -->
+                    <!-- fake left toolbar -->
                     <StackPanel HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
-                                Margin="12,12,0,0">
+                                Margin="12,12,0,0"
+                                Panel.ZIndex="10">
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="+"/>
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="−"/>
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="↔"/>
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="⌖"/>
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="◈"/>
-                        <Button Style="{StaticResource MiniMapButtonStyle}" Content="2D"/>
                     </StackPanel>
 
-                    <!-- right fake map toolbar -->
+                    <!-- fake right toolbar -->
                     <StackPanel HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
-                                Margin="0,0,12,0">
+                                Margin="0,0,12,0"
+                                Panel.ZIndex="10">
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="LoS"/>
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="⊞"/>
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="▤"/>
@@ -439,18 +467,38 @@
                         <Button Style="{StaticResource MiniMapButtonStyle}" Content="🗓"/>
                     </StackPanel>
 
-                    <!-- center placeholder -->
-                    <TextBlock Text="3D VISUALIZATION"
+                    <!-- 3D host -->
+                    <wf:WindowsFormsHost x:Name="Host3D"
+                                         Visibility="Visible"/>
+
+                    <!-- 2D host -->
+                    <wf:WindowsFormsHost x:Name="Host2D"
+                                         Visibility="Collapsed"/>
+
+                    <!-- fallback placeholder text -->
+                    <TextBlock x:Name="Placeholder3DText"
+                               Text="3D VISUALIZATION"
                                Foreground="White"
                                FontSize="18"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
+                               VerticalAlignment="Center"
+                               Visibility="Visible"/>
+
+                    <TextBlock x:Name="Placeholder2DText"
+                               Text="2D VISUALIZATION"
+                               Foreground="White"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="Collapsed"/>
 
                     <!-- top-right little menu -->
                     <StackPanel HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Margin="0,40,12,0">
+                                Margin="0,40,12,0"
+                                Panel.ZIndex="10">
                         <Border Background="#168ED8" Padding="12,8">
                             <TextBlock Text="Create Viewshed" Foreground="White"/>
                         </Border>
@@ -462,49 +510,39 @@
                         </Border>
                     </StackPanel>
 
-                    <!-- bottom right area info -->
-                    <Border HorizontalAlignment="Right"
+                    <!-- bottom preview bar -->
+                    <Border HorizontalAlignment="Stretch"
                             VerticalAlignment="Bottom"
-                            Margin="0,0,12,10"
-                            Background="#111111"
-                            Padding="10,6">
-                        <TextBlock Text="Total Area : 4.49 Kilometer Square"
-                                   Foreground="White"
-                                   FontSize="12"/>
+                            Height="42"
+                            Background="#0B0B0B"
+                            BorderBrush="#1C3242"
+                            BorderThickness="0,1,0,0"
+                            Panel.ZIndex="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="170"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="SCENARIO PREVIEW :"
+                                       Foreground="White"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"
+                                       Margin="8,0,0,0"/>
+
+                            <ComboBox Grid.Column="1"
+                                      Width="140"
+                                      Height="28"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Background="#021522"
+                                      Foreground="White"
+                                      BorderBrush="#5A7388">
+                                <ComboBoxItem Content="DEGREE DECIMAL" IsSelected="True"/>
+                            </ComboBox>
+                        </Grid>
                     </Border>
                 </Grid>
-
-                <Border Grid.Row="2"
-                        Background="Black"
-                        BorderBrush="#1C3242"
-                        BorderThickness="0,1,0,0">
-                    <Grid>
-                        <TextBlock Text="SCENARIO PREVIEW :"
-                                Foreground="White"
-                                FontWeight="Bold"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Margin="8,6,0,0"/>
-
-                        <TextBlock Text="2D VISUALIZATION"
-                                Foreground="White"
-                                FontSize="16"
-                                FontWeight="Bold"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-
-                        <ComboBox Width="140"
-                                Height="28"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Bottom"
-                                Margin="0,0,0,8"
-                                Background="#021522"
-                                Foreground="White"
-                                BorderBrush="#5A7388">
-                            <ComboBoxItem Content="DEGREE DECIMAL" IsSelected="True"/>
-                        </ComboBox>
-                    </Grid>
-                </Border>
             </Grid>
         </Grid>
     </Grid>

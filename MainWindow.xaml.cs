@@ -41,7 +41,7 @@ namespace EWTSS_DESKTOP
             // ✅ Navigate after login
             loginVM.LoginSucceeded += (user) =>
             {
-                var dashboard = new ScenarioDashboardView(user);
+                var dashboard = new ScenarioDashboardView(user, _stkEngineService);
 
                 // OPTIONAL: pass STK service to dashboard if needed
                 // var dashboard = new ScenarioDashboardView(user, _stkEngineService);

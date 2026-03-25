@@ -3,9 +3,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 using EWTSS_DESKTOP.Core.Models;
+using EWTSS_DESKTOP.Infrastructure.Services;
 using EWTSS_DESKTOP.Presentation.ViewModels;
 using EWTSS_DESKTOP.Presentation.Views.DbManagement;
-using EWTSS_DESKTOP.Presentation.Views.Dashboard;
 using EWTSS_DESKTOP.Presentation.Views.UserManagement;
 using EWTSS_DESKTOP.Presentation.Views.LogManagement;
 using EWTSS_DESKTOP.Presentation.Views.EmitterLibrary;
@@ -13,19 +13,22 @@ using EWTSS_DESKTOP.Presentation.Views.Report;
 using EWTSS_DESKTOP.Presentation.Views.IpConfiguration;
 using EWTSS_DESKTOP.Presentation.Views.Replay;
 
-
-
 namespace EWTSS_DESKTOP.Presentation.Views.Dashboard
 {
     public partial class ScenarioDashboardView : Page
     {
         private readonly ScenarioDashboardViewModel _viewModel;
+        private readonly User _loggedInUser;
+        private readonly StkEngineService _stkEngineService;
 
-        public ScenarioDashboardView(User user)
+        public ScenarioDashboardView(User user, StkEngineService stkEngineService)
         {
             InitializeComponent();
 
-            _viewModel = new ScenarioDashboardViewModel(user);
+            _loggedInUser = user;
+            _stkEngineService = stkEngineService;
+
+            _viewModel = new ScenarioDashboardViewModel(user, stkEngineService);
             DataContext = _viewModel;
 
             MainContentFrame.Navigate(new ScenarioHomeView(_viewModel));
@@ -67,11 +70,13 @@ namespace EWTSS_DESKTOP.Presentation.Views.Dashboard
             MainContentFrame.Navigate(new ReportView());
             SetActiveMenu(ReportButton);
         }
+
         private void IpConfiguration_Click(object sender, RoutedEventArgs e)
         {
-         MainContentFrame.Navigate(new IpConfigurationView());
-         SetActiveMenu(IpConfigurationButton);
+            MainContentFrame.Navigate(new IpConfigurationView());
+            SetActiveMenu(IpConfigurationButton);
         }
+
         private void Replay_Click(object sender, RoutedEventArgs e)
         {
             MainContentFrame.Navigate(new ReplayView());
@@ -88,9 +93,6 @@ namespace EWTSS_DESKTOP.Presentation.Views.Dashboard
             ReportButton.Background = Brushes.Transparent;
             IpConfigurationButton.Background = Brushes.Transparent;
             ReplayButton.Background = Brushes.Transparent;
-           
-
-            
 
             activeButton.Background = (Brush)new BrushConverter().ConvertFromString("#169C96");
         }

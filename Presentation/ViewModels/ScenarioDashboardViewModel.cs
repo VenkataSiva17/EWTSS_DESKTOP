@@ -18,7 +18,8 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
     {
         private readonly User _loggedInUser;
 
-        private readonly StkEngineService stkEngineService;
+
+        private readonly StkEngineService _stkEngineService;
 
         public ObservableCollection<Scenario> AllScenarios { get; set; } = new();
         public ObservableCollection<Scenario> FilteredScenarios { get; set; } = new();
@@ -73,9 +74,10 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
         public ICommand EditScenarioCommand { get; }
         public ICommand DeleteScenarioCommand { get; }
 
-        public ScenarioDashboardViewModel(User user)
+        public ScenarioDashboardViewModel(User user, StkEngineService stkEngineService)
         {
             _loggedInUser = user;
+            _stkEngineService = stkEngineService;
 
             LoggedInUserName = $"{user.FirstName} {user.LastName}";
             SearchCommand = new RelayCommand(() => ApplyFilters());
@@ -238,7 +240,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
         {
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
-                var editorPage = new ScenarioEditorPage(scenarioId);
+                var editorPage = new ScenarioEditorPage(scenarioId, _stkEngineService);
                 mainWindow.NavigateTo(editorPage);
             }
         }
