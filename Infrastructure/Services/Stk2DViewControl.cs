@@ -1,9 +1,11 @@
 using System;
 using System.Windows.Forms;
 
+using System;
+
 namespace EWTSS_DESKTOP.Infrastructure.Services
 {
-    public partial class Stk2DViewControl : UserControl
+    public partial class Stk2DViewControl : System.Windows.Forms.UserControl
     {
         public Stk2DViewControl()
         {

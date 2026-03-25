@@ -3,9 +3,7 @@ using AGI.STKX.Controls;
 using AGI.STKX;
 using System;
 
-
 namespace EWTSS_DESKTOP.Infrastructure.Services
-
 {
     partial class Stk3DViewControl
     {
@@ -16,12 +14,15 @@ namespace EWTSS_DESKTOP.Infrastructure.Services
         {
             if (disposing && (components != null))
                 components.Dispose();
+
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.axAgUiAxVOCntrl1 = new AxAGI.Ui.AxVOCntrl();
+
             ((System.ComponentModel.ISupportInitialize)(this.axAgUiAxVOCntrl1)).BeginInit();
             this.SuspendLayout();
 
