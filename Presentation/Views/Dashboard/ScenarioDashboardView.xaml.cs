@@ -3,9 +3,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 using EWTSS_DESKTOP.Core.Models;
+using EWTSS_DESKTOP.Infrastructure.Services;
 using EWTSS_DESKTOP.Presentation.ViewModels;
 using EWTSS_DESKTOP.Presentation.Views.DbManagement;
-using EWTSS_DESKTOP.Presentation.Views.Dashboard;
 using EWTSS_DESKTOP.Presentation.Views.UserManagement;
 using EWTSS_DESKTOP.Presentation.Views.LogManagement;
 using EWTSS_DESKTOP.Presentation.Views.EmitterLibrary;
@@ -13,86 +13,93 @@ using EWTSS_DESKTOP.Presentation.Views.Report;
 using EWTSS_DESKTOP.Presentation.Views.IpConfiguration;
 using EWTSS_DESKTOP.Presentation.Views.Replay;
 
-
+using WpfButton = System.Windows.Controls.Button;
+using WpfBrush = System.Windows.Media.Brush;
+using WpfBrushes = System.Windows.Media.Brushes;
+using WpfBrushConverter = System.Windows.Media.BrushConverter;
 
 namespace EWTSS_DESKTOP.Presentation.Views.Dashboard
 {
     public partial class ScenarioDashboardView : Page
     {
         private readonly ScenarioDashboardViewModel _viewModel;
+        private readonly User _loggedInUser;
+        private readonly StkEngineService _stkEngineService;
 
-        public ScenarioDashboardView(User user)
+        public ScenarioDashboardView(User user, StkEngineService stkEngineService)
         {
             InitializeComponent();
 
-            _viewModel = new ScenarioDashboardViewModel(user);
+            _loggedInUser = user;
+            _stkEngineService = stkEngineService;
+
+            _viewModel = new ScenarioDashboardViewModel(user, stkEngineService);
             DataContext = _viewModel;
 
-            MainContentFrame.Navigate(new ScenarioHomeView(_viewModel));
+            MainContentFrame.Content = new ScenarioHomeView(_viewModel);
             SetActiveMenu(HomeButton);
         }
 
         private void Home_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new ScenarioHomeView(_viewModel));
+            MainContentFrame.Content = new ScenarioHomeView(_viewModel);
             SetActiveMenu(HomeButton);
         }
 
         private void UserManagement_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new UserManagementView());
+            MainContentFrame.Content = new UserManagementView();
             SetActiveMenu(UserManagementButton);
         }
 
         private void DbManagement_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new DbManagementView());
+            MainContentFrame.Content = new DbManagementView();
             SetActiveMenu(DbManagementButton);
         }
 
         private void LogManagement_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new LogManagementView());
+            MainContentFrame.Content = new LogManagementView();
             SetActiveMenu(LogManagementButton);
         }
 
         private void EmitterLibrary_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new EmitterLibraryView());
+            MainContentFrame.Content = new EmitterLibraryView();
             SetActiveMenu(EmitterLibraryButton);
         }
 
         private void Report_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new ReportView());
+            MainContentFrame.Content = new ReportView();
             SetActiveMenu(ReportButton);
         }
+
         private void IpConfiguration_Click(object sender, RoutedEventArgs e)
         {
-         MainContentFrame.Navigate(new IpConfigurationView());
-         SetActiveMenu(IpConfigurationButton);
+            MainContentFrame.Content = new IpConfigurationView();
+            SetActiveMenu(IpConfigurationButton);
         }
+
         private void Replay_Click(object sender, RoutedEventArgs e)
         {
-            MainContentFrame.Navigate(new ReplayView());
+            MainContentFrame.Content = new ReplayView();
             SetActiveMenu(ReplayButton);
         }
 
-        private void SetActiveMenu(Button activeButton)
+        private void SetActiveMenu(WpfButton activeButton)
         {
-            HomeButton.Background = Brushes.Transparent;
-            UserManagementButton.Background = Brushes.Transparent;
-            DbManagementButton.Background = Brushes.Transparent;
-            LogManagementButton.Background = Brushes.Transparent;
-            EmitterLibraryButton.Background = Brushes.Transparent;
-            ReportButton.Background = Brushes.Transparent;
-            IpConfigurationButton.Background = Brushes.Transparent;
-            ReplayButton.Background = Brushes.Transparent;
-           
+            HomeButton.Background = WpfBrushes.Transparent;
+            UserManagementButton.Background = WpfBrushes.Transparent;
+            DbManagementButton.Background = WpfBrushes.Transparent;
+            LogManagementButton.Background = WpfBrushes.Transparent;
+            EmitterLibraryButton.Background = WpfBrushes.Transparent;
+            ReportButton.Background = WpfBrushes.Transparent;
+            IpConfigurationButton.Background = WpfBrushes.Transparent;
+            ReplayButton.Background = WpfBrushes.Transparent;
 
-            
-
-            activeButton.Background = (Brush)new BrushConverter().ConvertFromString("#169C96");
+            activeButton.Background = (WpfBrush)new WpfBrushConverter().ConvertFromString("#169C96");
         }
     }
 }

@@ -8,6 +8,7 @@ using EWTSS_DESKTOP.Commands;
 using EWTSS_DESKTOP.Core.Models;
 using EWTSS_DESKTOP.Presentation.Views.Scenario;
 using EWTSS_DESKTOP.Infrastructure.Data;
+using EWTSS_DESKTOP.Infrastructure.Services;
 using System;
 using System.Windows;
 
@@ -16,6 +17,9 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
     public class ScenarioDashboardViewModel : INotifyPropertyChanged
     {
         private readonly User _loggedInUser;
+
+
+        private readonly StkEngineService _stkEngineService;
 
         public ObservableCollection<Scenario> AllScenarios { get; set; } = new();
         public ObservableCollection<Scenario> FilteredScenarios { get; set; } = new();
@@ -70,9 +74,10 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
         public ICommand EditScenarioCommand { get; }
         public ICommand DeleteScenarioCommand { get; }
 
-        public ScenarioDashboardViewModel(User user)
+        public ScenarioDashboardViewModel(User user, StkEngineService stkEngineService)
         {
             _loggedInUser = user;
+            _stkEngineService = stkEngineService;
 
             LoggedInUserName = $"{user.FirstName} {user.LastName}";
             SearchCommand = new RelayCommand(() => ApplyFilters());
@@ -130,7 +135,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
         {
             var dialog = new CreateScenarioWindow
             {
-                Owner = Application.Current.MainWindow
+                Owner =  System.Windows.Application.Current.MainWindow
             };
 
             var result = dialog.ShowDialog();
@@ -157,6 +162,11 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
                 db.Scenarios.Add(scenario);
                 db.SaveChanges();
+                // Console.Write("dfjghdkfhgjkdfhg");
+
+               
+                // stkEngineService.CreateScenario(scenario.Name, DateTime.Now, TimeSpan.FromMinutes(20));
+                
 
                 LoadScenarios();
             }
@@ -186,6 +196,8 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
             db.Scenarios.Add(duplicate);
             db.SaveChanges();
+            
+
 
             LoadScenarios();
         }
@@ -195,7 +207,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
             if (parameter is not Scenario scenario)
                 return;
 
-            var result = MessageBox.Show(
+            var result =  System.Windows.MessageBox.Show(
                 $"Delete scenario '{scenario.Name}'?",
                 "Confirm Delete",
                 MessageBoxButton.YesNo,
@@ -226,9 +238,9 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         private void NavigateToEditor(int scenarioId)
         {
-            if (Application.Current.MainWindow is MainWindow mainWindow)
+            if ( System.Windows.Application.Current.MainWindow is MainWindow mainWindow)
             {
-                var editorPage = new ScenarioEditorPage(scenarioId);
+                var editorPage = new ScenarioEditorPage(scenarioId, _stkEngineService);
                 mainWindow.NavigateTo(editorPage);
             }
         }

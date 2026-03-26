@@ -26,33 +26,33 @@ namespace EWTSS_DESKTOP.Presentation.Views.LogManagement
 
         private void ResetTabs()
         {
-            var normalBrush = (Brush)new BrushConverter().ConvertFrom("#179C96");
+            var normalBrush = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#179C96");
 
             UserTab.Background = normalBrush;
-            UserTab.Foreground = Brushes.Black;
+            UserTab.Foreground = System.Windows.Media.Brushes.Black;
             UserTab.FontWeight = FontWeights.Normal;
 
             SentToDrsTab.Background = normalBrush;
-            SentToDrsTab.Foreground = Brushes.Black;
+            SentToDrsTab.Foreground = System.Windows.Media.Brushes.Black;
             SentToDrsTab.FontWeight = FontWeights.Normal;
 
             ReceivedFromDrsTab.Background = normalBrush;
-            ReceivedFromDrsTab.Foreground = Brushes.Black;
+            ReceivedFromDrsTab.Foreground = System.Windows.Media.Brushes.Black;
             ReceivedFromDrsTab.FontWeight = FontWeights.Normal;
 
             SystemTab.Background = normalBrush;
-            SystemTab.Foreground = Brushes.Black;
+            SystemTab.Foreground = System.Windows.Media.Brushes.Black;
             SystemTab.FontWeight = FontWeights.Normal;
 
 
         }
 
-        private void SetActiveTab(Button activeButton)
+        private void SetActiveTab(System.Windows.Controls.Button activeButton)
         {
             ResetTabs();
 
-            activeButton.Background = (Brush)new BrushConverter().ConvertFrom("#27B7AE");
-            activeButton.Foreground = Brushes.White;
+            activeButton.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFrom("#27B7AE");
+            activeButton.Foreground = System.Windows.Media.Brushes.White;
             activeButton.FontWeight = FontWeights.Bold;
         }
 
