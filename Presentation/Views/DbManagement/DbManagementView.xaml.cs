@@ -3,10 +3,13 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using EWTSS_DESKTOP.Helpers;
 using System.Windows.Threading;
-
+using EWTSS_DESKTOP.Infrastructure.Services;
+using EWTSS_DESKTOP.Presentation.ViewModels;
+using EWTSS_DESKTOP.Infrastructure.Repositories;
 using WpfButton = System.Windows.Controls.Button;
 using WpfBrushes = System.Windows.Media.Brushes;
 using WpfRectangle = System.Windows.Shapes.Rectangle;
+using System.Windows;
 
 namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
 {

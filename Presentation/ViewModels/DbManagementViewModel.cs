@@ -28,7 +28,7 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
         private void Backup()
         {
-            SaveFileDialog dialog = new SaveFileDialog
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog
             {
                 Filter = "SQL File (*.sql)|*.sql",
                 FileName = "backup.sql"
@@ -38,12 +38,12 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
                 return;
 
             _service.Backup(dialog.FileName, out string message);
-            MessageBox.Show(message);
+            System.Windows.MessageBox.Show(message);
         }
 
         private void Import()
         {
-            OpenFileDialog dialog = new OpenFileDialog
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Filter = "SQL File (*.sql)|*.sql"
             };
@@ -53,22 +53,22 @@ namespace EWTSS_DESKTOP.Presentation.ViewModels
 
             if (!File.Exists(dialog.FileName))
             {
-                MessageBox.Show("File not found.");
+                System.Windows.MessageBox.Show("File not found.");
                 return;
             }
 
             _service.Import(dialog.FileName, out string message);
-            MessageBox.Show(message);
+            System.Windows.MessageBox.Show(message);
         }
 
         private void Purge()
         {
-            if (MessageBox.Show("Delete all data?", "Confirm", MessageBoxButton.YesNo)
+            if (System.Windows.MessageBox.Show("Delete all data?", "Confirm", MessageBoxButton.YesNo)
                 != MessageBoxResult.Yes)
                 return;
 
             _service.Purge(out string message);
-            MessageBox.Show(message);
+            System.Windows.MessageBox.Show(message);
         }
     }
 }
