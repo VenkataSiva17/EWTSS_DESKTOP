@@ -48,7 +48,8 @@
                     FontWeight="Bold"
                     Content="BACKUP"
                     Cursor="Hand"
-                    FocusVisualStyle="{x:Null}"/>
+                    FocusVisualStyle="{x:Null}"
+                    Command="{Binding BackupCommand}"/>
 
             <Button Width="630"
                     Height="102"
@@ -61,7 +62,8 @@
                     FontWeight="Bold"
                     Content="PURGE"
                     Cursor="Hand"
-                    FocusVisualStyle="{x:Null}"/>
+                    FocusVisualStyle="{x:Null}"
+                    Command="{Binding PurgeCommand}"/>
 
             <Button Width="630"
                     Height="102"
@@ -74,7 +76,8 @@
                     FontWeight="Bold"
                     Content="IMPORT"
                     Cursor="Hand"
-                    FocusVisualStyle="{x:Null}"/>
+                    FocusVisualStyle="{x:Null}"
+                    Command="{Binding ImportCommand}"/>
 
             <Button Width="630"
                     Height="110"
@@ -82,7 +85,7 @@
                     BorderThickness="0"
                     FocusVisualStyle="{x:Null}"
                     Cursor="Hand"
-                    Click="UploadButton_Click">
+                    Command="{Binding UploadCommand}">
 
                 <Button.Template>
                     <ControlTemplate TargetType="Button">

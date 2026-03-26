@@ -1,11 +1,9 @@
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using EWTSS_DESKTOP.Helpers;
 using System.Windows.Threading;
-
-
+using EWTSS_DESKTOP.Helpers;
+using EWTSS_DESKTOP.Infrastructure.Repositories;
+using EWTSS_DESKTOP.Infrastructure.Services;
+using EWTSS_DESKTOP.Presentation.ViewModels;
 
 namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
 {
@@ -16,21 +14,17 @@ namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
         public DbManagementView()
         {
             InitializeComponent();
+
+            var repository = new DbManagementRepository(
+                "localhost",
+                "ewtss_db_march",
+                "root",
+                "DDD12");
+
+            var service = new DbManagementService(repository);
+
+            DataContext = new DbManagementViewModel(service);
             _clockTimer = ClockHelper.StartClock(TimeText);
-
-            
-        }
-
-        private void UploadButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                var border = button.Template.FindName("UploadBorder", button) as Rectangle;
-                if (border != null)
-                {
-                    border.Stroke = Brushes.DeepSkyBlue;
-                }
-            }
         }
     }
 }
