@@ -25,11 +25,11 @@ namespace EWTSS_DESKTOP
 
             _stkEngineService = new StkEngineService();
 
-            if (!_stkEngineService.CheckLicense())
-            {
-                System.Windows.Application.Current.Shutdown();
-                return;
-            }
+            // if (!_stkEngineService.CheckLicense())
+            // {
+            //     System.Windows.Application.Current.Shutdown();
+            //     return;
+            // }
 
             _db = new AppDbContext();
             var userService = new UserService(new UserRepository(_db));
