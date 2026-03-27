@@ -25,7 +25,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
                 "localhost",
                 "ewtss_db_march",
                 "root",
-                "DDD12");
+                "admin@123");
 
             var service = new DbManagementService(repository);
 
