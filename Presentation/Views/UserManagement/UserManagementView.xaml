@@ -5,6 +5,7 @@
       Title="UserManagementView">
 
     <Page.Resources>
+
         <Style x:Key="PopupLabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
@@ -49,6 +50,61 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="RowTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="ActionIconButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Margin" Value="4,0,4,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="2">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#123247"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#0D2637"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PermissionCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
     </Page.Resources>
 
     <Grid Margin="20">
@@ -58,8 +114,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- TITLE -->
-        <Grid Grid.Row="0" Margin="0,0,0,20">
+        <!-- TOP HEADER -->
+        <Grid Grid.Row="0" Margin="0,0,0,18">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -68,7 +124,7 @@
             <TextBlock Grid.Column="0"
                        Text="USER MANAGEMENT"
                        Foreground="White"
-                       FontSize="22"
+                       FontSize="18"
                        FontWeight="Bold"
                        VerticalAlignment="Center"/>
 
@@ -76,64 +132,161 @@
                        x:Name="TimeText"
                        Foreground="White"
                        FontSize="16"
-                       Margin="20,0,0,0"
                        VerticalAlignment="Center"/>
         </Grid>
 
         <!-- CREATE BUTTON -->
         <Button Grid.Row="1"
                 Content="CREATE NEW"
-                Width="180"
-                Height="40"
+                Width="178"
+                Height="42"
                 HorizontalAlignment="Right"
                 Background="#179C96"
                 Foreground="White"
                 BorderBrush="{x:Null}"
                 FontSize="14"
                 FontWeight="Bold"
-                Margin="0,0,0,12"
+                Margin="0,0,0,8"
                 Cursor="Hand"
                 Click="CreateNew_Click"/>
 
         <!-- TABLE -->
-        <Grid Grid.Row="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Border Grid.Row="2"
+                BorderBrush="#00B7B7"
+                BorderThickness="1.5"
+                Background="#021522"
+                Padding="0">
 
-            <Grid Grid.Row="0" Background="#179C96">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition Width="180"/>
-                    <ColumnDefinition Width="220"/>
-                    <ColumnDefinition Width="140"/>
-                    <ColumnDefinition Width="220"/>
-                    <ColumnDefinition Width="180"/>
-                    <ColumnDefinition Width="140"/>
-                </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="42"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Text="SNO" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="1" Text="NAME" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="2" Text="USER NAME" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="3" Text="ROLE" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="4" Text="PERMISSIONS" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="5" Text="CREATED ON" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="6" Text="ACTION" Foreground="White" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <!-- TABLE HEADER -->
+                <Grid Grid.Row="0" Background="#179C96">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="210"/>
+                        <ColumnDefinition Width="210"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="170"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="SNO" Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Grid.Column="1" Text="NAME" Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Grid.Column="2" Text="USER NAME" Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Grid.Column="3" Text="ROLE" Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Grid.Column="4" Text="PERMISSIONS" Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Grid.Column="5" Text="CREATED ON" Style="{StaticResource HeaderTextStyle}"/>
+                    <TextBlock Grid.Column="6" Text="ACTION" Style="{StaticResource HeaderTextStyle}"/>
+                </Grid>
+
+                <!-- TABLE BODY -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Background="#021522">
+
+                    <ItemsControl ItemsSource="{Binding Users}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#0E5165"
+                                        BorderThickness="0,0,0,1"
+                                        Background="#021522"
+                                        Padding="12,14">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="80"/>
+                                            <ColumnDefinition Width="210"/>
+                                            <ColumnDefinition Width="210"/>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="170"/>
+                                            <ColumnDefinition Width="170"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0"
+                                                   Text="{Binding SerialNo}"
+                                                   Style="{StaticResource RowTextStyle}"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"/>
+
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding FullName}"
+                                                   Style="{StaticResource RowTextStyle}"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   Margin="8,0"/>
+
+                                        <TextBlock Grid.Column="2"
+                                                   Text="{Binding UserName}"
+                                                   Style="{StaticResource RowTextStyle}"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   Margin="8,0"/>
+
+                                        <TextBlock Grid.Column="3"
+                                                   Text="{Binding RoleName}"
+                                                   Style="{StaticResource RowTextStyle}"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   Margin="8,0"/>
+
+                                        <TextBlock Grid.Column="4"
+                                                   Text="{Binding Permissions}"
+                                                   Style="{StaticResource RowTextStyle}"
+                                                   Margin="12,0,12,0"
+                                                   TextWrapping="Wrap"/>
+
+                                        <TextBlock Grid.Column="5"
+                                                   Text="{Binding CreatedOnText}"
+                                                   Style="{StaticResource RowTextStyle}"
+                                                   HorizontalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   Margin="8,0"/>
+
+                                        <StackPanel Grid.Column="6"
+                                                    Orientation="Horizontal"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    Content="&#xE70F;"
+                                                    ToolTip="Edit"
+                                                    Tag="{Binding}"
+                                                    Click="EditUser_Click"/>
+
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    Content="&#xE74D;"
+                                                    ToolTip="Delete"
+                                                    Tag="{Binding}"
+                                                    Click="DeleteUser_Click"/>
+
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    Content="&#xE72E;"
+                                                    ToolTip="Permissions"
+                                                    Tag="{Binding}"
+                                                    Click="PermissionUser_Click"/>
+
+                                            <Button Style="{StaticResource ActionIconButtonStyle}"
+                                                    Content="&#xE192;"
+                                                    ToolTip="Reset Password"
+                                                    Tag="{Binding}"
+                                                    Click="ResetPassword_Click"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Grid>
+        </Border>
 
-            <Border Grid.Row="1"
-                    Background="Transparent"
-                    BorderBrush="#1C3242"
-                    BorderThickness="1,0,0,0">
-                <TextBlock Text=""
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-            </Border>
-        </Grid>
-
-        <!-- POPUP OVERLAY -->
+        <!-- CREATE USER OVERLAY -->
         <Grid x:Name="CreateUserOverlay"
               Grid.RowSpan="3"
               Background="#66000000"
@@ -158,7 +311,6 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <!-- POPUP TITLE -->
                     <TextBlock Grid.Row="0"
                                Text="CREATE USER"
                                Foreground="White"
@@ -167,7 +319,6 @@
                                HorizontalAlignment="Center"
                                Margin="0,0,0,22"/>
 
-                    <!-- FIRST ROW -->
                     <Grid Grid.Row="1" Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -193,7 +344,6 @@
                         </StackPanel>
                     </Grid>
 
-                    <!-- SECOND ROW -->
                     <Grid Grid.Row="2" Margin="0,0,0,18">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -212,67 +362,69 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
-    <TextBlock Foreground="White"
-               FontSize="14"
-               Margin="0,0,0,8">
-        <Run Text="PASSWORD "/>
-        <Run Text="*" Foreground="Red"/>
-    </TextBlock>
+                            <TextBlock Foreground="White"
+                                       FontSize="14"
+                                       Margin="0,0,0,8">
+                                <Run Text="PASSWORD "/>
+                                <Run Text="*" Foreground="Red"/>
+                            </TextBlock>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="42"/>
-        </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="42"/>
+                                </Grid.ColumnDefinitions>
 
-        <!-- Hidden password -->
-        <PasswordBox x:Name="PasswordInput"
-                     Grid.Column="0"
-                     Height="32"
-                     Foreground="White"
-                     Background="#08263B"
-                     BorderBrush="#5E7385"
-                     BorderThickness="1"
-                     Padding="10,0,10,0"
-                     VerticalContentAlignment="Center"
-                     PasswordChanged="PasswordInput_PasswordChanged"/>
+                                <PasswordBox x:Name="PasswordInput"
+                                             Grid.Column="0"
+                                             Height="32"
+                                             Foreground="White"
+                                             Background="#08263B"
+                                             BorderBrush="#5E7385"
+                                             BorderThickness="1"
+                                             Padding="10,0,10,0"
+                                             VerticalContentAlignment="Center"
+                                             PasswordChanged="PasswordInput_PasswordChanged"/>
 
-        <!-- Visible password -->
-        <TextBox x:Name="PasswordVisibleTextBox"
-                 Grid.Column="0"
-                 Height="32"
-                 Foreground="White"
-                 Background="#08263B"
-                 BorderBrush="#5E7385"
-                 BorderThickness="1"
-                 Padding="10,0,10,0"
-                 VerticalContentAlignment="Center"
-                 Visibility="Collapsed"
-                 TextChanged="PasswordVisibleTextBox_TextChanged"/>
+                                <TextBox x:Name="PasswordVisibleTextBox"
+                                         Grid.Column="0"
+                                         Height="32"
+                                         Foreground="White"
+                                         Background="#08263B"
+                                         BorderBrush="#5E7385"
+                                         BorderThickness="1"
+                                         Padding="10,0,10,0"
+                                         VerticalContentAlignment="Center"
+                                         Visibility="Collapsed"
+                                         TextChanged="PasswordVisibleTextBox_TextChanged"/>
 
-        <!-- Eye button -->
-        <Button x:Name="TogglePasswordButton"
-        Grid.Column="1"
-        Width="42"
-        Height="32"
-        Background="#08263B"
-        BorderBrush="#5E7385"
-        BorderThickness="1"
-        Click="TogglePasswordButton_Click">
+                                <Button x:Name="TogglePasswordButton"
+                                        Grid.Column="1"
+                                        Width="42"
+                                        Height="32"
+                                        Background="#08263B"
+                                        BorderBrush="#5E7385"
+                                        BorderThickness="0,1,1,1"
+                                        Click="TogglePasswordButton_Click"
+                                        Cursor="Hand">
+                                    <Viewbox Width="16" Height="16">
+                                        <Canvas Width="24" Height="24">
+                                            <Path x:Name="EyeOpenPath"
+                                                  Stroke="#98A7B4"
+                                                  StrokeThickness="1.6"
+                                                  Data="M2,12 C5,7 9,5 12,5 C15,5 19,7 22,12 C19,17 15,19 12,19 C9,19 5,17 2,12 Z M12,9 A3,3 0 1 1 11.9,9 Z"/>
+                                            <Path x:Name="EyeClosedSlash"
+                                                  Stroke="#98A7B4"
+                                                  StrokeThickness="1.8"
+                                                  Data="M4,20 L20,4"
+                                                  Visibility="Collapsed"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
 
-    <TextBlock x:Name="TogglePasswordIcon"
-               Text="&#xE722;"
-               FontFamily="Segoe MDL2 Assets"
-               FontSize="16"
-               Foreground="#98A7B4"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
-</Button>
-    </Grid>
-</StackPanel>
-</Grid>
-
-                    <!-- ROLE -->
                     <StackPanel Grid.Row="3" Margin="0,0,0,20">
                         <TextBlock Style="{StaticResource PopupLabelStyle}" Text="ROLE"/>
 
@@ -298,10 +450,10 @@
 
                             <ComboBoxItem Content="Operator"/>
                             <ComboBoxItem Content="Instructor"/>
+                            <ComboBoxItem Content="Admin"/>
                         </ComboBox>
                     </StackPanel>
 
-                    <!-- BUTTONS -->
                     <StackPanel Grid.Row="4"
                                 Orientation="Horizontal"
                                 HorizontalAlignment="Right"
@@ -328,5 +480,450 @@
                 </Grid>
             </Border>
         </Grid>
+
+        <!-- UPDATE USER OVERLAY -->
+        <Grid x:Name="UpdateUserOverlay"
+              Grid.RowSpan="3"
+              Background="#66000000"
+              Visibility="Collapsed"
+              Panel.ZIndex="101">
+
+            <Border Width="420"
+                    Height="520"
+                    Background="#031E30"
+                    BorderBrush="#00D7D7"
+                    BorderThickness="1.5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                <Grid Margin="24">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="UPDATE USER"
+                               Foreground="White"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,28"/>
+
+                    <StackPanel Grid.Row="1" Margin="0,0,0,20">
+                        <TextBlock Text="USER NAME" Foreground="White" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBox x:Name="EditUserNameTextBox" Style="{StaticResource PopupTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Margin="0,0,0,20">
+                        <TextBlock Text="FIRST NAME" Foreground="White" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBox x:Name="EditFirstNameTextBox" Style="{StaticResource PopupTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Margin="0,0,0,20">
+                        <TextBlock Text="LAST NAME" Foreground="White" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <TextBox x:Name="EditLastNameTextBox" Style="{StaticResource PopupTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Margin="0,0,0,20">
+                        <TextBlock Text="ROLE" Foreground="White" FontWeight="Bold" Margin="0,0,0,8"/>
+                        <ComboBox x:Name="EditRoleComboBox"
+                                  Height="35"
+                                  FontSize="14"
+                                  Foreground="#08263B"
+                                  Background="#D6E2EA"
+                                  BorderBrush="#5E7385"
+                                  BorderThickness="1"
+                                  SelectedIndex="0">
+                            <ComboBoxItem Content="Operator"/>
+                            <ComboBoxItem Content="Instructor"/>
+                            <ComboBoxItem Content="Admin"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="5"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right">
+                        <Button Content="CANCEL"
+                                Width="96"
+                                Height="34"
+                                Margin="0,0,12,0"
+                                Foreground="White"
+                                Background="Transparent"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="CloseUpdateUser_Click"/>
+
+                        <Button Content="EDIT"
+                                Width="96"
+                                Height="34"
+                                Foreground="White"
+                                Background="#179C96"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="SaveUpdatedUser_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- DELETE USER OVERLAY -->
+        <Grid x:Name="DeleteUserOverlay"
+              Grid.RowSpan="3"
+              Background="#66000000"
+              Visibility="Collapsed"
+              Panel.ZIndex="102">
+
+            <Border Width="720"
+                    Height="120"
+                    Background="#031E30"
+                    BorderBrush="#00D7D7"
+                    BorderThickness="1.5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock x:Name="DeleteConfirmationText"
+                               Text="ARE YOU SURE YOU WANT TO DELETE USER ?"
+                               Foreground="White"
+                               FontSize="20"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,18,0,18"/>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="NO"
+                                Width="70"
+                                Height="32"
+                                Margin="0,0,12,0"
+                                Background="Transparent"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="CloseDeleteUser_Click"/>
+
+                        <Button Content="YES"
+                                Width="70"
+                                Height="32"
+                                Background="#179C96"
+                                Foreground="White"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="ConfirmDeleteUser_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- PERMISSION OVERLAY -->
+        <Grid x:Name="PermissionOverlay"
+              Grid.RowSpan="3"
+              Background="#66000000"
+              Visibility="Collapsed"
+              Panel.ZIndex="103">
+
+            <Border Width="430"
+                    Height="760"
+                    Background="#031E30"
+                    BorderBrush="#00D7D7"
+                    BorderThickness="1.5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="USER PERMISSION"
+                               Foreground="White"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,18"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+
+                            <TextBlock Text="USER MANAGEMENT" Foreground="#D6D6D6" FontWeight="Bold" FontSize="16" Margin="0,0,0,12"/>
+                            <CheckBox x:Name="PermissionUserCreate" Content="User Create" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionUserDelete" Content="User Delete" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionUserUpdate" Content="User Update" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionForgotPassword" Content="Forgot Password" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionChangePassword" Content="Change Password" Style="{StaticResource PermissionCheckBoxStyle}"/>
+
+                            <TextBlock Text="NEW SCENARIO" Foreground="#D6D6D6" FontWeight="Bold" FontSize="16" Margin="10,12,0,12"/>
+                            <CheckBox x:Name="PermissionScenarioCreate" Content="Scenario Create" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionScenarioDuplicate" Content="Scenario Duplicate" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionScenarioUpdate" Content="Scenario Update" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionScenarioDelete" Content="Scenario Delete" Style="{StaticResource PermissionCheckBoxStyle}"/>
+
+                            <TextBlock Text="DB MANAGEMENT" Foreground="#D6D6D6" FontWeight="Bold" FontSize="16" Margin="0,12,0,12"/>
+                            <CheckBox x:Name="PermissionDbPurge" Content="DB Purge" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionDbImport" Content="DB Import" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionDbRestore" Content="DB Restore" Style="{StaticResource PermissionCheckBoxStyle}"/>
+
+                            <TextBlock Text="LOG MANAGEMENT" Foreground="#D6D6D6" FontWeight="Bold" FontSize="16" Margin="0,12,0,12"/>
+                            <CheckBox x:Name="PermissionDrsSentLog" Content="DRS sent log" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionUserLog" Content="User log" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionDrsReceiveLog" Content="DRS receive log" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionSystemLog" Content="System log" Style="{StaticResource PermissionCheckBoxStyle}"/>
+
+                            <TextBlock Text="EMITTER LIBRARY" Foreground="#D6D6D6" FontWeight="Bold" FontSize="16" Margin="0,12,0,12"/>
+                            <CheckBox x:Name="PermissionCreateEmitterLibrary" Content="Create emitter library" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionUpdateEmitterLibrary" Content="Update emitter library" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionDeleteEmitterLibrary" Content="Delete emitter library" Style="{StaticResource PermissionCheckBoxStyle}"/>
+                            <CheckBox x:Name="PermissionViewEmitterLibrary" Content="View emitter library" Style="{StaticResource PermissionCheckBoxStyle}"/>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <StackPanel Grid.Row="2"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                Margin="0,18,0,0">
+                        <Button Content="CANCEL"
+                                Width="120"
+                                Height="36"
+                                Margin="0,0,12,0"
+                                Foreground="White"
+                                Background="Transparent"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="ClosePermission_Click"/>
+
+                        <Button Content="ADD PERMISSION"
+                                Width="160"
+                                Height="36"
+                                Foreground="White"
+                                Background="#179C96"
+                                BorderBrush="{x:Null}"
+                                Cursor="Hand"
+                                Click="SavePermission_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+<!-- RESET PASSWORD OVERLAY -->
+<!-- RESET PASSWORD OVERLAY -->
+<Grid x:Name="ResetPasswordOverlay"
+      Grid.RowSpan="3"
+      Background="#66000000"
+      Visibility="Collapsed"
+      Panel.ZIndex="104">
+
+    <Border Width="610"
+            Height="240"
+            Background="#031E30"
+            BorderBrush="#6D7C8A"
+            BorderThickness="1.2"
+            CornerRadius="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+
+        <Grid Margin="28,16,28,16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- TITLE -->
+            <TextBlock Grid.Row="0"
+                       Text="RESET PASSWORD"
+                       Foreground="White"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,16"/>
+
+            <!-- PASSWORD -->
+            <TextBlock Grid.Row="1"
+                       Text="PASSWORD"
+                       Foreground="White"
+                       FontSize="13"
+                       Margin="0,0,0,6"/>
+
+            <Grid Grid.Row="2" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.ColumnSpan="2"
+                        Height="31"
+                        Background="#08263B"
+                        BorderBrush="#5E7385"
+                        BorderThickness="1"/>
+
+                <PasswordBox x:Name="ResetPasswordBox"
+                             Grid.Column="0"
+                             Height="31"
+                             Background="Transparent"
+                             Foreground="#D6E2EA"
+                             BorderThickness="0"
+                             Padding="10,0,10,0"
+                             VerticalContentAlignment="Center"
+                             PasswordChanged="ResetPasswordBox_PasswordChanged"/>
+
+                <TextBox x:Name="ResetPasswordVisibleTextBox"
+                         Grid.Column="0"
+                         Height="31"
+                         Background="Transparent"
+                         Foreground="#D6E2EA"
+                         BorderThickness="0"
+                         Padding="10,0,10,0"
+                         VerticalContentAlignment="Center"
+                         Visibility="Collapsed"
+                         TextChanged="ResetPasswordVisibleTextBox_TextChanged"/>
+
+                <Border Grid.Column="1"
+                        Height="31"
+                        Background="#08263B"
+                        BorderBrush="#5E7385"
+                        BorderThickness="1,0,0,0"/>
+
+                <Button x:Name="EyeButton"
+                        Grid.Column="1"
+                        Width="30"
+                        Height="31"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="TogglePassword_Click"
+                        Cursor="Hand">
+                    <Viewbox Width="13" Height="13">
+                        <Canvas Width="24" Height="24">
+                            <Path x:Name="ResetEyeOpenPath"
+                                  Stroke="#98A7B4"
+                                  StrokeThickness="1.6"
+                                  Data="M2,12 C5,7 9,5 12,5 C15,5 19,7 22,12 C19,17 15,19 12,19 C9,19 5,17 2,12 Z M12,9 A3,3 0 1 1 11.9,9 Z"/>
+                            <Path x:Name="ResetEyeClosedSlash"
+                                  Stroke="#98A7B4"
+                                  StrokeThickness="1.8"
+                                  Data="M4,20 L20,4"
+                                  Visibility="Visible"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+            </Grid>
+
+            <!-- CONFIRM PASSWORD -->
+            <TextBlock Grid.Row="3"
+                       Text="CONFIRM PASSWORD"
+                       Foreground="White"
+                       FontSize="13"
+                       Margin="0,0,0,6"/>
+
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.ColumnSpan="2"
+                        Height="31"
+                        Background="#08263B"
+                        BorderBrush="#5E7385"
+                        BorderThickness="1"/>
+
+                <PasswordBox x:Name="ConfirmResetPasswordBox"
+                             Grid.Column="0"
+                             Height="31"
+                             Background="Transparent"
+                             Foreground="#D6E2EA"
+                             BorderThickness="0"
+                             Padding="10,0,10,0"
+                             VerticalContentAlignment="Center"
+                             PasswordChanged="ConfirmResetPasswordBox_PasswordChanged"/>
+
+                <TextBox x:Name="ConfirmResetPasswordVisibleTextBox"
+                         Grid.Column="0"
+                         Height="31"
+                         Background="Transparent"
+                         Foreground="#D6E2EA"
+                         BorderThickness="0"
+                         Padding="10,0,10,0"
+                         VerticalContentAlignment="Center"
+                         Visibility="Collapsed"
+                         TextChanged="ConfirmResetPasswordVisibleTextBox_TextChanged"/>
+
+                <Border Grid.Column="1"
+                        Height="31"
+                        Background="#08263B"
+                        BorderBrush="#5E7385"
+                        BorderThickness="1,0,0,0"/>
+
+                <Button x:Name="ConfirmEyeButton"
+                        Grid.Column="1"
+                        Width="30"
+                        Height="31"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Click="ToggleConfirmPassword_Click"
+                        Cursor="Hand">
+                    <Viewbox Width="13" Height="13">
+                        <Canvas Width="24" Height="24">
+                            <Path x:Name="ConfirmEyeOpenPath"
+                                  Stroke="#98A7B4"
+                                  StrokeThickness="1.6"
+                                  Data="M2,12 C5,7 9,5 12,5 C15,5 19,7 22,12 C19,17 15,19 12,19 C9,19 5,17 2,12 Z M12,9 A3,3 0 1 1 11.9,9 Z"/>
+                            <Path x:Name="ConfirmEyeClosedSlash"
+                                  Stroke="#98A7B4"
+                                  StrokeThickness="1.8"
+                                  Data="M4,20 L20,4"
+                                  Visibility="Visible"/>
+                        </Canvas>
+                    </Viewbox>
+                </Button>
+            </Grid>
+
+            <!-- BUTTONS -->
+            <Grid Grid.Row="6" Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="78"/>
+                    <ColumnDefinition Width="14"/>
+                    <ColumnDefinition Width="90"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="1"
+                        Content="CANCEL"
+                        Width="78"
+                        Height="30"
+                        Foreground="White"
+                        Background="Transparent"
+                        BorderBrush="{x:Null}"
+                        FontSize="12.5"
+                        Cursor="Hand"
+                        Click="CloseResetPassword_Click"/>
+
+                <Button Grid.Column="3"
+                        Content="SUBMIT"
+                        Width="90"
+                        Height="30"
+                        Foreground="White"
+                        Background="#179C96"
+                        BorderBrush="{x:Null}"
+                        FontSize="12.5"
+                        Cursor="Hand"
+                        VerticalContentAlignment="Center"
+                        Click="SubmitResetPassword_Click"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Grid>
+         
     </Grid>
 </Page>
