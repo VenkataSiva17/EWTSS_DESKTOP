@@ -32,15 +32,15 @@
 
             <!-- LEFT LOGO -->
             <StackPanel Grid.Column="0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
 
-                <Image Source="C:\Users\Admin\Downloads\white.png"
-                       Width="250"
-                       Height="100"
-                       Stretch="Uniform"/>
+    <Image Source="C:\Users\const\EWTSS_DESKTOP\Images\White.png"
+       Width="320"
+       Height="130"
+       Stretch="Uniform"/>
 
-            </StackPanel>
+</StackPanel>
 
             <!-- CENTER LINE -->
             <Border Grid.Column="1"

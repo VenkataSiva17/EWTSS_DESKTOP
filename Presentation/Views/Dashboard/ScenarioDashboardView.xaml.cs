@@ -90,14 +90,22 @@ namespace EWTSS_DESKTOP.Presentation.Views.Dashboard
 
         private void SetActiveMenu(WpfButton activeButton)
         {
-            HomeButton.Background = WpfBrushes.Transparent;
-            UserManagementButton.Background = WpfBrushes.Transparent;
-            DbManagementButton.Background = WpfBrushes.Transparent;
-            LogManagementButton.Background = WpfBrushes.Transparent;
-            EmitterLibraryButton.Background = WpfBrushes.Transparent;
-            ReportButton.Background = WpfBrushes.Transparent;
-            IpConfigurationButton.Background = WpfBrushes.Transparent;
-            ReplayButton.Background = WpfBrushes.Transparent;
+            WpfButton[] menuButtons =
+            {
+                HomeButton,
+                UserManagementButton,
+                DbManagementButton,
+                LogManagementButton,
+                EmitterLibraryButton,
+                ReportButton,
+                IpConfigurationButton,
+                ReplayButton
+            };
+
+            foreach (var button in menuButtons)
+            {
+                button.Background = WpfBrushes.Transparent;
+            }
 
             activeButton.Background = (WpfBrush)new WpfBrushConverter().ConvertFromString("#169C96");
         }

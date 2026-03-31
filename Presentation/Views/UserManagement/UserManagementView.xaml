@@ -11,6 +11,25 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="0,0,0,8"/>
         </Style>
+        <Style x:Key="NoHoverButtonStyle" TargetType="Button">
+    <Setter Property="Background" Value="#179C96"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Cursor" Value="Hand"/>
+
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
 
         <Style x:Key="PopupTextBoxStyle" TargetType="TextBox">
             <Setter Property="Height" Value="32"/>
@@ -104,6 +123,47 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
         </Style>
+        <Style x:Key="PopupCancelButtonStyle" TargetType="Button">
+    <Setter Property="Width" Value="96"/>
+    <Setter Property="Height" Value="32"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="#667085"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
+
+<Style x:Key="PopupCreateButtonStyle" TargetType="Button">
+    <Setter Property="Width" Value="96"/>
+    <Setter Property="Height" Value="32"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="#179C96"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
 
     </Page.Resources>
 
@@ -137,18 +197,13 @@
 
         <!-- CREATE BUTTON -->
         <Button Grid.Row="1"
-                Content="CREATE NEW"
-                Width="178"
-                Height="42"
-                HorizontalAlignment="Right"
-                Background="#179C96"
-                Foreground="White"
-                BorderBrush="{x:Null}"
-                FontSize="14"
-                FontWeight="Bold"
-                Margin="0,0,0,8"
-                Cursor="Hand"
-                Click="CreateNew_Click"/>
+        Content="CREATE NEW"
+        Width="178"
+        Height="42"
+        HorizontalAlignment="Right"
+        Style="{StaticResource NoHoverButtonStyle}"
+        Margin="0,0,0,8"
+        Click="CreateNew_Click"/>
 
         <!-- TABLE -->
         <Border Grid.Row="2"
@@ -459,23 +514,13 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom">
                         <Button Content="CANCEL"
-                                Width="96"
-                                Height="32"
-                                Margin="0,0,12,0"
-                                Foreground="White"
-                                Background="#667085"
-                                BorderBrush="{x:Null}"
-                                Cursor="Hand"
-                                Click="CloseCreateUser_Click"/>
+        Style="{StaticResource PopupCancelButtonStyle}"
+        Margin="0,0,12,0"
+        Click="CloseCreateUser_Click"/>
 
-                        <Button Content="CREATE"
-                                Width="96"
-                                Height="32"
-                                Foreground="White"
-                                Background="#179C96"
-                                BorderBrush="{x:Null}"
-                                Cursor="Hand"
-                                Click="SaveUser_Click"/>
+<Button Content="CREATE"
+        Style="{StaticResource PopupCreateButtonStyle}"
+        Click="SaveUser_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -551,6 +596,7 @@
                         <Button Content="CANCEL"
                                 Width="96"
                                 Height="34"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 Margin="0,0,12,0"
                                 Foreground="White"
                                 Background="Transparent"
@@ -562,6 +608,7 @@
                                 Width="96"
                                 Height="34"
                                 Foreground="White"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 Background="#179C96"
                                 BorderBrush="{x:Null}"
                                 Cursor="Hand"
@@ -601,6 +648,7 @@
                                 Height="32"
                                 Margin="0,0,12,0"
                                 Background="Transparent"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 Foreground="White"
                                 BorderBrush="{x:Null}"
                                 Cursor="Hand"
@@ -611,6 +659,7 @@
                                 Height="32"
                                 Background="#179C96"
                                 Foreground="White"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 BorderBrush="{x:Null}"
                                 Cursor="Hand"
                                 Click="ConfirmDeleteUser_Click"/>
@@ -696,6 +745,7 @@
                                 Foreground="White"
                                 Background="Transparent"
                                 BorderBrush="{x:Null}"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 Cursor="Hand"
                                 Click="ClosePermission_Click"/>
 
@@ -705,6 +755,7 @@
                                 Foreground="White"
                                 Background="#179C96"
                                 BorderBrush="{x:Null}"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 Cursor="Hand"
                                 Click="SavePermission_Click"/>
                     </StackPanel>
@@ -905,6 +956,7 @@
                         Foreground="White"
                         Background="Transparent"
                         BorderBrush="{x:Null}"
+                        Style="{StaticResource NoHoverButtonStyle}"
                         FontSize="12.5"
                         Cursor="Hand"
                         Click="CloseResetPassword_Click"/>
@@ -916,6 +968,7 @@
                         Foreground="White"
                         Background="#179C96"
                         BorderBrush="{x:Null}"
+                        Style="{StaticResource NoHoverButtonStyle}"
                         FontSize="12.5"
                         Cursor="Hand"
                         VerticalContentAlignment="Center"

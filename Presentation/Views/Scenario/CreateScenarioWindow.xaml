@@ -3,13 +3,109 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Create Scenario"
         Width="680"
-        Height="300"
+        Height="360"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
         ShowInTaskbar="False">
+
+    <Window.Resources>
+
+        <!-- Name TextBox -->
+        <Style x:Key="NameTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#021522"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#607080"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,0,10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Description TextBox -->
+        <Style x:Key="DescriptionTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#021522"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#607080"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="AcceptsReturn" Value="True"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Common Button Style -->
+        <Style x:Key="BaseButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonBorder"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="ButtonBorder"
+                                        Property="Background"
+                                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Cancel Button -->
+        <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Create Button -->
+        <Style x:Key="CreateButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+            <Setter Property="Width" Value="96"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="#7E8EA1"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="IsEnabled" Value="False"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Background" Value="#169C96"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
 
     <Border Background="#032238"
             BorderBrush="#607080"
@@ -34,30 +130,28 @@
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"/>
 
-            <!-- Name -->
+            <!-- Name Label -->
             <TextBlock Grid.Row="1"
-                       Text="NAME *"
-                       Foreground="White"
+                       Margin="0,0,0,8"
                        FontSize="12"
-                       FontWeight="Bold"
-                       Margin="0,0,0,6"/>
+                       FontWeight="Bold">
+                <Run Text="NAME " Foreground="White"/>
+                <Run Text="*" Foreground="Red"/>
+            </TextBlock>
 
+            <!-- Name TextBox -->
             <TextBox x:Name="TxtName"
                      Grid.Row="2"
-                     Height="34"
-                     Background="#021522"
-                     Foreground="White"
-                     BorderBrush="#607080"
-                     BorderThickness="1"
-                     VerticalContentAlignment="Center"
-                     Padding="10,0"
-                     Margin="0,0,0,15"/>
+                     Height="40"
+                     Style="{StaticResource NameTextBoxStyle}"
+                     Margin="0,0,0,16"
+                     TextChanged="TxtName_TextChanged"/>
 
-            <!-- Description -->
+            <!-- Description Section -->
             <Grid Grid.Row="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="110"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
@@ -66,20 +160,12 @@
                            Foreground="White"
                            FontSize="12"
                            FontWeight="Bold"
-                           Margin="0,0,0,6"/>
+                           Margin="0,0,0,8"/>
 
                 <TextBox x:Name="TxtDescription"
                          Grid.Row="1"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
+                         Style="{StaticResource DescriptionTextBoxStyle}"
                          MaxLength="256"
-                         Height="95"
-                         Background="#021522"
-                         Foreground="White"
-                         BorderBrush="#607080"
-                         BorderThickness="1"
-                         Padding="10"
                          TextChanged="TxtDescription_TextChanged"/>
 
                 <TextBlock x:Name="TxtRemaining"
@@ -88,7 +174,7 @@
                            Foreground="#B9C6D2"
                            FontSize="11"
                            HorizontalAlignment="Right"
-                           Margin="0,6,0,0"/>
+                           Margin="0,8,0,0"/>
             </Grid>
 
             <!-- Buttons -->
@@ -96,21 +182,15 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="0,20,0,0">
+
                 <Button Content="CANCEL"
-                        Width="90"
-                        Height="34"
-                        Margin="0,0,10,0"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderBrush="{x:Null}"
+                        Style="{StaticResource CancelButtonStyle}"
+                        Margin="0,0,14,0"
                         Click="Cancel_Click"/>
 
-                <Button Content="CREATE"
-                        Width="90"
-                        Height="34"
-                        Background="#7E8EA1"
-                        Foreground="White"
-                        BorderBrush="{x:Null}"
+                <Button x:Name="CreateButton"
+                        Content="CREATE"
+                        Style="{StaticResource CreateButtonStyle}"
                         Click="Create_Click"/>
             </StackPanel>
         </Grid>
