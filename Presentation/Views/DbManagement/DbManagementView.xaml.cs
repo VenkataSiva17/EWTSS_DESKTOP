@@ -23,7 +23,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.DbManagement
 
             var repository = new DbManagementRepository(
                 "localhost",
-                "ewtss_db_march",
+                "ewtss_db_march1",
                 "root",
                 "admin@123");
 

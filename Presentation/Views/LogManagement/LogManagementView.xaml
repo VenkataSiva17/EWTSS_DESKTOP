@@ -39,6 +39,26 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+    <Style x:Key="NoHoverButtonStyle" TargetType="Button">
+    <Setter Property="Background" Value="#179C96"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Cursor" Value="Hand"/>
+
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
     </Page.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -160,6 +180,7 @@
                     Background="#179C96"
                     Foreground="White"
                     BorderBrush="{x:Null}"
+                    Style="{StaticResource NoHoverButtonStyle}"
                     FontSize="14"
                     FontWeight="Bold"
                     Cursor="Hand"

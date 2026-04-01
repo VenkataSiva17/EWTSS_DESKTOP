@@ -62,7 +62,25 @@
                 </Setter.Value>
             </Setter>
         </Style>
+         <Style x:Key="NoHoverButtonStyle" TargetType="Button">
+    <Setter Property="Background" Value="#179C96"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="BorderBrush" Value="{x:Null}"/>
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Cursor" Value="Hand"/>
 
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <Border Background="{TemplateBinding Background}">
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
         <Style x:Key="DarkComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Background" Value="#03111C"/>
@@ -269,6 +287,7 @@
                     Background="#179C96"
                     Foreground="White"
                     BorderBrush="{x:Null}"
+                    Style="{StaticResource NoHoverButtonStyle}"
                     FontSize="14"
                     FontWeight="Bold"
                     Content="CREATE EMITTER"
@@ -557,6 +576,7 @@
                                 Background="Transparent"
                                 Foreground="White"
                                 BorderThickness="0"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 FontSize="14"
                                 Cursor="Hand"
                                 Click="CloseCreateEmitter_Click"/>
@@ -567,6 +587,7 @@
                                 VerticalAlignment="Center"
                                 Background="#179C96"
                                 Foreground="White"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 BorderThickness="0"
                                 FontSize="14"
                                 FontWeight="Bold"

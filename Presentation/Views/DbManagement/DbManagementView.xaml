@@ -3,6 +3,42 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="#021522">
 
+    <Page.Resources>
+    <Style x:Key="NewScenarioButtonStyle" TargetType="Button">
+    <Setter Property="Height" Value="48"/>
+    <Setter Property="Margin" Value="0,10,0,10"/>
+    <Setter Property="Background" Value="#1B9C95"/>
+    <Setter Property="Foreground" Value="Black"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Cursor" Value="Hand"/>
+
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                
+                <!-- Outer Cyan Border -->
+                <Border BorderBrush="#1B9C95"
+                        BorderThickness="2"
+                        Background="Transparent"
+                        Padding="2">
+
+                    <!-- Inner Black Border -->
+                    <Border BorderBrush="Black"
+                            BorderThickness="1"
+                            Background="{TemplateBinding Background}">
+
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+
+                    </Border>
+                </Border>
+
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
+</Page.Resources>
+
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -49,6 +85,7 @@
                     Content="BACKUP"
                     Cursor="Hand"
                     FocusVisualStyle="{x:Null}"
+                    Style="{StaticResource NewScenarioButtonStyle}"
                     Command="{Binding BackupCommand}"/>
 
             <Button Width="630"
@@ -63,6 +100,7 @@
                     Content="PURGE"
                     Cursor="Hand"
                     FocusVisualStyle="{x:Null}"
+                    Style="{StaticResource NewScenarioButtonStyle}"
                     Command="{Binding PurgeCommand}"/>
 
             <Button Width="630"
@@ -77,6 +115,7 @@
                     Content="IMPORT"
                     Cursor="Hand"
                     FocusVisualStyle="{x:Null}"
+                    Style="{StaticResource NewScenarioButtonStyle}"
                     Command="{Binding ImportCommand}"/>
 
             <Button Width="630"
