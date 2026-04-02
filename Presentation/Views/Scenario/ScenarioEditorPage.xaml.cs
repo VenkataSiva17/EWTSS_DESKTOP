@@ -11,7 +11,7 @@ using EWTSS_DESKTOP.Core.Models;
 using ScenarioModel = EWTSS_DESKTOP.Core.Models.Scenario;
 
 using MessageBox = System.Windows.MessageBox;
-
+  
 using WpfBrush = System.Windows.Media.Brush;
 using WpfBrushes = System.Windows.Media.Brushes;
 using WpfBrushConverter = System.Windows.Media.BrushConverter;
@@ -226,46 +226,48 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
         {
             ScenarioTree.Items.Clear();
 
+            // Only root expanded initially
             var root = CreateTreeNode(scenario.Name, true, true);
 
             root.Items.Add(CreateTreeNode("AREA OF OPERATION"));
 
-            var blueLine = CreateTreeNode("BLUE LINE", true);
+            // BLUE LINE collapsed initially
+            var blueLine = CreateTreeNode("BLUE LINE", false);
 
-            var cc = CreateTreeNode("CC", true);
-            var cc1 = CreateTreeNode("CC1", true);
+            var cc = CreateTreeNode("CC", false);
+            var cc1 = CreateTreeNode("CC1", false);
 
-            var rdfs = CreateAddableTreeNode("RDFS", "RDFS", true);
+            var rdfs = CreateAddableTreeNode("RDFS", "RDFS", false);
             rdfs.Items.Add(CreateTreeNode("RDFS1"));
-            
-            var jsvushf = CreateAddableTreeNode("JSVUSHF", "JSVUSHF", true);
+
+            var jsvushf = CreateAddableTreeNode("JSVUSHF", "JSVUSHF", false);
             jsvushf.Items.Add(CreateTreeNode("JSVUSHF1"));
 
             cc1.Items.Add(rdfs);
             cc1.Items.Add(jsvushf);
             cc.Items.Add(cc1);
-
             blueLine.Items.Add(cc);
 
-            var commEmitterAllied = CreateAddableTreeNode("COMMEMITTERALLIED", "COMMEMITTERALLIED", true);
+            var commEmitterAllied = CreateAddableTreeNode("COMMEMITTERALLIED", "COMMEMITTERALLIED", false);
             commEmitterAllied.Items.Add(CreateTreeNode("COMMEMITTERALLIED1"));
             blueLine.Items.Add(commEmitterAllied);
 
-            var radarEmitterAllied = CreateAddableTreeNode("RADAREMITTERALLIED", "RADAREMITTERALLIED", true);
+            var radarEmitterAllied = CreateAddableTreeNode("RADAREMITTERALLIED", "RADAREMITTERALLIED", false);
             blueLine.Items.Add(radarEmitterAllied);
 
             root.Items.Add(blueLine);
 
-            var redLine = CreateTreeNode("RED LINE", true);
+            // RED LINE collapsed initially
+            var redLine = CreateTreeNode("RED LINE", false);
 
-            var net = CreateTreeNode("NET", true);
+            var net = CreateTreeNode("NET", false);
             redLine.Items.Add(net);
 
-            var comEmitter = CreateAddableTreeNode("COMEMITTER", "COMEMITTER", true);
+            var comEmitter = CreateAddableTreeNode("COMEMITTER", "COMEMITTER", false);
             comEmitter.Items.Add(CreateTreeNode("COMEMITTER1"));
             redLine.Items.Add(comEmitter);
 
-            var radar = CreateAddableTreeNode("RADAR", "RADAR", true);
+            var radar = CreateAddableTreeNode("RADAR", "RADAR", false);
             radar.Items.Add(CreateTreeNode("RADAR1"));
             redLine.Items.Add(radar);
 
@@ -273,6 +275,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 
             ScenarioTree.Items.Add(root);
         }
+        
 
         private void AddChildNode_Click(object sender, RoutedEventArgs e)
         {
@@ -389,35 +392,40 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
         }
 
         private void ScenarioTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            if (e.NewValue is not TreeViewItem selectedItem)
-                return;
+{
+    if (e.NewValue is not TreeViewItem selectedItem)
+        return;
 
-            string nodeText = GetTreeNodeText(selectedItem);
-            string currentScenarioName = ScenarioNameTextBox.Text?.Trim() ?? string.Empty;
+    string nodeText = GetTreeNodeText(selectedItem);
+    string currentScenarioName = ScenarioNameTextBox.Text?.Trim() ?? string.Empty;
 
-            if (nodeText.Equals(currentScenarioName, StringComparison.OrdinalIgnoreCase))
-            {
-                ShowScenarioDetailsForm();
-            }
-            else if (nodeText.Equals("AREA OF OPERATION", StringComparison.OrdinalIgnoreCase))
-            {
-                ShowAreaOfOperationForm();
-            }
-            else if (nodeText.Equals("CC1", StringComparison.OrdinalIgnoreCase))
-            {
-                ShowCcPropertiesForm();
-            }
-            else if (nodeText.StartsWith("RDFS", StringComparison.OrdinalIgnoreCase)
-                     && !nodeText.Equals("RDFS", StringComparison.OrdinalIgnoreCase))
-            {
-                ShowRdfsPropertiesForm(nodeText);
-            }
-            else
-            {
-                ShowEmptyForm();
-            }
-        }
+    if (nodeText.Equals(currentScenarioName, StringComparison.OrdinalIgnoreCase))
+    {
+        ShowScenarioDetailsForm();
+    }
+    else if (nodeText.Equals("AREA OF OPERATION", StringComparison.OrdinalIgnoreCase))
+    {
+        ShowAreaOfOperationForm();
+    }
+    else if (nodeText.Equals("CC1", StringComparison.OrdinalIgnoreCase))
+    {
+        ShowCcPropertiesForm();
+    }
+    else if (nodeText.StartsWith("RDFS", StringComparison.OrdinalIgnoreCase)
+             && !nodeText.Equals("RDFS", StringComparison.OrdinalIgnoreCase))
+    {
+        ShowRdfsPropertiesForm(nodeText);
+    }
+    else if (nodeText.StartsWith("JSVUSHF", StringComparison.OrdinalIgnoreCase)
+             && !nodeText.Equals("JSVUSHF", StringComparison.OrdinalIgnoreCase))
+    {
+        ShowJsvushfPropertiesForm(nodeText);
+    }
+    else
+    {
+        ShowEmptyForm();
+    }
+}
 
         private void ShowScenarioDetailsForm()
         {
@@ -478,6 +486,27 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             RdfsSensitivityTextBox.Text = "-90";
             RdfsGainLossTextBox.Text = "3";
         }
+        private void ShowJsvushfPropertiesForm(string name)
+{
+    ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
+    AreaOfOperationBorder.Visibility = Visibility.Collapsed;
+    CcPropertiesBorder.Visibility = Visibility.Collapsed;
+    RdfsPropertiesBorder.Visibility = Visibility.Collapsed;
+    JsvushfPropertiesBorder.Visibility = Visibility.Visible;
+    EmptyDetailsBorder.Visibility = Visibility.Collapsed;
+    DrsTableBorder.Visibility = Visibility.Visible;
+
+    JsvushfTitleTextBlock.Text = $"{name} PROPERTIES";
+    JsvushfNameTextBox.Text = name;
+
+    // Default values (later load from DB)
+    JsvushfLatitudeTextBox.Text = "21° 24' 54.318''";
+    JsvushfLongitudeTextBox.Text = "77° 36' 49.554''";
+    JsvushfMinFreqTextBox.Text = "435";
+    JsvushfMaxFreqTextBox.Text = "1000";
+    JsvushfSensitivityTextBox.Text = "-90";
+    JsvushfGainLossTextBox.Text = "0";
+}
     }
 
     public class DrsPreviewRow

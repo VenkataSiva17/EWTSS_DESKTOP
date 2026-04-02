@@ -37,11 +37,18 @@
     </Style.Triggers>
 </Style>
 
+
         <Style x:Key="LabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
+       <Style x:Key="" TargetType="TreeViewItem">
+            <Setter Property="Foreground" Value="White"/>
+            
+        </Style>
+
+        
 
         <Style x:Key="EditorTextBoxStyle" TargetType="TextBox">
             <Setter Property="Height" Value="34"/>
@@ -372,7 +379,55 @@
                                 Click="UpdateScenario_Click"/>
                     </Grid>
                 </Border>
-                <!-- RDFS PROPERTIES PANEL -->
+                <Border x:Name="JsvushfPropertiesBorder"
+        Background="#062235"
+        Padding="20"
+        Visibility="Collapsed">
+
+    <StackPanel>
+        <TextBlock x:Name="JsvushfTitleTextBlock"
+                   Text="JSVUSHF PROPERTIES"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Foreground="White"
+                   Margin="0,0,0,20"/>
+
+        <TextBlock Text="JSVUSHF NAME *" Foreground="White"/>
+        <TextBox x:Name="JsvushfNameTextBox" Height="28"/>
+
+        <TextBlock Text="POSITION" Foreground="White" Margin="0,20,0,5"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="JsvushfLatitudeTextBox" Grid.Column="0" Margin="0,0,10,0"/>
+            <TextBox x:Name="JsvushfLongitudeTextBox" Grid.Column="1"/>
+        </Grid>
+
+        <TextBlock Text="FREQUENCY RANGE" Foreground="White" Margin="0,20,0,5"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="JsvushfMinFreqTextBox" Grid.Column="0" Margin="0,0,10,0"/>
+            <TextBox x:Name="JsvushfMaxFreqTextBox" Grid.Column="1"/>
+        </Grid>
+
+        <TextBlock Text="SENSITIVITY" Foreground="White" Margin="0,20,0,5"/>
+        <TextBox x:Name="JsvushfSensitivityTextBox"/>
+
+        <TextBlock Text="SETUP GAIN / LOSS" Foreground="White" Margin="0,20,0,5"/>
+        <TextBox x:Name="JsvushfGainLossTextBox"/>
+    </StackPanel>
+    
+</Border>
+                
 <!-- RDFS PROPERTIES PANEL -->
 <Border x:Name="RdfsPropertiesBorder"
         Grid.Row="0"
@@ -507,7 +562,7 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="MIN"
-                                   Foreground="White"
+                                   Foreground="White"                                   
                                    FontSize="12"
                                    FontWeight="Bold"
                                    Margin="0,0,0,6"/>
@@ -524,12 +579,12 @@
                             <ComboBox Grid.Column="1"
                                       Margin="4,0,0,0"
                                       Height="34"
-                                      Background="#021522"
+                                      Background="Black"
                                       Foreground="White"
                                       BorderBrush="#5A7388"
                                       SelectedIndex="0">
                                 <ComboBoxItem Content="MHz"/>
-                                <ComboBoxItem Content="GHz"/>
+                                <ComboBoxItem Content="GHz"/>+
                                 <ComboBoxItem Content="KHz"/>
                             </ComboBox>
                         </Grid>

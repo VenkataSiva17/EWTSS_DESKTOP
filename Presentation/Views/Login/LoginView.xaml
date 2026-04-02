@@ -1,168 +1,245 @@
 <Page x:Class="EWTSS_DESKTOP.Presentation.Views.Login.LoginView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="#031929">
+      Background="#031929"
+      Title="LoginView">
 
     <Page.Resources>
-    <Style x:Key="NewScenarioButtonStyle" TargetType="Button">
-    <Setter Property="Height" Value="48"/>
-    <Setter Property="Margin" Value="0,10,0,10"/>
-    <Setter Property="Background" Value="#1B9C95"/>
-    <Setter Property="Foreground" Value="Black"/>
-    <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Cursor" Value="Hand"/>
 
-    <Setter Property="Template">
-        <Setter.Value>
-            <ControlTemplate TargetType="Button">
-                
-                <!-- Outer Cyan Border -->
-                <Border BorderBrush="#1B9C95"
-                        BorderThickness="1"
-                        Background="Transparent"
-                        Padding="1">
+        <Style x:Key="InputLabelStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#D6E2EA"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
 
-                    <!-- Inner Black Border -->
-                    <Border BorderBrush="Black"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}">
-
-                        <ContentPresenter HorizontalAlignment="Center"
+        <Style x:Key="InputTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#08263B"/>
+            <Setter Property="BorderBrush" Value="#4E6A7A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0,36,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
                                           VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-                    </Border>
-                </Border>
+        <Style x:Key="InputPasswordBoxStyle" TargetType="PasswordBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#08263B"/>
+            <Setter Property="BorderBrush" Value="#4E6A7A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0,36,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            </ControlTemplate>
-        </Setter.Value>
-    </Setter>
-</Style>
-</Page.Resources>
+        <Style x:Key="EyeButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#AFC3CF"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="14">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LoginButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Background" Value="#179C96"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="BtnBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="BtnBorder"
+                                        Property="Background"
+                                        Value="#21B3AE"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="BtnBorder"
+                                        Property="Background"
+                                        Value="#14837E"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="BtnBorder"
+                                        Property="Opacity"
+                                        Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ForgotPasswordTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#AFC3CF"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,14,0,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </Page.Resources>
+
     <Grid>
-
-        <!-- ROW STRUCTURE -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="90"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- TOP TITLE -->
-        <Border Grid.Row="0" Padding="15">
+        <!-- Top title -->
+        <Grid Grid.Row="0" Margin="30,0,30,0">
             <TextBlock Text="ELECTRONIC WARFARE TRAINING SIMULATOR SYSTEM"
                        Foreground="White"
-                       FontSize="20"
+                       FontSize="22"
                        FontWeight="Bold"
-                       Margin="0,20,0,0"
-                       HorizontalAlignment="Center"/>
-        </Border>
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Grid>
 
-        <!-- MAIN CONTENT -->
-        <Grid Grid.Row="1">
-
+        <!-- Main content -->
+        <Grid Grid.Row="1" Margin="40,20,40,40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- LEFT LOGO -->
-            <StackPanel Grid.Column="0"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center">
+            <!-- Left side -->
+            <Grid Grid.Column="0">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Image Source="C:\Users\const\EWTSS_DESKTOP\Images\White.png"
+                           Width="340"
+                           Height="140"
+                           Stretch="Uniform"/>
+                </StackPanel>
+            </Grid>
 
-    <Image Source="C:\Users\const\EWTSS_DESKTOP\Images\White.png"
-       Width="320"
-       Height="130"
-       Stretch="Uniform"/>
-
-</StackPanel>
-
-            <!-- CENTER LINE -->
+            <!-- Divider -->
             <Border Grid.Column="1"
-                    Width="2"
-                    Background="White"
-                    Margin="0 70 0 70"/>
+                    Background="#4E6A7A"
+                    Margin="0,40"/>
 
-            <!-- RIGHT LOGIN -->
-            <StackPanel Grid.Column="2"
-                        Width="300"
-                        
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+            <!-- Right side -->
+            <Grid Grid.Column="2">
+                <Border Width="360"
+                        Padding="28"
+                        Background="#041C2C"
+                        BorderBrush="#12364A"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <StackPanel>
 
-                <TextBlock Text="HELLO!"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Foreground="White"/>
+                        <TextBlock Text="HELLO!"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Foreground="White"/>
 
-                <TextBlock Text="Login to your account to continue"
-                           FontSize="14"
-                           Foreground="White"
-                           Margin="0 5 0 20"/>
+                        <TextBlock Text="Login to your account to continue"
+                                   FontSize="13"
+                                   Foreground="#AFC3CF"
+                                   Margin="0,6,0,24"/>
 
-                <!-- USERNAME -->
-                <TextBlock Text="Username"
-                           Foreground="White"
-                           FontWeight="Bold"/>
+                        <!-- Username -->
+                        <TextBlock Text="Username"
+                                   Style="{StaticResource InputLabelStyle}"/>
 
-                <TextBox Height="35"
-                         Margin="0 5 0 15"
-                         VerticalContentAlignment="Center"
-                         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Height="38"
+                                 Style="{StaticResource InputTextBoxStyle}"
+                                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!-- PASSWORD -->
-                <!-- PASSWORD -->
-<TextBlock Text="Password"
-           Foreground="White"
-           FontWeight="Bold"/>
+                        <!-- Password -->
+                        <TextBlock Text="Password"
+                                   Style="{StaticResource InputLabelStyle}"/>
 
-<Grid Height="35" Margin="0 5 0 20">
-    <!-- PasswordBox -->
-    <PasswordBox x:Name="PasswordBox"
-                 VerticalContentAlignment="Center"
-                 Padding="0,0,35,0"
-                 PasswordChanged="PasswordBox_PasswordChanged"/>
+                        <Grid Margin="0,0,0,18">
+                            <PasswordBox x:Name="PasswordBox"
+                                         Style="{StaticResource InputPasswordBoxStyle}"
+                                         PasswordChanged="PasswordBox_PasswordChanged"/>
 
-    <!-- TextBox for showing password -->
-    <TextBox x:Name="TextBoxVisible"
-             VerticalContentAlignment="Center"
-             Padding="0,0,35,0"
-             Visibility="Collapsed"/>
+                            <TextBox x:Name="TextBoxVisible"
+                                     Style="{StaticResource InputTextBoxStyle}"
+                                     Visibility="Collapsed"
+                                     TextChanged="TextBoxVisible_TextChanged"
+                                     Margin="0"/>
 
-    <!-- Eye button -->
-    <Button x:Name="BtnTogglePassword"
-            Width="30"
-            Height="30"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Margin="0 0 5 0"
-            Cursor="Hand"
-            Background="Transparent"
-            BorderBrush="{x:Null}"
-            Click="BtnTogglePassword_Click">
-        <Image Source="C:\Users\Admin\Downloads\eye.png"/>
-    </Button>
-</Grid>
+                            <Button x:Name="BtnTogglePassword"
+                                    Style="{StaticResource EyeButtonStyle}"
+                                    Content="&#xE722;"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,6,0"
+                                    Click="BtnTogglePassword_Click"/>
+                        </Grid>
 
-                <!-- LOGIN BUTTON -->
-                <Button Content="Login"
-                        Height="35"
-                        Background="#0c8e7e"
-                        Foreground="White"
-                        Cursor="Hand"
-                        Style="{StaticResource NewScenarioButtonStyle}"
-                        Command="{Binding LoginCommand}"/>
-                <TextBlock Text="Forgot Password?"
-                               Foreground="White"
-                               Margin="0 15 0 0"
-                               HorizontalAlignment="Center"
-                               Cursor="Hand"/>
+                        <!-- Login -->
+                        <Button Content="LOGIN"
+                                Style="{StaticResource LoginButtonStyle}"
+                                Command="{Binding LoginCommand}"/>
 
+                        <TextBlock Text="Forgot Password?"
+                                   Style="{StaticResource ForgotPasswordTextStyle}"/>
 
-            </StackPanel>
-
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
-
     </Grid>
-
 </Page>
