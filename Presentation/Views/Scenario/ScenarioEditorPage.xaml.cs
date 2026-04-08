@@ -1,23 +1,24 @@
+using EWTSS_DESKTOP.Core.Models;
+using EWTSS_DESKTOP.Infrastructure.Data;
+using EWTSS_DESKTOP.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.EntityFrameworkCore;
-
-using EWTSS_DESKTOP.Infrastructure.Data;
-using EWTSS_DESKTOP.Infrastructure.Services;
-using EWTSS_DESKTOP.Core.Models;
-using ScenarioModel = EWTSS_DESKTOP.Core.Models.Scenario;
-
+using System.Windows.Media;
 using MessageBox = System.Windows.MessageBox;
-  
+using ScenarioModel = EWTSS_DESKTOP.Core.Models.Scenario;
 using WpfBrush = System.Windows.Media.Brush;
-using WpfBrushes = System.Windows.Media.Brushes;
 using WpfBrushConverter = System.Windows.Media.BrushConverter;
+using WpfBrushes = System.Windows.Media.Brushes;
 using WpfButton = System.Windows.Controls.Button;
-using WpfTextBlock = System.Windows.Controls.TextBlock;
 using WpfGrid = System.Windows.Controls.Grid;
+using WpfTextBlock = System.Windows.Controls.TextBlock;
+
+// Add the correct namespace if your STK controls are in a different namespace
+
 
 namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 {
@@ -26,8 +27,15 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
         private readonly int _scenarioId;
         private readonly StkEngineService _stkEngineService;
 
-        private Stk3DViewControl _stk3DView;
-        private Stk2DViewControl _stk2DView;
+        private Stk3DViewControl? _stk3DView;
+        private Stk2DViewControl? _stk2DView;
+
+
+        private int? _selectedCcId;
+        private int? _selectedEntityId;
+        private int? _selectedEmitterId;
+
+        private int? _selectedAreaOperationId;
 
         public ScenarioEditorPage(int scenarioId, StkEngineService stkEngineService)
         {
@@ -42,7 +50,24 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             LoadTablePreview();
             ShowScenarioDetailsForm();
         }
-
+        private void SetAreaOperationButtonState(bool isUpdate)
+        {
+            if (isUpdate)
+            {
+                CreateAreaOperationButton.Content = "UPDATE";
+            }
+            else
+            {
+                CreateAreaOperationButton.Content = "CREATE";
+            }
+        }
+        private void SetRdfsButtonState(bool isUpdate)
+        {
+            if (isUpdate)
+                CreateRdfsButton.Content = "UPDATE";
+            else
+                CreateRdfsButton.Content = "CREATE";
+        }
         private TreeViewItem CreateTreeNode(string text, bool isExpanded = false, bool cyan = false)
         {
             return new TreeViewItem
@@ -66,7 +91,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             return node;
         }
 
-        private object CreateTreeHeader(string text, TreeViewItem node, bool showAddButton, bool cyan)
+        private object CreateTreeHeader(string text, TreeViewItem? node, bool showAddButton, bool cyan)
         {
             var headerGrid = new WpfGrid
             {
@@ -83,7 +108,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             {
                 Text = text,
                 Foreground = cyan
-                    ? (WpfBrush)new WpfBrushConverter().ConvertFromString("#21B3AE")
+                    ? (WpfBrush)new WpfBrushConverter().ConvertFromString("#21B3AE")!
                     : WpfBrushes.White,
                 FontWeight = FontWeights.SemiBold,
                 FontSize = 13,
@@ -92,6 +117,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
                 TextAlignment = TextAlignment.Left,
                 TextTrimming = TextTrimming.CharacterEllipsis
             };
+
             Grid.SetColumn(textBlock, 0);
             headerGrid.Children.Add(textBlock);
 
@@ -126,33 +152,48 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 
         private void LoadScenario()
         {
-            using var db = new AppDbContext();
-
-            var scenario = db.Scenarios
-                .Include(x => x.User)
-                .FirstOrDefault(x => x.Id == _scenarioId);
-
-            if (scenario == null)
+            try
             {
-                MessageBox.Show("Scenario not found.");
-                return;
+                using var db = new AppDbContext();
+
+                var scenario = db.Scenarios
+                    .Where(x => x.Id == _scenarioId)
+                    .Select(x => new
+                    {
+                        Scenario = x,
+                        UserFirstName = x.User != null ? x.User.FirstName : null,
+                        UserLastName = x.User != null ? x.User.LastName : null
+                    })
+                    .FirstOrDefault();
+
+                if (scenario == null)
+                {
+                    MessageBox.Show("Scenario not found.");
+                    return;
+                }
+
+                var scenarioData = scenario.Scenario;
+
+                ScenarioTitleTextBlock.Text = $"{scenarioData.Name} | - TREE STRUCTURE";
+                UserNameTextBlock.Text = !string.IsNullOrWhiteSpace(scenario.UserFirstName)
+                    ? $"{scenario.UserFirstName} {scenario.UserLastName}"
+                    : "Admin Admin";
+
+                ScenarioNameTextBox.Text = scenarioData.Name ?? string.Empty;
+                ScenarioDescriptionTextBox.Text = scenarioData.Description ?? string.Empty;
+                ScenarioCreatedDateTextBlock.Text = $"SCENARIO CREATION DATE (DD-MM-YYYY) : {scenarioData.StartDate:dd-MM-yyyy}";
+                ScenarioCreatedTimeTextBlock.Text = $"SCENARIO CREATION TIME (HH:MM:SS) : {scenarioData.StartTime}";
+                ScenarioDurationTextBox.Text = scenarioData.Duration.ToString();
+                ScenarioExecutionTimeTextBox.Text = scenarioData.ExecuteTime?.ToString() ?? "--:--:--";
+
+                UpdateDescriptionCount();
+                LoadScenarioTree(scenarioData);
+                InitializeStkViews(scenarioData.Name ?? "Scenario");
             }
-
-            ScenarioTitleTextBlock.Text = $"{scenario.Name} | - TREE STRUCTURE";
-            UserNameTextBlock.Text = scenario.User != null
-                ? $"{scenario.User.FirstName} {scenario.User.LastName}"
-                : "Admin Admin";
-
-            ScenarioNameTextBox.Text = scenario.Name;
-            ScenarioDescriptionTextBox.Text = scenario.Description ?? string.Empty;
-            ScenarioCreatedDateTextBlock.Text = $"SCENARIO CREATION DATE(DD:MM:YYYY) : {scenario.StartDate:dd-MM-yyyy}";
-            ScenarioCreatedTimeTextBlock.Text = $"SCENARIO CREATION TIME(HH:MM:SS) : {scenario.StartTime}";
-            ScenarioDurationTextBox.Text = scenario.Duration.ToString();
-            ScenarioExecutionTimeTextBox.Text = scenario.ExecuteTime?.ToString() ?? "--:--:--";
-
-            UpdateDescriptionCount();
-            LoadScenarioTree(scenario);
-            InitializeStkViews(scenario.Name);
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load scenario.\n\n{ex.Message}");
+            }
         }
 
         private void InitializeStkViews(string scenarioName)
@@ -196,7 +237,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             Placeholder3DText.Visibility = Visibility.Collapsed;
             Placeholder2DText.Visibility = Visibility.Collapsed;
 
-            Btn3D.Background = (WpfBrush)new WpfBrushConverter().ConvertFromString("#062235");
+            Btn3D.Background = (WpfBrush)new WpfBrushConverter().ConvertFromString("#062235")!;
             Btn2D.Background = WpfBrushes.Transparent;
         }
 
@@ -208,7 +249,7 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             Placeholder3DText.Visibility = Visibility.Collapsed;
             Placeholder2DText.Visibility = Visibility.Collapsed;
 
-            Btn2D.Background = (WpfBrush)new WpfBrushConverter().ConvertFromString("#062235");
+            Btn2D.Background = (WpfBrush)new WpfBrushConverter().ConvertFromString("#062235")!;
             Btn3D.Background = WpfBrushes.Transparent;
         }
 
@@ -226,12 +267,10 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
         {
             ScenarioTree.Items.Clear();
 
-            // Only root expanded initially
-            var root = CreateTreeNode(scenario.Name, true, true);
+            var root = CreateTreeNode(scenario.Name ?? "Scenario", true, true);
 
             root.Items.Add(CreateTreeNode("AREA OF OPERATION"));
 
-            // BLUE LINE collapsed initially
             var blueLine = CreateTreeNode("BLUE LINE", false);
 
             var cc = CreateTreeNode("CC", false);
@@ -257,7 +296,6 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 
             root.Items.Add(blueLine);
 
-            // RED LINE collapsed initially
             var redLine = CreateTreeNode("RED LINE", false);
 
             var net = CreateTreeNode("NET", false);
@@ -275,7 +313,6 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 
             ScenarioTree.Items.Add(root);
         }
-        
 
         private void AddChildNode_Click(object sender, RoutedEventArgs e)
         {
@@ -365,22 +402,30 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
 
         private void UpdateScenario_Click(object sender, RoutedEventArgs e)
         {
-            using var db = new AppDbContext();
-
-            var scenario = db.Scenarios.FirstOrDefault(x => x.Id == _scenarioId);
-            if (scenario == null)
+            try
             {
-                MessageBox.Show("Scenario not found.");
-                return;
+                using var db = new AppDbContext();
+
+                var scenario = db.Scenarios.FirstOrDefault(x => x.Id == _scenarioId);
+                if (scenario == null)
+                {
+                    MessageBox.Show("Scenario not found.");
+                    return;
+                }
+
+                scenario.Name = ScenarioNameTextBox.Text?.Trim();
+                scenario.Description = ScenarioDescriptionTextBox.Text?.Trim();
+                scenario.UpdatedOn = DateTime.Now;
+
+                db.SaveChanges();
+
+                ScenarioTitleTextBlock.Text = $"{scenario.Name} | - TREE STRUCTURE";
+                MessageBox.Show("Scenario updated successfully.");
             }
-
-            scenario.Name = ScenarioNameTextBox.Text?.Trim();
-            scenario.Description = ScenarioDescriptionTextBox.Text?.Trim();
-
-            db.SaveChanges();
-
-            ScenarioTitleTextBlock.Text = $"{scenario.Name} | - TREE STRUCTURE";
-            MessageBox.Show("Scenario updated successfully.");
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to update scenario.\n\n{ex.Message}");
+            }
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
@@ -392,88 +437,620 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
         }
 
         private void ScenarioTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-{
-    if (e.NewValue is not TreeViewItem selectedItem)
-        return;
-
-    string nodeText = GetTreeNodeText(selectedItem);
-    string currentScenarioName = ScenarioNameTextBox.Text?.Trim() ?? string.Empty;
-
-    if (nodeText.Equals(currentScenarioName, StringComparison.OrdinalIgnoreCase))
-    {
-        ShowScenarioDetailsForm();
-    }
-    else if (nodeText.Equals("AREA OF OPERATION", StringComparison.OrdinalIgnoreCase))
-    {
-        ShowAreaOfOperationForm();
-    }
-    else if (nodeText.Equals("CC1", StringComparison.OrdinalIgnoreCase))
-    {
-        ShowCcPropertiesForm();
-    }
-    else if (nodeText.StartsWith("RDFS", StringComparison.OrdinalIgnoreCase)
-             && !nodeText.Equals("RDFS", StringComparison.OrdinalIgnoreCase))
-    {
-        ShowRdfsPropertiesForm(nodeText);
-    }
-    else if (nodeText.StartsWith("JSVUSHF", StringComparison.OrdinalIgnoreCase)
-             && !nodeText.Equals("JSVUSHF", StringComparison.OrdinalIgnoreCase))
-    {
-        ShowJsvushfPropertiesForm(nodeText);
-    }
-    else
-    {
-        ShowEmptyForm();
-    }
-}
-
-        private void ShowScenarioDetailsForm()
         {
-            ScenarioDetailsBorder.Visibility = Visibility.Visible;
+            if (e.NewValue is not TreeViewItem selectedItem)
+                return;
+
+            string nodeText = GetTreeNodeText(selectedItem);
+            string currentScenarioName = ScenarioNameTextBox.Text?.Trim() ?? string.Empty;
+
+            if (nodeText.Equals(currentScenarioName, StringComparison.OrdinalIgnoreCase))
+            {
+                ShowScenarioDetailsForm();
+            }
+            else if (nodeText.Equals("AREA OF OPERATION", StringComparison.OrdinalIgnoreCase))
+            {
+                LoadAreaOperationFromDb();
+            }
+            else if (nodeText.Equals("BLUE LINE", StringComparison.OrdinalIgnoreCase) ||
+                     nodeText.Equals("RED LINE", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowEmptyForm();
+            }
+            else if (nodeText.Equals("CC", StringComparison.OrdinalIgnoreCase))
+            {
+                _selectedCcId = null;
+                CcNameTextBox.Text = "CC1";
+                CcLatitudeTextBox.Text = "";
+                CcLongitudeTextBox.Text = "";
+                ShowCcPropertiesForm();
+            }
+            else if (nodeText.StartsWith("CC", StringComparison.OrdinalIgnoreCase) &&
+                     !nodeText.Equals("CC", StringComparison.OrdinalIgnoreCase))
+            {
+                LoadCcFromDbByName(nodeText);
+            }
+            else if (nodeText.Equals("RDFS", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowEmptyForm();
+            }
+            else if (nodeText.StartsWith("RDFS", StringComparison.OrdinalIgnoreCase) &&
+                     !nodeText.Equals("RDFS", StringComparison.OrdinalIgnoreCase))
+            {
+                LoadRdfsFromDbByName(nodeText);
+            }
+            else if (nodeText.Equals("JSVUSHF", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowEmptyForm();
+            }
+            else if (nodeText.StartsWith("JSVUSHF", StringComparison.OrdinalIgnoreCase) &&
+                     !nodeText.Equals("JSVUSHF", StringComparison.OrdinalIgnoreCase))
+            {
+                LoadJsvushfFromDbByName(nodeText);
+            }
+            else if (nodeText.Equals("COMMEMITTERALLIED", StringComparison.OrdinalIgnoreCase))
+            {
+                ShowEmptyForm();
+            }
+            else if (nodeText.StartsWith("COMMEMITTERALLIED", StringComparison.OrdinalIgnoreCase) &&
+                     !nodeText.Equals("COMMEMITTERALLIED", StringComparison.OrdinalIgnoreCase))
+            {
+                LoadCommEmitterAlliedFromDbByName(nodeText);
+            }
+            else
+            {
+                ShowEmptyForm();
+            }
+        }
+        private void ShowCommEmitterTechnicalTab()
+        {
+            CommEmitterTechnicalScrollViewer.Visibility = Visibility.Visible;
+            CommEmitterTacticalScrollViewer.Visibility = Visibility.Collapsed;
+
+            CommEmitterTechnicalTabButton.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#2CB7B0");
+            CommEmitterTacticalTabButton.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#179C96");
+        }
+
+        private void ShowCommEmitterTacticalTab()
+        {
+            CommEmitterTechnicalScrollViewer.Visibility = Visibility.Collapsed;
+            CommEmitterTacticalScrollViewer.Visibility = Visibility.Visible;
+
+            CommEmitterTechnicalTabButton.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#179C96");
+            CommEmitterTacticalTabButton.Background = (System.Windows.Media.Brush)new BrushConverter().ConvertFromString("#2CB7B0");
+        }
+
+        private void CommEmitterTechnicalTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowCommEmitterTechnicalTab();
+        }
+
+        private void CommEmitterTacticalTabButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowCommEmitterTacticalTab();
+        }
+        private void CreateScenario_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                TimeSpan.TryParse(ScenarioExecutionTimeTextBox.Text, out var executeTime);
+
+                var scenario = new ScenarioModel
+                {
+                    Name = ScenarioNameTextBox.Text?.Trim(),
+                    Description = ScenarioDescriptionTextBox.Text?.Trim(),
+                    StartDate = DateTime.Now.Date,
+                    StartTime = DateTime.Now.TimeOfDay,
+                    ExecuteDate = DateTime.Now.Date,
+                    ExecuteTime = executeTime,
+                    CreatedOn = DateTime.Now,
+                    UpdatedOn = DateTime.Now,
+                    IsActive = true,
+                    UserId = 1
+                };
+
+                db.Scenarios.Add(scenario);
+                db.SaveChanges();
+
+                MessageBox.Show("Scenario created successfully.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to create scenario.\n\n{ex.Message}");
+            }
+        }
+
+        private void CreateAreaOperation_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                int scenarioId = _scenarioId > 0
+                    ? _scenarioId
+                    : db.Scenarios
+                        .OrderByDescending(x => x.Id)
+                        .Select(x => x.Id)
+                        .FirstOrDefault();
+
+                if (scenarioId <= 0)
+                {
+                    MessageBox.Show("Please create a scenario first.");
+                    return;
+                }
+
+                AreaOperation areaOperation;
+                bool isUpdate = false;
+
+                if (_selectedAreaOperationId.HasValue)
+                {
+                    areaOperation = db.AreaOperations.FirstOrDefault(x => x.Id == _selectedAreaOperationId.Value);
+                    if (areaOperation == null)
+                    {
+                        MessageBox.Show("Selected Area Of Operation not found.");
+                        return;
+                    }
+
+                    isUpdate = true;
+                }
+                else
+                {
+                    areaOperation = db.AreaOperations.FirstOrDefault(x => x.ScenarioId == scenarioId);
+
+                    if (areaOperation == null)
+                    {
+                        areaOperation = new AreaOperation
+                        {
+                            CreatedOn = DateTime.Now,
+                            IsActive = true,
+                            ScenarioId = scenarioId
+                        };
+
+                        db.AreaOperations.Add(areaOperation);
+                    }
+                    else
+                    {
+                        isUpdate = true;
+                    }
+                }
+
+                areaOperation.Name = "AREA OF OPERATION";
+                areaOperation.Description = "Created from Scenario Editor";
+                areaOperation.Altitude = "1000";
+                areaOperation.UpdatedOn = DateTime.Now;
+
+                db.SaveChanges();
+
+                bool hasBlueLine = db.ScenarioLines.Any(x =>
+                    x.AreaOperationId == areaOperation.Id && x.Name == "BLUE LINE");
+
+                bool hasRedLine = db.ScenarioLines.Any(x =>
+                    x.AreaOperationId == areaOperation.Id && x.Name == "RED LINE");
+
+                if (!hasBlueLine)
+                {
+                    db.ScenarioLines.Add(new ScenarioLine
+                    {
+                        Name = "BLUE LINE",
+                        Description = "Auto-created for Area Of Operation",
+                        AreaOperationId = areaOperation.Id,
+                        LineType = LineType.BULE_LINE,
+                        CreatedOn = DateTime.Now,
+                        UpdatedOn = DateTime.Now,
+                        IsActive = true
+                    });
+                }
+
+                if (!hasRedLine)
+                {
+                    db.ScenarioLines.Add(new ScenarioLine
+                    {
+                        Name = "RED LINE",
+                        Description = "Auto-created for Area Of Operation",
+                        AreaOperationId = areaOperation.Id,
+                        LineType = LineType.RED_LINE,
+                        CreatedOn = DateTime.Now,
+                        UpdatedOn = DateTime.Now,
+                        IsActive = true
+                    });
+                }
+
+                db.SaveChanges();
+
+                _selectedAreaOperationId = areaOperation.Id;
+
+                SetAreaOperationButtonState(true);
+
+                MessageBox.Show(isUpdate
+                    ? "Area Of Operation updated successfully."
+                    : "Area Of Operation created successfully.");
+
+                LoadScenario();
+            }
+            catch (Exception ex)
+            {
+                string fullError = ex.Message;
+                Exception? inner = ex.InnerException;
+
+                while (inner != null)
+                {
+                    fullError += "\n\nINNER ERROR:\n" + inner.Message;
+                    inner = inner.InnerException;
+                }
+
+                MessageBox.Show(fullError, "Failed to save Area Of Operation");
+            }
+        }
+        private void CreateOrUpdateAreaOperation_Click(object sender, RoutedEventArgs e)
+        {
+            CreateAreaOperation_Click(sender, e);
+        }
+
+        private void CreateCc_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                int blueLineId = db.ScenarioLines
+                    .Where(x => x.AreaOperation.ScenarioId == _scenarioId
+                             && x.Name == "BLUE LINE")
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                if (blueLineId <= 0)
+                {
+                    MessageBox.Show("BLUE LINE not found for this scenario.");
+                    return;
+                }
+
+                var cc = new Cc
+                {
+                    CcName = string.IsNullOrWhiteSpace(CcNameTextBox.Text)
+                        ? "CC1"
+                        : CcNameTextBox.Text.Trim(),
+
+                    Latitude = string.IsNullOrWhiteSpace(CcLatitudeTextBox.Text)
+                        ? "0"
+                        : CcLatitudeTextBox.Text.Trim(),
+
+                    Longitude = string.IsNullOrWhiteSpace(CcLongitudeTextBox.Text)
+                        ? "0"
+                        : CcLongitudeTextBox.Text.Trim(),
+
+                    LineId = blueLineId,
+
+
+                };
+
+                db.Ccs.Add(cc);
+                db.SaveChanges();
+
+                MessageBox.Show("CC created successfully.");
+            }
+            catch (Exception ex)
+            {
+                string fullError = ex.Message;
+
+                Exception inner = ex.InnerException;
+                while (inner != null)
+                {
+                    fullError += "\n\nINNER ERROR:\n" + inner.Message;
+                    inner = inner.InnerException;
+                }
+
+                MessageBox.Show(fullError, "Failed to create CC");
+            }
+
+        }
+        private void CreateRdfs_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                int ccId = _selectedCcId ?? db.Ccs
+                    .Where(x => x.Line.AreaOperation.ScenarioId == _scenarioId)
+                    .OrderByDescending(x => x.Id)
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                if (ccId <= 0)
+                {
+                    MessageBox.Show("Please create CC first before creating RDFS.");
+                    return;
+                }
+
+                if (!TryParseDouble(RdfsMinFreqTextBox.Text, out double minFreq) ||
+                    !TryParseDouble(RdfsMaxFreqTextBox.Text, out double maxFreq))
+                {
+                    MessageBox.Show("Please enter valid RDFS frequency values.");
+                    return;
+                }
+
+                int? antennaHeight = null;
+                if (int.TryParse(RdfsAntennaHeightTextBox.Text, out int parsedHeight))
+                    antennaHeight = parsedHeight;
+
+                Entity entity;
+                if (_selectedEntityId.HasValue)
+                {
+                    entity = db.Entities.FirstOrDefault(x => x.Id == _selectedEntityId.Value);
+                    if (entity == null)
+                    {
+                        MessageBox.Show("Selected RDFS not found.");
+                        return;
+                    }
+                }
+                else
+                {
+                    entity = new Entity();
+                    db.Entities.Add(entity);
+                }
+
+                entity.Name = string.IsNullOrWhiteSpace(RdfsNameTextBox.Text) ? "RDFS1" : RdfsNameTextBox.Text.Trim();
+                entity.StartFrequencyValue = minFreq;
+                entity.StopFrequencyValue = maxFreq;
+                entity.AntennaType = string.IsNullOrWhiteSpace(RdfsAntennaTypeTextBox.Text) ? "Default" : RdfsAntennaTypeTextBox.Text.Trim();
+                entity.Polarization = string.IsNullOrWhiteSpace(RdfsPolarizationTextBox.Text) ? "Vertical" : RdfsPolarizationTextBox.Text.Trim();
+                entity.AntennaHeight = antennaHeight;
+                entity.ScanType = string.IsNullOrWhiteSpace(RdfsScanTypeTextBox.Text) ? "SCAN" : RdfsScanTypeTextBox.Text.Trim();
+                entity.CcId = ccId;
+                entity.EntityType = EntityType.RDFS;
+
+                db.SaveChanges();
+
+                MessageBox.Show(_selectedEntityId.HasValue ? "RDFS updated successfully." : "RDFS saved successfully.");
+                LoadScenario();
+            }
+            catch (Exception ex)
+            {
+                string fullError = ex.Message;
+                Exception? inner = ex.InnerException;
+
+                while (inner != null)
+                {
+                    fullError += "\n\nINNER ERROR:\n" + inner.Message;
+                    inner = inner.InnerException;
+                }
+
+                MessageBox.Show(fullError, "Failed to save RDFS");
+            }
+        }
+        private void CreateJsvushf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                int ccId = _selectedCcId ?? db.Ccs
+                    .Where(x => x.Line.AreaOperation.ScenarioId == _scenarioId)
+                    .OrderByDescending(x => x.Id)
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                if (ccId <= 0)
+                {
+                    MessageBox.Show("Please create CC first before creating JSVUSHF.");
+                    return;
+                }
+
+                if (!TryParseDouble(JsvushfMinFreqTextBox.Text, out double minFreq) ||
+                    !TryParseDouble(JsvushfMaxFreqTextBox.Text, out double maxFreq))
+                {
+                    MessageBox.Show("Please enter valid frequency values.");
+                    return;
+                }
+
+                int? antennaHeight = null;
+                if (int.TryParse(JsvushfAntennaHeightTextBox.Text, out int parsedHeight))
+                    antennaHeight = parsedHeight;
+
+                Entity entity;
+                if (_selectedEntityId.HasValue)
+                {
+                    entity = db.Entities.FirstOrDefault(x => x.Id == _selectedEntityId.Value);
+                    if (entity == null)
+                    {
+                        MessageBox.Show("Selected JSVUSHF not found.");
+                        return;
+                    }
+                }
+                else
+                {
+                    entity = new Entity();
+                    db.Entities.Add(entity);
+                }
+
+                entity.Name = string.IsNullOrWhiteSpace(JsvushfNameTextBox.Text) ? "JSVUSHF1" : JsvushfNameTextBox.Text.Trim();
+                entity.StartFrequencyValue = minFreq;
+                entity.StopFrequencyValue = maxFreq;
+                entity.AntennaType = string.IsNullOrWhiteSpace(JsvushfAntennaTypeTextBox.Text) ? "Default" : JsvushfAntennaTypeTextBox.Text.Trim();
+                entity.Polarization = string.IsNullOrWhiteSpace(JsvushfPolarizationTextBox.Text) ? "Vertical" : JsvushfPolarizationTextBox.Text.Trim();
+                entity.AntennaHeight = antennaHeight;
+                entity.ScanType = string.IsNullOrWhiteSpace(JsvushfScanTypeTextBox.Text) ? "SCAN" : JsvushfScanTypeTextBox.Text.Trim();
+                entity.CcId = ccId;
+                entity.EntityType = EntityType.JSVUSHF;
+
+                db.SaveChanges();
+
+                MessageBox.Show(_selectedEntityId.HasValue ? "JSVUSHF updated successfully." : "JSVUSHF saved successfully.");
+                LoadScenario();
+            }
+            catch (Exception ex)
+            {
+                string fullError = ex.Message;
+                Exception? inner = ex.InnerException;
+
+                while (inner != null)
+                {
+                    fullError += "\n\nINNER ERROR:\n" + inner.Message;
+                    inner = inner.InnerException;
+                }
+
+                MessageBox.Show(fullError, "Failed to save JSVUSHF");
+            }
+        }
+        private void CreateCommEmitterAllied_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using var db = new AppDbContext();
+
+                int blueLineId = db.ScenarioLines
+                    .Where(x => x.AreaOperation.ScenarioId == _scenarioId && x.Name == "BLUE LINE")
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                if (blueLineId <= 0)
+                {
+                    MessageBox.Show("BLUE LINE not found for this scenario.");
+                    return;
+                }
+
+                double? power = null;
+                if (double.TryParse(CommEmitterPowerTextBox.Text, out double parsedPower))
+                    power = parsedPower;
+
+                double? frequency = null;
+                if (double.TryParse(CommEmitterFrequencyTextBox.Text, out double parsedFrequency))
+                    frequency = parsedFrequency;
+
+                double? bandwidth = null;
+                if (double.TryParse(CommEmitterBandwidthTextBox.Text, out double parsedBandwidth))
+                    bandwidth = parsedBandwidth;
+
+                double? gain = null;
+                if (double.TryParse(CommEmitterGainTextBox.Text, out double parsedGain))
+                    gain = parsedGain;
+
+                double? scanRate = null;
+                if (double.TryParse(CommEmitterScanRateTextBox.Text, out double parsedScanRate))
+                    scanRate = parsedScanRate;
+
+                Emitter emitter;
+                if (_selectedEmitterId.HasValue)
+                {
+                    emitter = db.Emitters.FirstOrDefault(x => x.Id == _selectedEmitterId.Value);
+                    if (emitter == null)
+                    {
+                        MessageBox.Show("Selected COMMEMITTERALLIED not found.");
+                        return;
+                    }
+                }
+                else
+                {
+                    emitter = new Emitter
+                    {
+                        CreatedOn = DateTime.Now,
+                        IsActive = true
+                    };
+                    db.Emitters.Add(emitter);
+                }
+
+                emitter.Name = string.IsNullOrWhiteSpace(CommEmitterNameTextBox.Text)
+                    ? "COMMEMITTERALLIED1"
+                    : CommEmitterNameTextBox.Text.Trim();
+
+                emitter.PlatformType = PlatformType.LAND_STATIC;
+                emitter.ModeType = (CommEmitterModeComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "FF";
+                emitter.PowerTransmitted = power;
+                emitter.StartFrequencyValue = frequency;
+                emitter.StopFrequencyValue = frequency;
+                emitter.Bandwidth = bandwidth;
+                emitter.HopPeriodValue = 0;
+                emitter.HopPeriodUnit = "ms";
+                emitter.HopInterPeriodValue = 0;
+                emitter.HopInterPeriodUnit = "ms";
+                emitter.ModulationType = "AM";
+                emitter.PatternType = "DEFAULT";
+                emitter.ScanRate = scanRate;
+                emitter.AntennaType = string.IsNullOrWhiteSpace(CommEmitterAntennaTypeTextBox.Text)
+                    ? "DEFAULT"
+                    : CommEmitterAntennaTypeTextBox.Text.Trim();
+                emitter.Gain = gain;
+                emitter.Polarization = string.IsNullOrWhiteSpace(CommEmitterPolarizationTextBox.Text)
+                    ? "VERTICAL"
+                    : CommEmitterPolarizationTextBox.Text.Trim();
+                emitter.LineId = blueLineId;
+                emitter.EmitterType = (CommEmitterEmitterTypeComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "COMMUNICATION";
+                emitter.Type = EmitterKeyName.COMMEMITTERALLIED;
+                emitter.UpdatedOn = DateTime.Now;
+
+                db.SaveChanges();
+
+                MessageBox.Show(_selectedEmitterId.HasValue
+                    ? "COMMEMITTERALLIED updated successfully."
+                    : "COMMEMITTERALLIED saved successfully.");
+
+                LoadScenario();
+            }
+            catch (Exception ex)
+            {
+                string fullError = ex.Message;
+                Exception? inner = ex.InnerException;
+
+                while (inner != null)
+                {
+                    fullError += "\n\nINNER ERROR:\n" + inner.Message;
+                    inner = inner.InnerException;
+                }
+
+                MessageBox.Show(fullError, "Failed to save COMMEMITTERALLIED");
+            }
+        }
+
+        private static bool TryParseDouble(string? value, out double result)
+        {
+            return double.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out result)
+                   || double.TryParse(value, NumberStyles.Any, CultureInfo.CurrentCulture, out result);
+        }
+
+        private void HideAllForms()
+        {
+            ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
             AreaOfOperationBorder.Visibility = Visibility.Collapsed;
             CcPropertiesBorder.Visibility = Visibility.Collapsed;
             RdfsPropertiesBorder.Visibility = Visibility.Collapsed;
+            JsvushfPropertiesBorder.Visibility = Visibility.Collapsed;
+            CommEmitterAlliedPropertiesBorder.Visibility = Visibility.Collapsed;
             EmptyDetailsBorder.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowScenarioDetailsForm()
+        {
+            HideAllForms();
+            ScenarioDetailsBorder.Visibility = Visibility.Visible;
             DrsTableBorder.Visibility = Visibility.Visible;
         }
 
         private void ShowAreaOfOperationForm()
         {
-            ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
+            HideAllForms();
             AreaOfOperationBorder.Visibility = Visibility.Visible;
-            CcPropertiesBorder.Visibility = Visibility.Collapsed;
-            RdfsPropertiesBorder.Visibility = Visibility.Collapsed;
-            EmptyDetailsBorder.Visibility = Visibility.Collapsed;
             DrsTableBorder.Visibility = Visibility.Visible;
         }
 
         private void ShowCcPropertiesForm()
         {
-            ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
-            AreaOfOperationBorder.Visibility = Visibility.Collapsed;
+            HideAllForms();
             CcPropertiesBorder.Visibility = Visibility.Visible;
-            RdfsPropertiesBorder.Visibility = Visibility.Collapsed;
-            EmptyDetailsBorder.Visibility = Visibility.Collapsed;
             DrsTableBorder.Visibility = Visibility.Visible;
         }
 
         private void ShowEmptyForm()
         {
-            ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
-            AreaOfOperationBorder.Visibility = Visibility.Collapsed;
-            CcPropertiesBorder.Visibility = Visibility.Collapsed;
-            RdfsPropertiesBorder.Visibility = Visibility.Collapsed;
+            HideAllForms();
             EmptyDetailsBorder.Visibility = Visibility.Visible;
             DrsTableBorder.Visibility = Visibility.Visible;
         }
 
         private void ShowRdfsPropertiesForm(string rdfsName)
         {
-            ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
-            AreaOfOperationBorder.Visibility = Visibility.Collapsed;
-            CcPropertiesBorder.Visibility = Visibility.Collapsed;
+            HideAllForms();
             RdfsPropertiesBorder.Visibility = Visibility.Visible;
-            EmptyDetailsBorder.Visibility = Visibility.Collapsed;
             DrsTableBorder.Visibility = Visibility.Visible;
 
             RdfsTitleTextBlock.Text = $"{rdfsName} PROPERTIES";
@@ -485,37 +1062,281 @@ namespace EWTSS_DESKTOP.Presentation.Views.Scenario
             RdfsMaxFreqTextBox.Text = "1000";
             RdfsSensitivityTextBox.Text = "-90";
             RdfsGainLossTextBox.Text = "3";
+
+            RdfsAntennaTypeTextBox.Text = "Default";
+            RdfsPolarizationTextBox.Text = "Vertical";
+            RdfsAntennaHeightTextBox.Text = "10";
+            RdfsScanTypeTextBox.Text = "SCAN";
         }
+
         private void ShowJsvushfPropertiesForm(string name)
-{
-    ScenarioDetailsBorder.Visibility = Visibility.Collapsed;
-    AreaOfOperationBorder.Visibility = Visibility.Collapsed;
-    CcPropertiesBorder.Visibility = Visibility.Collapsed;
-    RdfsPropertiesBorder.Visibility = Visibility.Collapsed;
-    JsvushfPropertiesBorder.Visibility = Visibility.Visible;
-    EmptyDetailsBorder.Visibility = Visibility.Collapsed;
-    DrsTableBorder.Visibility = Visibility.Visible;
+        {
+            HideAllForms();
+            JsvushfPropertiesBorder.Visibility = Visibility.Visible;
+            DrsTableBorder.Visibility = Visibility.Visible;
 
-    JsvushfTitleTextBlock.Text = $"{name} PROPERTIES";
-    JsvushfNameTextBox.Text = name;
+            JsvushfTitleTextBlock.Text = $"{name} PROPERTIES";
+            JsvushfNameTextBox.Text = name;
 
-    // Default values (later load from DB)
-    JsvushfLatitudeTextBox.Text = "21° 24' 54.318''";
-    JsvushfLongitudeTextBox.Text = "77° 36' 49.554''";
-    JsvushfMinFreqTextBox.Text = "435";
-    JsvushfMaxFreqTextBox.Text = "1000";
-    JsvushfSensitivityTextBox.Text = "-90";
-    JsvushfGainLossTextBox.Text = "0";
-}
-    }
+            JsvushfLatitudeTextBox.Text = "21° 24' 54.318''";
+            JsvushfLongitudeTextBox.Text = "77° 36' 49.554''";
+            JsvushfMinFreqTextBox.Text = "435";
+            JsvushfMaxFreqTextBox.Text = "1000";
+            JsvushfSensitivityTextBox.Text = "-90";
+            JsvushfGainLossTextBox.Text = "0";
 
-    public class DrsPreviewRow
+            JsvushfAntennaTypeTextBox.Text = "Default";
+            JsvushfPolarizationTextBox.Text = "Vertical";
+            JsvushfAntennaHeightTextBox.Text = "10";
+            JsvushfScanTypeTextBox.Text = "SCAN";
+        }
+
+        private void ShowCommEmitterAlliedPropertiesForm(string name)
+        {
+            HideAllForms();
+            CommEmitterAlliedPropertiesBorder.Visibility = Visibility.Visible;
+            DrsTableBorder.Visibility = Visibility.Visible;
+
+            CommEmitterAlliedTitleTextBlock.Text = $"{name} PROPERTIES";
+            CommEmitterNameTextBox.Text = name;
+
+            CommEmitterPlatformTypeComboBox.SelectedIndex = 0;
+            CommEmitterModeComboBox.SelectedIndex = 0;
+            CommEmitterGainTextBox.Text = "0";
+            CommEmitterPowerTextBox.Text = "60";
+            CommEmitterBandwidthTextBox.Text = "3";
+            CommEmitterFrequencyTextBox.Text = "1000";
+            CommEmitterAntennaTypeTextBox.Text = "DEFAULT";
+            CommEmitterPolarizationTextBox.Text = "VERTICAL";
+            CommEmitterScanRateTextBox.Text = "0";
+            CommEmitterDurationTextBox.Text = "00:10:00";
+            CommEmitterSequenceCountTextBox.Text = "1";
+
+            CommEmitterSequenceDataGrid.ItemsSource = new List<EmitterSequenceRow>
     {
-        public int Sno { get; set; }
-        public string Side { get; set; }
-        public string EmitterName { get; set; }
-        public string EmitterType { get; set; }
-        public string Mode { get; set; }
-        public string Modulation { get; set; }
+        new EmitterSequenceRow
+        {
+            Sno = 1,
+            Start = "00:00:00",
+            Stop = "00:10:00",
+            Duration = 600,
+            Mode = "ACTIVE"
+        }
+    };
+
+            ShowCommEmitterTechnicalTab();
+        }
+        private void LoadCcFromDbByName(string ccName)
+        {
+            using var db = new AppDbContext();
+
+            var cc = db.Ccs
+                .Where(x => x.Line.AreaOperation.ScenarioId == _scenarioId)
+                .AsEnumerable()
+                .FirstOrDefault(x =>
+                    string.Equals(
+                        x.CcName?.Trim(),
+                        ccName.Trim(),
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (cc == null)
+            {
+                _selectedCcId = null;
+                CcNameTextBox.Text = ccName;
+                CcLatitudeTextBox.Text = "";
+                CcLongitudeTextBox.Text = "";
+                ShowCcPropertiesForm();
+                return;
+            }
+
+            _selectedCcId = cc.Id;
+            CcNameTextBox.Text = cc.CcName ?? "";
+            CcLatitudeTextBox.Text = cc.Latitude ?? "";
+            CcLongitudeTextBox.Text = cc.Longitude ?? "";
+
+            ShowCcPropertiesForm();
+        }
+        private void LoadRdfsFromDbByName(string entityName)
+        {
+            using var db = new AppDbContext();
+
+            var entity = db.Entities
+                .Where(x => x.Cc.Line.AreaOperation.ScenarioId == _scenarioId
+                         && x.EntityType == EntityType.RDFS)
+                .AsEnumerable()
+                .FirstOrDefault(x =>
+                    string.Equals(
+                        x.Name?.Trim(),
+                        entityName.Trim(),
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (entity == null)
+            {
+                _selectedEntityId = null;
+
+                // keep your old default form structure and default values
+                ShowRdfsPropertiesForm(entityName);
+                RdfsNameTextBox.Text = entityName;
+
+                SetRdfsButtonState(false);   // CREATE
+                return;
+            }
+
+            _selectedEntityId = entity.Id;
+            _selectedCcId = entity.CcId;
+
+            // first load normal form structure
+            ShowRdfsPropertiesForm(entity.Name ?? "RDFS");
+
+            // then replace defaults with DB values
+            RdfsNameTextBox.Text = entity.Name ?? "RDFS1";
+            RdfsMinFreqTextBox.Text = entity.StartFrequencyValue?.ToString() ?? "435";
+            RdfsMaxFreqTextBox.Text = entity.StopFrequencyValue?.ToString() ?? "1000";
+            RdfsAntennaTypeTextBox.Text = entity.AntennaType ?? "Default";
+            RdfsPolarizationTextBox.Text = entity.Polarization ?? "Vertical";
+            RdfsAntennaHeightTextBox.Text = entity.AntennaHeight?.ToString() ?? "10";
+            RdfsScanTypeTextBox.Text = entity.ScanType ?? "SCAN";
+
+            SetRdfsButtonState(true);   // UPDATE
+        }
+
+        private void LoadJsvushfFromDbByName(string entityName)
+        {
+            using var db = new AppDbContext();
+
+            var entity = db.Entities
+                .Where(x => x.Cc.Line.AreaOperation.ScenarioId == _scenarioId
+                         && x.EntityType == EntityType.JSVUSHF)
+                .AsEnumerable()
+                .FirstOrDefault(x =>
+                    string.Equals(
+                        x.Name?.Trim(),
+                        entityName.Trim(),
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (entity == null)
+            {
+                _selectedEntityId = null;
+
+                ShowJsvushfPropertiesForm(entityName);
+
+                JsvushfNameTextBox.Text = entityName;
+                JsvushfMinFreqTextBox.Text = "";
+                JsvushfMaxFreqTextBox.Text = "";
+                JsvushfAntennaTypeTextBox.Text = "";
+                JsvushfPolarizationTextBox.Text = "";
+                JsvushfAntennaHeightTextBox.Text = "";
+                JsvushfScanTypeTextBox.Text = "";
+
+                return;
+            }
+
+            _selectedEntityId = entity.Id;
+            _selectedCcId = entity.CcId;
+
+            ShowJsvushfPropertiesForm(entity.Name ?? "JSVUSHF");
+
+            JsvushfNameTextBox.Text = entity.Name ?? string.Empty;
+            JsvushfMinFreqTextBox.Text = entity.StartFrequencyValue?.ToString() ?? string.Empty;
+            JsvushfMaxFreqTextBox.Text = entity.StopFrequencyValue?.ToString() ?? string.Empty;
+            JsvushfAntennaTypeTextBox.Text = entity.AntennaType ?? string.Empty;
+            JsvushfPolarizationTextBox.Text = entity.Polarization ?? string.Empty;
+            JsvushfAntennaHeightTextBox.Text = entity.AntennaHeight?.ToString() ?? string.Empty;
+            JsvushfScanTypeTextBox.Text = entity.ScanType ?? string.Empty;
+        }
+
+        private void LoadCommEmitterAlliedFromDbByName(string emitterName)
+        {
+            using var db = new AppDbContext();
+
+            var emitter = db.Emitters
+                .Where(x => x.Line.AreaOperation.ScenarioId == _scenarioId
+                         && x.Type == EmitterKeyName.COMMEMITTERALLIED)
+                .AsEnumerable()
+                .FirstOrDefault(x =>
+                    string.Equals(
+                        x.Name?.Trim(),
+                        emitterName.Trim(),
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (emitter == null)
+            {
+                _selectedEmitterId = null;
+
+                ShowCommEmitterAlliedPropertiesForm(emitterName);
+
+                CommEmitterNameTextBox.Text = emitterName;
+                CommEmitterPowerTextBox.Text = "";
+                CommEmitterBandwidthTextBox.Text = "";
+                CommEmitterFrequencyTextBox.Text = "";
+                CommEmitterAntennaTypeTextBox.Text = "";
+                CommEmitterPolarizationTextBox.Text = "";
+                CommEmitterScanRateTextBox.Text = "";
+                CommEmitterGainTextBox.Text = "";
+
+                return;
+            }
+
+            _selectedEmitterId = emitter.Id;
+
+            ShowCommEmitterAlliedPropertiesForm(emitter.Name ?? "COMMEMITTERALLIED");
+
+            CommEmitterNameTextBox.Text = emitter.Name ?? string.Empty;
+            CommEmitterPowerTextBox.Text = emitter.PowerTransmitted?.ToString() ?? string.Empty;
+            CommEmitterBandwidthTextBox.Text = emitter.Bandwidth?.ToString() ?? string.Empty;
+            CommEmitterFrequencyTextBox.Text = emitter.StartFrequencyValue?.ToString() ?? string.Empty;
+            CommEmitterAntennaTypeTextBox.Text = emitter.AntennaType ?? string.Empty;
+            CommEmitterPolarizationTextBox.Text = emitter.Polarization ?? string.Empty;
+            CommEmitterScanRateTextBox.Text = emitter.ScanRate?.ToString() ?? string.Empty;
+            CommEmitterGainTextBox.Text = emitter.Gain?.ToString() ?? string.Empty;
+        }
+        private void LoadAreaOperationFromDb()
+        {
+            using var db = new AppDbContext();
+
+            var area = db.AreaOperations
+                .Where(x => x.ScenarioId == _scenarioId)
+                .OrderByDescending(x => x.Id)
+                .FirstOrDefault();
+
+            ShowAreaOfOperationForm();
+
+            if (area == null)
+            {
+                _selectedAreaOperationId = null;
+
+                SetAreaOperationButtonState(false); // CREATE
+
+                return;
+            }
+
+            _selectedAreaOperationId = area.Id;
+
+            // load fields if needed
+            // AreaOperationNameTextBox.Text = area.Name;
+
+            SetAreaOperationButtonState(true); // UPDATE
+        }
+
+
+        public class DrsPreviewRow
+        {
+            public int Sno { get; set; }
+            public string Side { get; set; } = string.Empty;
+            public string EmitterName { get; set; } = string.Empty;
+            public string EmitterType { get; set; } = string.Empty;
+            public string Mode { get; set; } = string.Empty;
+            public string Modulation { get; set; } = string.Empty;
+        }
+        public class EmitterSequenceRow
+        {
+            public int Sno { get; set; }
+            public string Start { get; set; } = string.Empty;
+            public string Stop { get; set; } = string.Empty;
+            public int Duration { get; set; }
+            public string Mode { get; set; } = string.Empty;
+        }
+
+
     }
 }

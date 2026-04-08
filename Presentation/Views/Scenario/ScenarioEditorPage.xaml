@@ -6,6 +6,25 @@
       Title="ScenarioEditorPage">
 
     <Page.Resources>
+        <Style x:Key="NoHoverButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#179C96"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="TopButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="30"/>
             <Setter Property="MinWidth" Value="56"/>
@@ -17,38 +36,54 @@
             <Setter Property="Padding" Value="14,0"/>
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
-        <Style TargetType="TreeViewItem">
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-</Style>
-        
-       <Style x:Key="FlatTreeItemStyle" TargetType="TreeViewItem">
-    <Setter Property="Foreground" Value="White"/>
-    <Setter Property="Background" Value="#021522"/>
-    <Setter Property="FontSize" Value="13"/>
-    <Setter Property="FontWeight" Value="SemiBold"/>
-    <Setter Property="Padding" Value="2"/>
-    <Setter Property="Margin" Value="0,2,0,2"/>
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-    <Style.Triggers>
-        <Trigger Property="IsSelected" Value="True">
-            <Setter Property="Foreground" Value="#21B3AE"/>
-            <Setter Property="Background" Value="#021522"/>
-        </Trigger>
-    </Style.Triggers>
-</Style>
 
+        <Style x:Key="FlatTreeItemStyle" TargetType="TreeViewItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#021522"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Margin" Value="0,2,0,2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Foreground" Value="#21B3AE"/>
+                    <Setter Property="Background" Value="#021522"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NewScenarioButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="0,10,0,10"/>
+            <Setter Property="Background" Value="#1B9C95"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="#1B9C95"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Padding="2">
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
         <Style x:Key="LabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="Bold"/>
         </Style>
-       <Style x:Key="" TargetType="TreeViewItem">
-            <Setter Property="Foreground" Value="White"/>
-            
-        </Style>
-
-        
 
         <Style x:Key="EditorTextBoxStyle" TargetType="TextBox">
             <Setter Property="Height" Value="34"/>
@@ -106,6 +141,15 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="BottomActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
     </Page.Resources>
 
     <Grid>
@@ -140,7 +184,7 @@
                                VerticalAlignment="Center"/>
                 </Button>
 
-                <Image Source="C:\Users\Admin\Downloads\white.png"
+                <Image Source="/Images/white.png"
                        Width="190"
                        Height="36"
                        Stretch="Uniform"
@@ -202,8 +246,8 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center">
                 <Button Content="EXECUTE" Style="{StaticResource TopButtonStyle}"/>
-                <Button Content="Start" Style="{StaticResource TopButtonStyle}"/>
-                <Button Content=" Start Recording"
+                <Button Content="START" Style="{StaticResource TopButtonStyle}"/>
+                <Button Content="START RECORDING"
                         Style="{StaticResource TopButtonStyle}"
                         MinWidth="120"/>
             </StackPanel>
@@ -249,13 +293,25 @@
                             Width="120"
                             Height="30"
                             HorizontalAlignment="Left"
-                            Margin="0,0,0,8"
+                            Margin="12,0,0,8"
                             Background="#21B3AE"
                             Foreground="White"
+                            Style="{StaticResource NoHoverButtonStyle}"
                             BorderBrush="{x:Null}"
                             FontWeight="Bold"/>
                 </Grid>
             </Border>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
 
             <!-- MIDDLE DETAILS -->
@@ -265,6 +321,9 @@
                     <RowDefinition Height="230"/>
                 </Grid.RowDefinitions>
 
+                
+                
+                
                 <!-- SCENARIO DETAILS PANEL -->
                 <Border x:Name="ScenarioDetailsBorder"
                         Grid.Row="0"
@@ -371,97 +430,427 @@
                         <Button Grid.Row="9"
                                 Content="UPDATE"
                                 HorizontalAlignment="Right"
-                                Width="80"
+                                Width="90"
                                 Background="Transparent"
                                 Foreground="#21B3AE"
+                                Style="{StaticResource NoHoverButtonStyle}"
                                 BorderBrush="{x:Null}"
                                 FontWeight="Bold"
-                                Click="UpdateScenario_Click"/>
+                                Click="CreateScenario_Click"/>
                     </Grid>
                 </Border>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!-- JSVUSHF PROPERTIES PANEL -->
                 <Border x:Name="JsvushfPropertiesBorder"
-        Background="#062235"
-        Padding="20"
-        Visibility="Collapsed">
-
-    <StackPanel>
-        <TextBlock x:Name="JsvushfTitleTextBlock"
-                   Text="JSVUSHF PROPERTIES"
-                   FontSize="18"
-                   FontWeight="Bold"
-                   Foreground="White"
-                   Margin="0,0,0,20"/>
-
-        <TextBlock Text="JSVUSHF NAME *" Foreground="White"/>
-        <TextBox x:Name="JsvushfNameTextBox" Height="28"/>
-
-        <TextBlock Text="POSITION" Foreground="White" Margin="0,20,0,5"/>
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <TextBox x:Name="JsvushfLatitudeTextBox" Grid.Column="0" Margin="0,0,10,0"/>
-            <TextBox x:Name="JsvushfLongitudeTextBox" Grid.Column="1"/>
-        </Grid>
-
-        <TextBlock Text="FREQUENCY RANGE" Foreground="White" Margin="0,20,0,5"/>
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <TextBox x:Name="JsvushfMinFreqTextBox" Grid.Column="0" Margin="0,0,10,0"/>
-            <TextBox x:Name="JsvushfMaxFreqTextBox" Grid.Column="1"/>
-        </Grid>
-
-        <TextBlock Text="SENSITIVITY" Foreground="White" Margin="0,20,0,5"/>
-        <TextBox x:Name="JsvushfSensitivityTextBox"/>
-
-        <TextBlock Text="SETUP GAIN / LOSS" Foreground="White" Margin="0,20,0,5"/>
-        <TextBox x:Name="JsvushfGainLossTextBox"/>
-    </StackPanel>
-    
-</Border>
-                
-<!-- RDFS PROPERTIES PANEL -->
-<Border x:Name="RdfsPropertiesBorder"
         Grid.Row="0"
         Background="#032238"
         BorderBrush="#30495C"
         BorderThickness="0,1,1,1"
         Margin="0,0,0,10"
         Visibility="Collapsed">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="48"/>
-        </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0"
+                        <ScrollViewer Grid.Row="0"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       Background="#032238">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                <!-- TITLE -->
-                <TextBlock x:Name="RdfsTitleTextBlock"
+                                <!-- TITLE -->
+                                <TextBlock x:Name="JsvushfTitleTextBlock"
+                           Grid.Row="0"
+                           Text="JSVUSHF1 PROPERTIES"
+                           Foreground="White"
+                           FontSize="15"
+                           FontWeight="Bold"
+                           Margin="0,0,0,18"/>
+
+                                <!-- NAME -->
+                                <TextBlock Grid.Row="1"
+                           Text="JSVUSHF NAME *"
+                           Foreground="White"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Margin="0,0,0,6"/>
+
+                                <TextBox x:Name="JsvushfNameTextBox"
+                         Grid.Row="2"
+                         Text="JSVUSHF1"
+                         Style="{StaticResource EditorTextBoxStyle}"
+                         Margin="0,0,0,18"/>
+
+                                <!-- POSITION -->
+                                <TextBlock Grid.Row="3"
+                           Text="POSITION"
+                           Foreground="White"
+                           FontSize="13"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                                <Grid Grid.Row="4" Margin="0,0,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="LATITUDE *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="JsvushfLatitudeTextBox"
+                                     Text="21° 24' 54.318''"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <TextBox Grid.Column="1"
+                                     x:Name="JsvushfLatitudeDirectionTextBox"
+                                     Text="N"
+                                     Margin="4,0,0,0"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="JsvushfLongitudeTextBox"
+                                     Text="77° 36' 49.554''"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <TextBox Grid.Column="1"
+                                     x:Name="JsvushfLongitudeDirectionTextBox"
+                                     Text="E"
+                                     Margin="4,0,0,0"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- FREQUENCY RANGE -->
+                                <TextBlock Grid.Row="5"
+                           Text="FREQUENCY RANGE * (30 MHz - 6000 MHz)"
+                           Foreground="White"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+
+                                <Grid Grid.Row="6" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="MIN"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="JsvushfMinFreqTextBox"
+                                     Text="435"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <ComboBox Grid.Column="1"
+                                      x:Name="JsvushfMinFreqUnitComboBox"
+                                      Margin="4,0,0,0"
+                                      Height="34"
+                                      Background="#021522"
+                                      Foreground="White"
+                                      BorderBrush="#5A7388"
+                                      SelectedIndex="0">
+                                                <ComboBoxItem Content="MHz"/>
+                                                <ComboBoxItem Content="GHz"/>
+                                                <ComboBoxItem Content="KHz"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="MAX"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="JsvushfMaxFreqTextBox"
+                                     Text="1000"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <ComboBox Grid.Column="1"
+                                      x:Name="JsvushfMaxFreqUnitComboBox"
+                                      Margin="4,0,0,0"
+                                      Height="34"
+                                      Background="#021522"
+                                      Foreground="White"
+                                      BorderBrush="#5A7388"
+                                      SelectedIndex="0">
+                                                <ComboBoxItem Content="MHz"/>
+                                                <ComboBoxItem Content="GHz"/>
+                                                <ComboBoxItem Content="KHz"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- SENSITIVITY / GAIN -->
+                                <Grid Grid.Row="8" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="SENSITIVITY *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,2"/>
+                                        <TextBlock Text="(-108 dBm to -30 dBm)"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="JsvushfSensitivityTextBox"
+                                     Text="-90"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <TextBox Grid.Column="1"
+                                     Text="dBm"
+                                     Margin="4,0,0,0"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="SETUP GAIN / LOSS *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,2"/>
+                                        <TextBlock Text="(-35 dB to 35 dB)"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="JsvushfGainLossTextBox"
+                                     Text="0"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <TextBox Grid.Column="1"
+                                     Text="dB"
+                                     Margin="4,0,0,0"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- NEW REQUIRED DATABASE FIELDS -->
+                                <Grid Grid.Row="10" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="ANTENNA TYPE *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="JsvushfAntennaTypeTextBox"
+                                 Text="Default"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="POLARIZATION"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="JsvushfPolarizationTextBox"
+                                 Text="Vertical"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="12" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="ANTENNA HEIGHT *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="JsvushfAntennaHeightTextBox"
+                                 Text="10"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="SCAN TYPE *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="JsvushfScanTypeTextBox"
+                                 Text="SCAN"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
+
+                        <Border Grid.Row="1" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="1"
+                        Content="DELETE"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="White"/>
+
+                                <Button Grid.Column="2"
+                        Content="CREATE"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"
+                        Click="CreateJsvushf_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+
+
+
+
+
+
+
+
+
+                <!-- RDFS PROPERTIES PANEL -->
+                <Border x:Name="RdfsPropertiesBorder"
+        Grid.Row="0"
+        Background="#032238"
+        BorderBrush="#30495C"
+        BorderThickness="0,1,1,1"
+        Margin="0,0,0,10"
+        Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
+
+                        <ScrollViewer Grid.Row="0"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Background="#032238">
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- TITLE -->
+                                <TextBlock x:Name="RdfsTitleTextBlock"
                            Grid.Row="0"
                            Text="RDFS1 PROPERTIES"
                            Foreground="White"
@@ -469,980 +858,1537 @@
                            FontWeight="Bold"
                            Margin="0,0,0,18"/>
 
-                <!-- NAME -->
-                <TextBlock Grid.Row="1"
+                                <!-- NAME -->
+                                <TextBlock Grid.Row="1"
                            Text="RDFS NAME *"
                            Foreground="White"
                            FontSize="12"
                            FontWeight="Bold"
                            Margin="0,0,0,6"/>
 
-                <TextBox x:Name="RdfsNameTextBox"
+                                <TextBox x:Name="RdfsNameTextBox"
                          Grid.Row="2"
                          Text="RDFS1"
                          Style="{StaticResource EditorTextBoxStyle}"
                          Margin="0,0,0,18"/>
 
-                <!-- POSITION -->
-                <TextBlock Grid.Row="3"
+                                <!-- POSITION -->
+                                <TextBlock Grid.Row="3"
                            Text="POSITION"
                            Foreground="White"
                            FontSize="13"
                            FontWeight="Bold"
                            Margin="0,0,0,10"/>
 
-                <Grid Grid.Row="4" Margin="0,0,0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
+                                <Grid Grid.Row="4" Margin="0,0,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="LATITUDE *"
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="LATITUDE *"
                                    Foreground="White"
                                    FontSize="12"
                                    FontWeight="Bold"
                                    Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="RdfsLatitudeTextBox"
+                                            <TextBox x:Name="RdfsLatitudeTextBox"
                                      Text="19° 2' 5.590''"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
 
-                            <TextBox Grid.Column="1"
+                                            <TextBox Grid.Column="1"
+                                     x:Name="RdfsLatitudeDirectionTextBox"
                                      Text="N"
                                      Margin="4,0,0,0"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
 
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="LONGITUDE *"
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE *"
                                    Foreground="White"
                                    FontSize="12"
                                    FontWeight="Bold"
                                    Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="RdfsLongitudeTextBox"
+                                            <TextBox x:Name="RdfsLongitudeTextBox"
                                      Text="77° 21' 15.441''"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
 
-                            <TextBox Grid.Column="1"
+                                            <TextBox Grid.Column="1"
+                                     x:Name="RdfsLongitudeDirectionTextBox"
                                      Text="E"
                                      Margin="4,0,0,0"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
 
-                <!-- FREQUENCY RANGE -->
-                <TextBlock Grid.Row="5"
+                                <!-- FREQUENCY RANGE -->
+                                <TextBlock Grid.Row="5"
                            Text="FREQUENCY RANGE * (30 MHz - 6000 MHz)"
                            Foreground="White"
                            FontSize="12"
                            FontWeight="Bold"
                            Margin="0,0,0,10"/>
 
-                <Grid Grid.Row="6" Margin="0,0,0,18">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
+                                <Grid Grid.Row="6" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="MIN"
-                                   Foreground="White"                                   
-                                   FontSize="12"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="70"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox x:Name="RdfsMinFreqTextBox"
-                                     Text="435"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-
-                            <ComboBox Grid.Column="1"
-                                      Margin="4,0,0,0"
-                                      Height="34"
-                                      Background="Black"
-                                      Foreground="White"
-                                      BorderBrush="#5A7388"
-                                      SelectedIndex="0">
-                                <ComboBoxItem Content="MHz"/>
-                                <ComboBoxItem Content="GHz"/>+
-                                <ComboBoxItem Content="KHz"/>
-                            </ComboBox>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="MAX"
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="MIN"
                                    Foreground="White"
                                    FontSize="12"
                                    FontWeight="Bold"
                                    Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="70"/>
-                            </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="RdfsMaxFreqTextBox"
-                                     Text="1000"
+                                            <TextBox x:Name="RdfsMinFreqTextBox"
+                                     Text="435"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
 
-                            <ComboBox Grid.Column="1"
+                                            <ComboBox Grid.Column="1"
+                                      x:Name="RdfsMinFreqUnitComboBox"
                                       Margin="4,0,0,0"
                                       Height="34"
                                       Background="#021522"
                                       Foreground="White"
                                       BorderBrush="#5A7388"
                                       SelectedIndex="0">
-                                <ComboBoxItem Content="MHz"/>
-                                <ComboBoxItem Content="GHz"/>
-                                <ComboBoxItem Content="KHz"/>
-                            </ComboBox>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
+                                                <ComboBoxItem Content="MHz"/>
+                                                <ComboBoxItem Content="GHz"/>
+                                                <ComboBoxItem Content="KHz"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
 
-                <!-- SENSITIVITY / GAIN -->
-                <Grid Grid.Row="8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="MAX"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="70"/>
+                                            </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="SENSITIVITY *"
+                                            <TextBox x:Name="RdfsMaxFreqTextBox"
+                                     Text="1000"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <ComboBox Grid.Column="1"
+                                      x:Name="RdfsMaxFreqUnitComboBox"
+                                      Margin="4,0,0,0"
+                                      Height="34"
+                                      Background="#021522"
+                                      Foreground="White"
+                                      BorderBrush="#5A7388"
+                                      SelectedIndex="0">
+                                                <ComboBoxItem Content="MHz"/>
+                                                <ComboBoxItem Content="GHz"/>
+                                                <ComboBoxItem Content="KHz"/>
+                                            </ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- SENSITIVITY / GAIN -->
+                                <Grid Grid.Row="8" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="SENSITIVITY *"
                                    Foreground="White"
                                    FontSize="12"
                                    FontWeight="Bold"
                                    Margin="0,0,0,2"/>
-                        <TextBlock Text="(-108 dBm to -30 dBm)"
+                                        <TextBlock Text="(-108 dBm to -30 dBm)"
                                    Foreground="White"
                                    FontSize="11"
                                    Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="RdfsSensitivityTextBox"
+                                            <TextBox x:Name="RdfsSensitivityTextBox"
                                      Text="-90"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
 
-                            <TextBox Grid.Column="1"
+                                            <TextBox Grid.Column="1"
                                      Text="dBm"
                                      Margin="4,0,0,0"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
 
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="SETUP GAIN / LOSS *"
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="SETUP GAIN / LOSS *"
                                    Foreground="White"
                                    FontSize="12"
                                    FontWeight="Bold"
                                    Margin="0,0,0,2"/>
-                        <TextBlock Text="(-35 dB to 35 dB)"
+                                        <TextBlock Text="(-35 dB to 35 dB)"
                                    Foreground="White"
                                    FontSize="11"
                                    Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="RdfsGainLossTextBox"
+                                            <TextBox x:Name="RdfsGainLossTextBox"
                                      Text="3"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
 
-                            <TextBox Grid.Column="1"
+                                            <TextBox Grid.Column="1"
                                      Text="dB"
                                      Margin="4,0,0,0"
                                      Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </Grid>
-        </ScrollViewer>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
 
-        <Border Grid.Row="1" Background="#0C3144">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
+                                <!-- NEW REQUIRED DATABASE FIELDS -->
+                                <Grid Grid.Row="10" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1"
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="ANTENNA TYPE *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="RdfsAntennaTypeTextBox"
+                                 Text="Default"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="POLARIZATION"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="RdfsPolarizationTextBox"
+                                 Text="Vertical"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Grid.Row="12" Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="ANTENNA HEIGHT *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="RdfsAntennaHeightTextBox"
+                                 Text="10"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="SCAN TYPE *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,6"/>
+                                        <TextBox x:Name="RdfsScanTypeTextBox"
+                                 Text="SCAN"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </ScrollViewer>
+
+                        <Border Grid.Row="1" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="1"
                         Content="DELETE"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderBrush="{x:Null}"
-                        FontWeight="Bold"
-                        Cursor="Hand"/>
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="White"/>
 
-                <Button Grid.Column="2"
-                        Content="UPDATE"
-                        Background="Transparent"
-                        Foreground="#21B3AE"
-                        BorderBrush="{x:Null}"
-                        FontWeight="Bold"
-                        Cursor="Hand"/>
-            </Grid>
-        </Border>
-    </Grid>
-</Border>
+                                <Button x:Name="CreateRdfsButton"
+        Grid.Column="2"
+        Content="CREATE"
+        Style="{StaticResource BottomActionButtonStyle}"
+        Foreground="#21B3AE"
+        Click="CreateRdfs_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+
+
+
+
+
+
+                <!-- EMPTY DETAILS -->
                 <Border x:Name="EmptyDetailsBorder"
-        Grid.Row="0"
-        Background="#032238"
-        BorderBrush="#30495C"
-        BorderThickness="0,1,1,1"
-        Margin="0,0,0,10"
-        Visibility="Collapsed">
-    <Grid Background="#032238"/>
-</Border>
-<!-- CC PROPERTIES PANEL -->
-<Border x:Name="CcPropertiesBorder"
-        Grid.Row="0"
-        Background="#032238"
-        BorderBrush="#30495C"
-        BorderThickness="0,1,1,1"
-        Margin="0,0,0,10"
-        Visibility="Collapsed">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="48"/>
-        </Grid.RowDefinitions>
+                        Grid.Row="0"
+                        Background="#032238"
+                        BorderBrush="#30495C"
+                        BorderThickness="0,1,1,1"
+                        Margin="0,0,0,10"
+                        Visibility="Collapsed">
+                    <Grid Background="#032238"/>
+                </Border>
 
-        <Grid Grid.Row="0" Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                
+                
+                
+                
+                
+                
+                <!-- CC PROPERTIES PANEL -->
+                <Border x:Name="CcPropertiesBorder"
+                        Grid.Row="0"
+                        Background="#032238"
+                        BorderBrush="#30495C"
+                        BorderThickness="0,1,1,1"
+                        Margin="0,0,0,10"
+                        Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0"
-                       Text="CC PROPERTIES"
-                       Foreground="White"
-                       FontSize="15"
-                       FontWeight="Bold"
-                       Margin="0,0,0,18"/>
+                        <Grid Grid.Row="0" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="1"
-                       Text="CC NAME *"
-                       Foreground="White"
-                       FontSize="12"
-                       FontWeight="Bold"
-                       Margin="0,0,0,6"/>
+                            <TextBlock Grid.Row="0"
+                                       Text="CC PROPERTIES"
+                                       Foreground="White"
+                                       FontSize="15"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,18"/>
 
-            <TextBox Grid.Row="2"
-                     x:Name="CcNameTextBox"
-                     Text="CC1"
-                     Style="{StaticResource EditorTextBoxStyle}"
-                     Margin="0,0,0,16"/>
+                            <TextBlock Grid.Row="1"
+                                       Text="CC NAME *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
 
-            <StackPanel Grid.Row="3">
-                <TextBlock Text="POSITION"
-                           Foreground="White"
-                           FontSize="13"
-                           FontWeight="Bold"
-                           Margin="0,0,0,8"/>
+                            <TextBox Grid.Row="2"
+                                     x:Name="CcNameTextBox"
+                                     Text="CC1"
+                                     Style="{StaticResource EditorTextBoxStyle}"
+                                     Margin="0,0,0,16"/>
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Row="3">
+                                <TextBlock Text="POSITION"
+                                           Foreground="White"
+                                           FontSize="13"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,8"/>
 
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="LATITUDE *"
-                                   Foreground="White"
-                                   FontSize="12"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="CcLatitudeTextBox"
-                                     Text="26° 19' 10.440''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="LATITUDE *"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   FontWeight="Bold"
+                                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
 
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox x:Name="CcLatitudeTextBox"
+                                                     Text="26° 19' 10.440''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE *"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   FontWeight="Bold"
+                                                   Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBox x:Name="CcLongitudeTextBox"
+                                                     Text="73° 30' 12.899''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
                         </Grid>
-                    </StackPanel>
 
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="LONGITUDE *"
-                                   Foreground="White"
-                                   FontSize="12"
-                                   FontWeight="Bold"
-                                   Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
+                        <Border Grid.Row="1" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="CcLongitudeTextBox"
-                                     Text="73° 30' 12.899''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                <Button Grid.Column="1"
+                                        Content="DELETE"
+                                        Style="{StaticResource BottomActionButtonStyle}"
+                                        Foreground="White"/>
 
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </Grid>
+                                <Button Grid.Column="2"
+                                        Content="CREATE"
+                                        Style="{StaticResource BottomActionButtonStyle}"
+                                        Foreground="#21B3AE"
+                                        Click="CreateCc_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
 
-        <Border Grid.Row="1" Background="#0C3144">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="1"
-                        Content="DELETE"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderBrush="{x:Null}"
-                        FontWeight="Bold"
-                        Cursor="Hand"/>
-
-                <Button Grid.Column="2"
-                        Content="UPDATE"
-                        Background="Transparent"
-                        Foreground="#21B3AE"
-                        BorderBrush="{x:Null}"
-                        FontWeight="Bold"
-                        Cursor="Hand"/>
-            </Grid>
-        </Border>
-    </Grid>
-</Border>
-
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 <!-- AREA OF OPERATION PANEL -->
                 <Border x:Name="AreaOfOperationBorder"
+                        Grid.Row="0"
+                        Background="#032238"
+                        BorderBrush="#30495C"
+                        BorderThickness="0,1,1,1"
+                        Margin="0,0,0,10"
+                        Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
+
+                        <ScrollViewer Grid.Row="0"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      Background="#032238">
+                            <StackPanel Margin="10">
+
+                                <TextBlock Text="AREA OF OPERATION"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,14"/>
+
+                                <TextBlock Text="BOUNDARIES"
+                                           Foreground="White"
+                                           FontSize="13"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,10"/>
+
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="140"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="No. of Points"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   Margin="0,0,0,6"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="-"
+                                                    Width="28"
+                                                    Height="26"
+                                                    Background="#021522"
+                                                    Foreground="White"
+                                                    BorderBrush="#5A7388"/>
+                                            <TextBox Text="4"
+                                                     Width="36"
+                                                     Height="26"
+                                                     Margin="4,0"
+                                                     Background="#021522"
+                                                     Foreground="White"
+                                                     BorderBrush="#5A7388"
+                                                     HorizontalContentAlignment="Center"
+                                                     VerticalContentAlignment="Center"/>
+                                            <Button Content="+"
+                                                    Width="28"
+                                                    Height="26"
+                                                    Background="#021522"
+                                                    Foreground="White"
+                                                    BorderBrush="#5A7388"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="AOP ENABLE"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   Margin="0,0,0,10"/>
+                                        <CheckBox Width="54"
+                                                  Height="22"
+                                                  HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- POINT 1 -->
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="28"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                               Text="POINT 1 *"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3"
+                                               Text="🗑"
+                                               Foreground="#BFBFBF"
+                                               FontSize="14"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"/>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="26° 19' 13.226''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="73° 30' 10.102''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- POINT 2 -->
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="28"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                               Text="POINT 2 *"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3"
+                                               Text="🗑"
+                                               Foreground="#BFBFBF"
+                                               FontSize="14"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"/>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="26° 19' 13.507''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="73° 30' 18.624''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- POINT 3 -->
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="28"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                               Text="POINT 3 *"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3"
+                                               Text="🗑"
+                                               Foreground="#BFBFBF"
+                                               FontSize="14"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"/>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="26° 19' 8.910''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="73° 30' 18.974''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- POINT 4 -->
+                                <Grid Margin="0,0,0,22">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="28"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                               Text="POINT 4 *"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3"
+                                               Text="🗑"
+                                               Foreground="#BFBFBF"
+                                               FontSize="14"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"/>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="26° 19' 8.433''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="73° 30' 10.513''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <TextBlock Text="FEBA POSITION"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,10"/>
+
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="160"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="No. of FEBA Points"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   Margin="0,0,0,6"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="-"
+                                                    Width="28"
+                                                    Height="26"
+                                                    Background="#021522"
+                                                    Foreground="White"
+                                                    BorderBrush="#5A7388"/>
+                                            <TextBox Text="2"
+                                                     Width="36"
+                                                     Height="26"
+                                                     Margin="4,0"
+                                                     Background="#021522"
+                                                     Foreground="White"
+                                                     BorderBrush="#5A7388"
+                                                     HorizontalContentAlignment="Center"
+                                                     VerticalContentAlignment="Center"/>
+                                            <Button Content="+"
+                                                    Width="28"
+                                                    Height="26"
+                                                    Background="#021522"
+                                                    Foreground="White"
+                                                    BorderBrush="#5A7388"/>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="FEBA LINE ENABLE"
+                                                   Foreground="White"
+                                                   FontSize="12"
+                                                   Margin="0,0,0,10"/>
+                                        <CheckBox Width="54"
+                                                  Height="22"
+                                                  HorizontalAlignment="Left"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- FEBA POINT 1 -->
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="28"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                               Text="POINT 1 *"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3"
+                                               Text="🗑"
+                                               Foreground="#BFBFBF"
+                                               FontSize="14"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"/>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="26° 19' 10.630''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="73° 30' 9.596''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- FEBA POINT 2 -->
+                                <Grid Margin="0,0,0,26">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="28"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0"
+                                               Text="POINT 2 *"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,6"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="3"
+                                               Text="🗑"
+                                               Foreground="#BFBFBF"
+                                               FontSize="14"
+                                               VerticalAlignment="Bottom"
+                                               HorizontalAlignment="Center"/>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="26° 19' 10.781''"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="N"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Row="1" Grid.Column="2">
+                                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text=""
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                            <TextBox Grid.Column="1"
+                                                     Text="E"
+                                                     Margin="4,0,0,0"
+                                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Grid>
+
+                                <TextBlock Text="PROPAGATION MODEL"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           FontWeight="Bold"
+                                           Margin="0,0,0,18"/>
+
+                                <Grid Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="90"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="ATMOSPHERIC ABSORPTION MODEL"
+                                               Foreground="#1FD77E"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"/>
+
+                                    <CheckBox Grid.Column="1"
+                                              Width="54"
+                                              Height="22"
+                                              HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="90"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="RAIN MODEL [ITU-R P618]"
+                                               Foreground="#1FD77E"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"/>
+
+                                    <CheckBox Grid.Column="1"
+                                              Width="54"
+                                              Height="22"
+                                              HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="90"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="CLOUD/FOG MODEL [ITU-R P840]"
+                                               Foreground="#1FD77E"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"/>
+
+                                    <CheckBox Grid.Column="1"
+                                              Width="54"
+                                              Height="22"
+                                              HorizontalAlignment="Right"/>
+                                </Grid>
+
+                                <Grid Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="90"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Text="OTHER MODELS"
+                                               Foreground="#1FD77E"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"/>
+
+                                    <CheckBox Grid.Column="1"
+                                              Width="54"
+                                              Height="22"
+                                              HorizontalAlignment="Right"/>
+                                </Grid>
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <Border Grid.Row="1" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="1"
+                                        Content="DELETE"
+                                        Style="{StaticResource BottomActionButtonStyle}"
+                                        Foreground="White"/>
+
+                                <Button Grid.Column="2"
+                                        Content="CREATE"
+                                        Style="{StaticResource BottomActionButtonStyle}"
+                                        Foreground="#21B3AE"
+                                        x:Name="CreateAreaOperationButton"
+                                       
+                                         Click="CreateAreaOperation_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+
+
+
+
+
+
+
+
+
+                <!-- COMMEMITTERALLIED PROPERTIES PANEL -->
+                <Border x:Name="CommEmitterAlliedPropertiesBorder"
         Grid.Row="0"
         Background="#032238"
         BorderBrush="#30495C"
         BorderThickness="0,1,1,1"
         Margin="0,0,0,10"
         Visibility="Collapsed">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="48"/>
-        </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Auto"
-                      Background="#032238">
-            <StackPanel Margin="10">
+                        <!-- TOP TABS -->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                <!-- AREA OF OPERATION -->
-                <TextBlock Text="AREA OF OPERATION"
-                           Foreground="White"
-                           FontSize="15"
-                           FontWeight="Bold"
-                           Margin="0,0,0,14"/>
+                            <Button x:Name="CommEmitterTechnicalTabButton"
+                    Grid.Column="0"
+                    Content="TECHNICAL"
+                    Background="#2CB7B0"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="CommEmitterTechnicalTabButton_Click"/>
 
-                <TextBlock Text="BOUNDARIES"
-                           Foreground="White"
-                           FontSize="13"
-                           FontWeight="Bold"
-                           Margin="0,0,0,10"/>
+                            <Button x:Name="CommEmitterTacticalTabButton"
+                    Grid.Column="1"
+                    Content="TACTICAL"
+                    Background="#179C96"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="CommEmitterTacticalTabButton_Click"/>
+                        </Grid>
 
-                <Grid Margin="0,0,0,16">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="140"/>
-                    </Grid.ColumnDefinitions>
+                        <!-- CONTENT -->
+                        <Grid Grid.Row="1">
+                            <!-- TECHNICAL TAB -->
+                            <ScrollViewer x:Name="CommEmitterTechnicalScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="#032238"
+                          Visibility="Visible">
+                                <StackPanel Margin="10">
 
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="No. of Points"
+                                    <TextBlock x:Name="CommEmitterAlliedTitleTextBlock"
+                               Text="COMMEMITTERALLIED1 PROPERTIES"
+                               Foreground="White"
+                               FontSize="15"
+                               FontWeight="Bold"
+                               Margin="0,0,0,14"/>
+
+                                    <TextBlock Text="LOAD FROM TEMPLATE"
+                               Foreground="White"
+                               FontSize="12"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterTemplateComboBox"
+                              Height="34"
+                              Background="#021522"
+                              Foreground="White"
+                              BorderBrush="#5A7388"
+                              Margin="0,0,0,16">
+                                        <ComboBoxItem Content="SELECT TEMPLATE" IsSelected="True"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="COMMEMITTERALLIED NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <TextBox x:Name="CommEmitterNameTextBox"
+                             Text="COMMEMITTERALLIED1"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <TextBlock Text="PLATFORM TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterPlatformTypeComboBox"
+                              Height="34"
+                              Background="#021522"
+                              Foreground="White"
+                              BorderBrush="#5A7388"
+                              Margin="0,0,0,16">
+                                        <ComboBoxItem Content="LAND STATIC" IsSelected="True"/>
+                                        <ComboBoxItem Content="LAND MOBILE"/>
+                                        <ComboBoxItem Content="AIR"/>
+                                        <ComboBoxItem Content="SEA"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="POSITION"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="LATITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterLatitudeTextBox"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="LONGITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterLongitudeTextBox"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="EMITTER TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterEmitterTypeComboBox"
+                              Height="34"
+                              Background="#021522"
+                              Foreground="White"
+                              BorderBrush="#5A7388"
+                              Margin="0,0,0,16">
+                                        <ComboBoxItem Content="SELECT EMITTER TYPE" IsSelected="True"/>
+                                        <ComboBoxItem Content="COMMUNICATION"/>
+                                        <ComboBoxItem Content="ALLIED COMMUNICATION"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="MODE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterModeComboBox"
+                              Height="34"
+                              Background="#021522"
+                              Foreground="White"
+                              BorderBrush="#5A7388"
+                              Margin="0,0,0,16">
+                                        <ComboBoxItem Content="FF" IsSelected="True"/>
+                                        <ComboBoxItem Content="FH"/>
+                                    </ComboBox>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="SETUP GAIN / LOSS *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="40"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="CommEmitterGainTextBox"
+                                         Text="0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <TextBox Grid.Column="1"
+                                         Text="dB"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                            </Grid>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="POWER TRANSMITTED *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="50"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="CommEmitterPowerTextBox"
+                                         Text="60"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <TextBox Grid.Column="1"
+                                         Text="dBm"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="BANDWIDTH *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="CommEmitterBandwidthTextBox"
+                                 Text="3"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                        <ComboBox x:Name="CommEmitterBandwidthUnitComboBox"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                            <ComboBoxItem Content="KHz"/>
+                                            <ComboBoxItem Content="MHz"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <TextBlock Text="FREQUENCY *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="CommEmitterFrequencyTextBox"
+                                 Text="1000"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                        <ComboBox x:Name="CommEmitterFrequencyUnitComboBox"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                            <ComboBoxItem Content="MHz"/>
+                                            <ComboBoxItem Content="GHz"/>
+                                            <ComboBoxItem Content="KHz"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="ANTENNA TYPE *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterAntennaTypeTextBox"
+                                     Text="DEFAULT"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="POLARIZATION"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterPolarizationTextBox"
+                                     Text="VERTICAL"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="SCAN RATE"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <TextBox x:Name="CommEmitterScanRateTextBox"
+                             Text="0"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,20"/>
+                                </StackPanel>
+                            </ScrollViewer>
+
+                            <!-- TACTICAL TAB -->
+                            <ScrollViewer x:Name="CommEmitterTacticalScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          Background="#032238"
+                          Visibility="Collapsed">
+                                <StackPanel Margin="10">
+
+                                    <TextBlock Text="CALL SIGN NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                    <TextBox x:Name="CommEmitterCallSignTextBox"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <TextBlock Text="EMITTER DURATION (HH:MM:SS)"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                    <TextBox x:Name="CommEmitterDurationTextBox"
+                             Text="00:10:00"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="SEQUENCE OF OPERATIONS *"
                                    Foreground="White"
                                    FontSize="12"
-                                   Margin="0,0,0,6"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="-"
-                                    Width="28"
-                                    Height="26"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+
+                                        <Grid Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="40"/>
+                                                <ColumnDefinition Width="30"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button Grid.Column="0"
+                                    Content="-"
                                     Background="#021522"
                                     Foreground="White"
                                     BorderBrush="#5A7388"/>
-                            <TextBox Text="4"
-                                     Width="36"
-                                     Height="26"
-                                     Margin="4,0"
+
+                                            <TextBox Grid.Column="1"
+                                     x:Name="CommEmitterSequenceCountTextBox"
+                                     Text="1"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
                                      Background="#021522"
                                      Foreground="White"
-                                     BorderBrush="#5A7388"
-                                     HorizontalContentAlignment="Center"
-                                     VerticalContentAlignment="Center"/>
-                            <Button Content="+"
-                                    Width="28"
-                                    Height="26"
+                                     BorderBrush="#5A7388"/>
+
+                                            <Button Grid.Column="2"
+                                    Content="+"
                                     Background="#021522"
                                     Foreground="White"
                                     BorderBrush="#5A7388"/>
-                        </StackPanel>
-                    </StackPanel>
+                                        </Grid>
+                                    </Grid>
 
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Text="AOP ENABLE"
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="170"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="EMITTER BEHAVIOUR"
                                    Foreground="White"
                                    FontSize="12"
-                                   Margin="0,0,0,10"/>
-                        <CheckBox Width="54"
-                                  Height="22"
-                                  HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </Grid>
+                                   FontWeight="Bold"/>
 
-                <!-- AOP POINT 1 -->
-                <Grid Margin="0,0,0,14">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="28"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0"
-                               Text="POINT 1 *"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3"
-                               Text="🗑"
-                               Foreground="#BFBFBF"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"/>
-
-                    <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="26° 19' 13.226''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="73° 30' 10.102''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-
-                <!-- AOP POINT 2 -->
-                <Grid Margin="0,0,0,14">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="28"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0"
-                               Text="POINT 2 *"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3"
-                               Text="🗑"
-                               Foreground="#BFBFBF"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"/>
-
-                    <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="26° 19' 13.507''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="73° 30' 18.624''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-
-                <!-- AOP POINT 3 -->
-                <Grid Margin="0,0,0,14">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="28"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0"
-                               Text="POINT 3 *"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3"
-                               Text="🗑"
-                               Foreground="#BFBFBF"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"/>
-
-                    <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="26° 19' 8.910''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="73° 30' 18.974''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-
-                <!-- AOP POINT 4 -->
-                <Grid Margin="0,0,0,22">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="28"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0"
-                               Text="POINT 4 *"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3"
-                               Text="🗑"
-                               Foreground="#BFBFBF"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"/>
-
-                    <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="26° 19' 8.433''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="73° 30' 10.513''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
-
-                <!-- FEBA POSITION -->
-                <TextBlock Text="FEBA POSITION"
-                           Foreground="White"
-                           FontSize="15"
-                           FontWeight="Bold"
-                           Margin="0,0,0,10"/>
-
-                <Grid Margin="0,0,0,16">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="No. of FEBA Points"
+                                        <TextBlock Grid.Column="1"
+                                   Text="CONFIGURED DURATION (SEC) : 600"
                                    Foreground="White"
                                    FontSize="12"
-                                   Margin="0,0,0,6"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="-"
-                                    Width="28"
-                                    Height="26"
-                                    Background="#021522"
-                                    Foreground="White"
-                                    BorderBrush="#5A7388"/>
-                            <TextBox Text="2"
-                                     Width="36"
-                                     Height="26"
-                                     Margin="4,0"
-                                     Background="#021522"
-                                     Foreground="White"
-                                     BorderBrush="#5A7388"
-                                     HorizontalContentAlignment="Center"
-                                     VerticalContentAlignment="Center"/>
-                            <Button Content="+"
-                                    Width="28"
-                                    Height="26"
-                                    Background="#021522"
-                                    Foreground="White"
-                                    BorderBrush="#5A7388"/>
-                        </StackPanel>
-                    </StackPanel>
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Right"/>
+                                    </Grid>
 
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Text="FEBA LINE ENABLE"
-                                   Foreground="White"
-                                   FontSize="12"
-                                   Margin="0,0,0,10"/>
-                        <CheckBox Width="54"
-                                  Height="22"
-                                  HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </Grid>
-
-                <!-- FEBA POINT 1 -->
-                <Grid Margin="0,0,0,14">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="28"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0"
-                               Text="POINT 1 *"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3"
-                               Text="🗑"
-                               Foreground="#BFBFBF"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"/>
-
-                    <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="26° 19' 10.630''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                    <DataGrid x:Name="CommEmitterSequenceDataGrid"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="None"
+                              BorderThickness="0"
+                              Background="#032238"
+                              Foreground="White"
+                              RowBackground="#032238"
+                              AlternatingRowBackground="#082D42"
+                              ColumnHeaderStyle="{StaticResource GridHeaderStyle}"
+                              CellStyle="{StaticResource GridCellStyle}"
+                              RowStyle="{StaticResource GridRowStyle}"
+                              Height="220">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="SNO" Binding="{Binding Sno}" Width="50"/>
+                                            <DataGridTextColumn Header="START" Binding="{Binding Start}" Width="100"/>
+                                            <DataGridTextColumn Header="STOP" Binding="{Binding Stop}" Width="100"/>
+                                            <DataGridTextColumn Header="DURATION (SEC)" Binding="{Binding Duration}" Width="120"/>
+                                            <DataGridTextColumn Header="MODE" Binding="{Binding Mode}" Width="100"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Grid>
-                    </StackPanel>
 
-                    <StackPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="73° 30' 9.596''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
+                        <!-- BOTTOM BUTTONS -->
+                        <Border Grid.Row="2" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="70"/>
+                                </Grid.ColumnDefinitions>
 
-                <!-- FEBA POINT 2 -->
-                <Grid Margin="0,0,0,26">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="28"/>
-                    </Grid.ColumnDefinitions>
+                                <Button Grid.Column="1"
+                        Content="SAVE AS TEMPLATE"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#0E8D87"/>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0"
-                               Text="POINT 2 *"
-                               Foreground="White"
-                               FontWeight="Bold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3"
-                               Text="🗑"
-                               Foreground="#BFBFBF"
-                               FontSize="14"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Center"/>
+                                <Button Grid.Column="2"
+                        Content="ADD"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#0E8D87"
+                        Click="CreateCommEmitterAllied_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
 
-                    <StackPanel Grid.Row="1" Grid.Column="0">
-                        <TextBlock Text="LATITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text="26° 19' 10.781''"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="N"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
 
-                    <StackPanel Grid.Row="1" Grid.Column="2">
-                        <TextBlock Text="LONGITUDE" Foreground="White" Margin="0,0,0,6"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="30"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox Text=""
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                            <TextBox Grid.Column="1"
-                                     Text="E"
-                                     Margin="4,0,0,0"
-                                     Style="{StaticResource EditorTextBoxStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </Grid>
 
-                <!-- PROPAGATION MODEL -->
-                <TextBlock Text="PROPAGATION MODEL"
-                           Foreground="White"
-                           FontSize="15"
-                           FontWeight="Bold"
-                           Margin="0,0,0,18"/>
 
-                <Grid Margin="0,0,0,18">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="90"/>
-                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="ATMOSPHERIC ABSORPTION MODEL"
-                               Foreground="#1FD77E"
-                               FontSize="12"
-                               VerticalAlignment="Center"/>
 
-                    <CheckBox Grid.Column="1"
-                              Width="54"
-                              Height="22"
-                              HorizontalAlignment="Right"/>
-                </Grid>
 
-                <Grid Margin="0,0,0,14">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="90"/>
-                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="RAIN MODEL[ITU-R P618]"
-                               Foreground="#1FD77E"
-                               FontSize="12"
-                               VerticalAlignment="Center"/>
 
-                    <CheckBox Grid.Column="1"
-                              Width="54"
-                              Height="22"
-                              HorizontalAlignment="Right"/>
-                </Grid>
 
-                <Grid Margin="0,0,0,14">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="90"/>
-                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="CLOUD/FOG MODEL [ITU-R P840]"
-                               Foreground="#1FD77E"
-                               FontSize="12"
-                               VerticalAlignment="Center"/>
-
-                    <CheckBox Grid.Column="1"
-                              Width="54"
-                              Height="22"
-                              HorizontalAlignment="Right"/>
-                </Grid>
-
-                <Grid Margin="0,0,0,18">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="90"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="OTHER MODELS"
-                               Foreground="#1FD77E"
-                               FontSize="12"
-                               VerticalAlignment="Center"/>
-
-                    <CheckBox Grid.Column="1"
-                              Width="54"
-                              Height="22"
-                              HorizontalAlignment="Right"/>
-                </Grid>
-
-            </StackPanel>
-        </ScrollViewer>
-
-        <Border Grid.Row="1" Background="#0C3144">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="90"/>
-                    <ColumnDefinition Width="90"/>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="1"
-                        Content="DELETE"
-                        Background="Transparent"
-                        Foreground="White"
-                        BorderBrush="{x:Null}"
-                        FontWeight="Bold"
-                        Cursor="Hand"/>
-
-                <Button Grid.Column="2"
-                        Content="UPDATE"
-                        Background="Transparent"
-                        Foreground="#21B3AE"
-                        BorderBrush="{x:Null}"
-                        FontWeight="Bold"
-                        Cursor="Hand"/>
-            </Grid>
-        </Border>
-    </Grid>
-</Border>
 
                 <!-- BOTTOM TABLE -->
                 <Border x:Name="DrsTableBorder"
@@ -1477,6 +2423,17 @@
                 </Border>
             </Grid>
 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             <!-- RIGHT VISUALIZATION -->
             <Grid Grid.Column="2" Background="Black">
                 <Grid.RowDefinitions>
@@ -1567,10 +2524,10 @@
                                 VerticalAlignment="Top"
                                 Margin="0,40,12,0"
                                 Panel.ZIndex="10">
-                        <Border Background="#168ED8" Padding="12,8">
+                        <Border Background="#168ED8" Padding="12,8" Margin="0,0,0,6">
                             <TextBlock Text="Create Viewshed" Foreground="White"/>
                         </Border>
-                        <Border Background="#168ED8" Padding="12,8">
+                        <Border Background="#168ED8" Padding="12,8" Margin="0,0,0,6">
                             <TextBlock Text="Cancel" Foreground="White"/>
                         </Border>
                         <Border Background="#168ED8" Padding="12,8">
