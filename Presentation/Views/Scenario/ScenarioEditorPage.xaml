@@ -25,6 +25,115 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="DarkComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#062235"/>
+            <Setter Property="BorderBrush" Value="#5A7388"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="34"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="MainBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="34"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- selected item text -->
+                                <ContentPresenter Grid.Column="0"
+                                          Margin="10,0,6,0"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Left"
+                                          RecognizesAccessKey="True"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
+
+                                <!-- arrow area -->
+                                <Border Grid.Column="1"
+                                Background="#062235"
+                                BorderBrush="#5A7388"
+                                BorderThickness="1,0,0,0">
+                                    <Path Width="10"
+                                  Height="6"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Fill="White"
+                                  Data="M 0 0 L 5 5 L 10 0 Z"/>
+                                </Border>
+
+                                <ToggleButton Grid.ColumnSpan="2"
+              Background="Transparent"
+              BorderBrush="Transparent"
+              BorderThickness="0"
+              Focusable="False"
+              ClickMode="Press"
+              OverridesDefaultStyle="True"
+              FocusVisualStyle="{x:Null}"
+              IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"/>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+                            </Grid>
+
+                            <Popup IsOpen="{TemplateBinding IsDropDownOpen}"
+                           Placement="Bottom"
+                           AllowsTransparency="True"
+                           PopupAnimation="Slide"
+                           Focusable="False">
+                                <Border Background="#031929"
+                                BorderBrush="#00D7D7"
+                                BorderThickness="1"
+                                MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <ScrollViewer MaxHeight="220">
+                                        <StackPanel IsItemsHost="True"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DarkComboBoxItemStyle" TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#031929"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="ItemBorder" Background="{TemplateBinding Background}">
+                            <ContentPresenter Margin="4,0"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Left"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!-- no hover background -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#031929"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="TopButtonStyle" TargetType="Button">
             <Setter Property="Height" Value="30"/>
             <Setter Property="MinWidth" Value="56"/>
@@ -1983,12 +2092,14 @@
                                Margin="0,0,0,6"/>
 
                                     <ComboBox x:Name="CommEmitterTemplateComboBox"
-                              Height="34"
-                              Background="#021522"
-                              Foreground="White"
-                              BorderBrush="#5A7388"
-                              Margin="0,0,0,16">
+                              Style="{StaticResource DarkComboBoxStyle}"
+                              ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+                               SelectedIndex="0"
+                                Margin="0,0,0,16">
                                         <ComboBoxItem Content="SELECT TEMPLATE" IsSelected="True"/>
+                                        <ComboBoxItem Content="COMMEMITTER1"/>
+                                        <ComboBoxItem Content="COMMEMITTER1"/>
+
                                     </ComboBox>
 
                                     <TextBlock Text="COMMEMITTERALLIED NAME *"
@@ -2009,12 +2120,11 @@
                                Margin="0,0,0,6"/>
 
                                     <ComboBox x:Name="CommEmitterPlatformTypeComboBox"
-                              Height="34"
-                              Background="#021522"
-                              Foreground="White"
-                              BorderBrush="#5A7388"
-                              Margin="0,0,0,16">
-                                        <ComboBoxItem Content="LAND STATIC" IsSelected="True"/>
+          Style="{StaticResource DarkComboBoxStyle}"
+          ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+          SelectedIndex="0"
+          Margin="0,0,0,16">
+                                        <ComboBoxItem Content="LAND STATIC"/>
                                         <ComboBoxItem Content="LAND MOBILE"/>
                                         <ComboBoxItem Content="AIR"/>
                                         <ComboBoxItem Content="SEA"/>
@@ -2059,11 +2169,11 @@
                                Margin="0,0,0,6"/>
 
                                     <ComboBox x:Name="CommEmitterEmitterTypeComboBox"
-                              Height="34"
-                              Background="#021522"
-                              Foreground="White"
-                              BorderBrush="#5A7388"
-                              Margin="0,0,0,16">
+                                              Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+SelectedIndex="0"
+Margin="0,0,0,16">
+                              
                                         <ComboBoxItem Content="SELECT EMITTER TYPE" IsSelected="True"/>
                                         <ComboBoxItem Content="COMMUNICATION"/>
                                         <ComboBoxItem Content="ALLIED COMMUNICATION"/>
@@ -2076,11 +2186,10 @@
                                Margin="0,0,0,6"/>
 
                                     <ComboBox x:Name="CommEmitterModeComboBox"
-                              Height="34"
-                              Background="#021522"
-                              Foreground="White"
-                              BorderBrush="#5A7388"
-                              Margin="0,0,0,16">
+                                                                            Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+SelectedIndex="0"
+Margin="0,0,0,16">
                                         <ComboBoxItem Content="FF" IsSelected="True"/>
                                         <ComboBoxItem Content="FH"/>
                                     </ComboBox>
@@ -2365,15 +2474,15 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Button Grid.Column="1"
-                        Content="SAVE AS TEMPLATE"
-                        Style="{StaticResource BottomActionButtonStyle}"
-                        Foreground="#0E8D87"/>
+                Content="SAVE AS TEMPLATE"
+                Style="{StaticResource BottomActionButtonStyle}"
+                Foreground="#0E8D87"/>
 
                                 <Button Grid.Column="2"
-                        Content="ADD"
-                        Style="{StaticResource BottomActionButtonStyle}"
-                        Foreground="#0E8D87"
-                        Click="CreateCommEmitterAllied_Click"/>
+                Content="ADD"
+                Style="{StaticResource BottomActionButtonStyle}"
+                Foreground="#0E8D87"
+                Click="CreateCommEmitterAllied_Click"/>
                             </Grid>
                         </Border>
                     </Grid>
@@ -2383,6 +2492,1217 @@
 
 
 
+                <!-- RADAREMITTERALLIED PROPERTIES PANEL -->
+                        <Border x:Name="RadarEmitterAlliedPropertiesBorder"
+        Grid.Row="0"
+        Background="#032238"
+        BorderBrush="#30495C"
+        BorderThickness="0,1,1,1"
+        Margin="0,0,0,10"
+        Visibility="Collapsed">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="36"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="48"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- TOP TABS -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button x:Name="RadarEmitterTechnicalTabButton"
+                    Grid.Column="0"
+                    Content="TECHNICAL"
+                    Background="#2CB7B0"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="RadarEmitterTechnicalTabButton_Click"/>
+
+                                    <Button x:Name="RadarEmitterTacticalTabButton"
+                    Grid.Column="1"
+                    Content="TACTICAL"
+                    Background="#179C96"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="RadarEmitterTacticalTabButton_Click"/>
+                                </Grid>
+
+                                <!-- CONTENT -->
+                                <Grid Grid.Row="1">
+                                    <!-- TECHNICAL TAB -->
+                                    <ScrollViewer x:Name="RadarEmitterTechnicalScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="#032238"
+                          Visibility="Visible">
+                                        <StackPanel Margin="10">
+
+                                            <TextBlock x:Name="RadarEmitterAlliedTitleTextBlock"
+                               Text="RADAREMITTERALLIED1 PROPERTIES"
+                               Foreground="White"
+                               FontSize="15"
+                               FontWeight="Bold"
+                               Margin="0,0,0,14"/>
+
+                                            <TextBlock Text="LOAD FROM TEMPLATE"
+                               Foreground="White"
+                               FontSize="12"
+                               Margin="0,0,0,6"/>
+
+                                            <ComboBox x:Name="RadarEmitterTemplateComboBox"
+                              Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+ SelectedIndex="0"
+  Margin="0,0,0,16">
+                                                <ComboBoxItem Content="SELECT TEMPLATE" IsSelected="True"/>
+                                            </ComboBox>
+
+                                            <TextBlock Text="RADAREMITTERALLIED NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <TextBox x:Name="RadarEmitterNameTextBox"
+                             Text="RADAREMITTERALLIED1"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                            <TextBlock Text="PLATFORM TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <ComboBox x:Name="RadarEmitterPlatformTypeComboBox"
+                              Height="34"
+                              Style="{StaticResource DarkComboBoxStyle}"
+                              ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+                              Margin="0,0,0,16">
+                                                <ComboBoxItem Content="LAND STATIC" IsSelected="True"/>
+                                                <ComboBoxItem Content="LAND MOBILE"/>
+                                                <ComboBoxItem Content="AIR"/>
+                                                <ComboBoxItem Content="SEA"/>
+                                            </ComboBox>
+
+                                            <TextBlock Text="POSITION"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"/>
+
+                                            <Grid Margin="0,0,0,16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="20"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="LATITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                                    <TextBox x:Name="RadarEmitterLatitudeTextBox"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock Text="LONGITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                                    <TextBox x:Name="RadarEmitterLongitudeTextBox"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <TextBlock Text="EMITTER TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <ComboBox x:Name="RadarEmitterEmitterTypeComboBox"
+                             Height="34"
+Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+Margin="0,0,0,16">
+                                                <ComboBoxItem Content="SELECT EMITTER TYPE" IsSelected="True"/>
+                                                <ComboBoxItem Content="RADAR"/>
+                                                <ComboBoxItem Content="ALLIED RADAR"/>
+                                            </ComboBox>
+
+                                            <TextBlock Text="MODE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <ComboBox x:Name="RadarEmitterModeComboBox"
+                                                                           Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+SelectedIndex="0"
+Margin="0,0,0,16">
+                                                <ComboBoxItem Content="FF" IsSelected="True"/>
+                                                <ComboBoxItem Content="FH"/>
+                                            </ComboBox>
+
+                                            <Grid Margin="0,0,0,16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="20"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="SETUP GAIN / LOSS *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="40"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBox x:Name="RadarEmitterGainTextBox"
+                                         Text="0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                        <TextBox Grid.Column="1"
+                                         Text="dB"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                                    </Grid>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock Text="POWER TRANSMITTED *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="50"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBox x:Name="RadarEmitterPowerTextBox"
+                                         Text="60"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                        <TextBox Grid.Column="1"
+                                         Text="dBm"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <TextBlock Text="BANDWIDTH *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <Grid Margin="0,0,0,16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="RadarEmitterBandwidthTextBox"
+                                 Text="3"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <ComboBox x:Name="RadarEmitterBandwidthUnitComboBox"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                                    <ComboBoxItem Content="KHz"/>
+                                                    <ComboBoxItem Content="MHz"/>
+                                                </ComboBox>
+                                            </Grid>
+
+                                            <TextBlock Text="FREQUENCY *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <Grid Margin="0,0,0,16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="RadarEmitterFrequencyTextBox"
+                                 Text="1000"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <ComboBox x:Name="RadarEmitterFrequencyUnitComboBox"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                                    <ComboBoxItem Content="MHz"/>
+                                                    <ComboBoxItem Content="GHz"/>
+                                                    <ComboBoxItem Content="KHz"/>
+                                                </ComboBox>
+                                            </Grid>
+
+                                            <Grid Margin="0,0,0,16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*"/>
+                                                    <ColumnDefinition Width="20"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="ANTENNA TYPE *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                                    <TextBox x:Name="RadarEmitterAntennaTypeTextBox"
+                                     Text="DEFAULT"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock Text="POLARIZATION"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                                    <TextBox x:Name="RadarEmitterPolarizationTextBox"
+                                     Text="VERTICAL"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                                </StackPanel>
+                                            </Grid>
+
+                                            <TextBlock Text="SCAN RATE"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                            <TextBox x:Name="RadarEmitterScanRateTextBox"
+                             Text="0"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,20"/>
+                                        </StackPanel>
+                                    </ScrollViewer>
+
+                                    <!-- TACTICAL TAB -->
+                                    <ScrollViewer x:Name="RadarEmitterTacticalScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          Background="#032238"
+                          Visibility="Collapsed">
+                                        <StackPanel Margin="10">
+
+                                            <TextBlock Text="CALL SIGN NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                            <TextBox x:Name="RadarEmitterCallSignTextBox"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                            <TextBlock Text="EMITTER DURATION (HH:MM:SS)"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                            <TextBox x:Name="RadarEmitterDurationTextBox"
+                             Text="00:10:00"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                            <Grid Margin="0,0,0,16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="SEQUENCE OF OPERATIONS *"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+
+                                                <Grid Grid.Column="1">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="30"/>
+                                                        <ColumnDefinition Width="40"/>
+                                                        <ColumnDefinition Width="30"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Button Grid.Column="0"
+                                    Content="-"
+                                    Background="#021522"
+                                    Foreground="White"
+                                    BorderBrush="#5A7388"/>
+
+                                                    <TextBox Grid.Column="1"
+                                     x:Name="RadarEmitterSequenceCountTextBox"
+                                     Text="1"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Background="#021522"
+                                     Foreground="White"
+                                     BorderBrush="#5A7388"/>
+
+                                                    <Button Grid.Column="2"
+                                    Content="+"
+                                    Background="#021522"
+                                    Foreground="White"
+                                    BorderBrush="#5A7388"/>
+                                                </Grid>
+                                            </Grid>
+
+                                            <Grid Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="170"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Text="EMITTER BEHAVIOUR"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"/>
+
+                                                <TextBlock Grid.Column="1"
+                                   Text="CONFIGURED DURATION (SEC) : 600"
+                                   Foreground="White"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Right"/>
+                                            </Grid>
+
+                                            <DataGrid x:Name="RadarEmitterSequenceDataGrid"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="None"
+                              BorderThickness="0"
+                              Background="#032238"
+                              Foreground="White"
+                              RowBackground="#032238"
+                              AlternatingRowBackground="#082D42"
+                              ColumnHeaderStyle="{StaticResource GridHeaderStyle}"
+                              CellStyle="{StaticResource GridCellStyle}"
+                              RowStyle="{StaticResource GridRowStyle}"
+                              Height="220">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="SNO" Binding="{Binding Sno}" Width="50"/>
+                                                    <DataGridTextColumn Header="START" Binding="{Binding Start}" Width="100"/>
+                                                    <DataGridTextColumn Header="STOP" Binding="{Binding Stop}" Width="100"/>
+                                                    <DataGridTextColumn Header="DURATION (SEC)" Binding="{Binding Duration}" Width="120"/>
+                                                    <DataGridTextColumn Header="MODE" Binding="{Binding Mode}" Width="100"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+
+                                <!-- BOTTOM BUTTONS -->
+                                <Border Grid.Row="2" Background="#0C3144">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="140"/>
+                                            <ColumnDefinition Width="90"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Button Grid.Column="1"
+                        Content="SAVE AS TEMPLATE"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"/>
+
+                                        <Button x:Name="CreateRadarEmitterAlliedButton"
+                        Grid.Column="2"
+                        Content="ADD"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"
+                        Click="CreateRadarEmitterAllied_Click"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+
+
+
+
+                <!-- COMEMITTER PROPERTIES PANEL -->
+                <Border x:Name="CommEmitterPropertiesBorder"
+        Grid.Row="0"
+        Background="#032238"
+        BorderBrush="#30495C"
+        BorderThickness="0,1,1,1"
+        Margin="0,0,0,10"
+        Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- TOP TABS -->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="CommEmitterTechnicalTabButton2"
+                    Grid.Column="0"
+                    Content="TECHNICAL"
+                    Background="#2CB7B0"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="CommEmitterTechnicalTabButton2_Click"/>
+
+                            <Button x:Name="CommEmitterTacticalTabButton2"
+                    Grid.Column="1"
+                    Content="TACTICAL"
+                    Background="#179C96"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="CommEmitterTacticalTabButton2_Click"/>
+                        </Grid>
+
+                        <!-- CONTENT -->
+                        <Grid Grid.Row="1">
+                            <!-- TECHNICAL TAB -->
+                            <ScrollViewer x:Name="CommEmitterTechnicalScrollViewer2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="#032238"
+                          Visibility="Visible">
+                                <StackPanel Margin="10">
+
+                                    <TextBlock x:Name="CommEmitterTitleTextBlock"
+                               Text="COMEMITTER1 PROPERTIES"
+                               Foreground="White"
+                               FontSize="15"
+                               FontWeight="Bold"
+                               Margin="0,0,0,14"/>
+
+                                    <TextBlock Text="LOAD FROM TEMPLATE"
+                               Foreground="White"
+                               FontSize="12"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterTemplateComboBox2"
+                              Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+ SelectedIndex="0"
+  Margin="0,0,0,16">
+                                        <ComboBoxItem Content="SELECT TEMPLATE" IsSelected="True"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="COMEMITTER NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <TextBox x:Name="CommEmitterNameTextBox2"
+                             Text="COMEMITTER1"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <TextBlock Text="PLATFORM TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterPlatformTypeComboBox2"
+                              Height="34"
+                              Style="{StaticResource DarkComboBoxStyle}"
+                              ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+                              Margin="0,0,0,16">
+                                        <ComboBoxItem Content="LAND STATIC" IsSelected="True"/>
+                                        <ComboBoxItem Content="LAND MOBILE"/>
+                                        <ComboBoxItem Content="AIR"/>
+                                        <ComboBoxItem Content="SEA"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="POSITION"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="LATITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterLatitudeTextBox2"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="LONGITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterLongitudeTextBox2"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="EMITTER TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterEmitterTypeComboBox2"
+                              Height="34"
+Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+Margin="0,0,0,16">
+                                        <ComboBoxItem Content="SELECT EMITTER TYPE" IsSelected="True"/>
+                                        <ComboBoxItem Content="COMMUNICATION"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="MODE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="CommEmitterModeComboBox2"
+                                             Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+SelectedIndex="0"
+Margin="0,0,0,16">
+                                        <ComboBoxItem Content="FF" IsSelected="True"/>
+                                        <ComboBoxItem Content="FH"/>
+                                    </ComboBox>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="SETUP GAIN / LOSS *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="40"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="CommEmitterGainTextBox2"
+                                         Text="0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <TextBox Grid.Column="1"
+                                         Text="dB"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                            </Grid>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="POWER TRANSMITTED *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="50"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="CommEmitterPowerTextBox2"
+                                         Text="60"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <TextBox Grid.Column="1"
+                                         Text="dBm"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="BANDWIDTH *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="CommEmitterBandwidthTextBox2"
+                                 Text="3"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                        <ComboBox x:Name="CommEmitterBandwidthUnitComboBox2"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                            <ComboBoxItem Content="KHz"/>
+                                            <ComboBoxItem Content="MHz"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <TextBlock Text="FREQUENCY *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="CommEmitterFrequencyTextBox2"
+                                 Text="1000"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                        <ComboBox x:Name="CommEmitterFrequencyUnitComboBox2"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                            <ComboBoxItem Content="MHz"/>
+                                            <ComboBoxItem Content="GHz"/>
+                                            <ComboBoxItem Content="KHz"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="ANTENNA TYPE *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterAntennaTypeTextBox2"
+                                     Text="DEFAULT"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="POLARIZATION"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="CommEmitterPolarizationTextBox2"
+                                     Text="VERTICAL"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="SCAN RATE"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <TextBox x:Name="CommEmitterScanRateTextBox2"
+                             Text="0"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,20"/>
+                                </StackPanel>
+                            </ScrollViewer>
+
+                            <!-- TACTICAL TAB -->
+                            <ScrollViewer x:Name="CommEmitterTacticalScrollViewer2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          Background="#032238"
+                          Visibility="Collapsed">
+                                <StackPanel Margin="10">
+
+                                    <TextBlock Text="CALL SIGN NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                    <TextBox x:Name="CommEmitterCallSignTextBox2"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <TextBlock Text="EMITTER DURATION (HH:MM:SS)"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                    <TextBox x:Name="CommEmitterDurationTextBox2"
+                             Text="00:10:00"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+
+                        <Border Grid.Row="2" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="1"
+                        Content="SAVE AS TEMPLATE"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"/>
+
+                                <Button x:Name="CreateCommEmitterButton2"
+                        Grid.Column="2"
+                        Content="ADD"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"
+                        Click="CreateCommEmitter_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+
+
+                <!-- RADAR PROPERTIES PANEL -->
+                <Border x:Name="RadarPropertiesBorder"
+        Grid.Row="0"
+        Background="#032238"
+        BorderBrush="#30495C"
+        BorderThickness="0,1,1,1"
+        Margin="0,0,0,10"
+        Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="48"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- TOP TABS -->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="RadarTechnicalTabButton2"
+                    Grid.Column="0"
+                    Content="TECHNICAL"
+                    Background="#2CB7B0"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="RadarTechnicalTabButton2_Click"/>
+
+                            <Button x:Name="RadarTacticalTabButton2"
+                    Grid.Column="1"
+                    Content="TACTICAL"
+                    Background="#179C96"
+                    Foreground="White"
+                    BorderBrush="#5A7388"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Click="RadarTacticalTabButton2_Click"/>
+                        </Grid>
+
+                        <!-- CONTENT -->
+                        <Grid Grid.Row="1">
+                            <!-- TECHNICAL TAB -->
+                            <ScrollViewer x:Name="RadarTechnicalScrollViewer2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="#032238"
+                          Visibility="Visible">
+                                <StackPanel Margin="10">
+
+                                    <TextBlock x:Name="RadarTitleTextBlock"
+                               Text="RADAR1 PROPERTIES"
+                               Foreground="White"
+                               FontSize="15"
+                               FontWeight="Bold"
+                               Margin="0,0,0,14"/>
+
+                                    <TextBlock Text="LOAD FROM TEMPLATE"
+                               Foreground="White"
+                               FontSize="12"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="RadarTemplateComboBox2"
+                             Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+ SelectedIndex="0"
+  Margin="0,0,0,16">
+                                        <ComboBoxItem Content="SELECT TEMPLATE" IsSelected="True"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="RADAR NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <TextBox x:Name="RadarNameTextBox2"
+                             Text="RADAR1"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <TextBlock Text="PLATFORM TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="RadarPlatformTypeComboBox2"
+                              Height="34"
+                              Style="{StaticResource DarkComboBoxStyle}"
+                              ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+                              Margin="0,0,0,16">
+                                        <ComboBoxItem Content="LAND STATIC" IsSelected="True"/>
+                                        <ComboBoxItem Content="LAND MOBILE"/>
+                                        <ComboBoxItem Content="AIR"/>
+                                        <ComboBoxItem Content="SEA"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="POSITION"
+                               Foreground="White"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Margin="0,0,0,10"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="LATITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="RadarLatitudeTextBox2"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="LONGITUDE"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="RadarLongitudeTextBox2"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="EMITTER TYPE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="RadarEmitterTypeComboBox2"
+                              Height="34"
+Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+Margin="0,0,0,16">
+                                        <ComboBoxItem Content="SELECT EMITTER TYPE" IsSelected="True"/>
+                                        <ComboBoxItem Content="RADAR"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="MODE *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <ComboBox x:Name="RadarModeComboBox2"
+                                                                            Style="{StaticResource DarkComboBoxStyle}"
+ItemContainerStyle="{StaticResource DarkComboBoxItemStyle}"
+SelectedIndex="0"
+Margin="0,0,0,16">
+                                        <ComboBoxItem Content="FF" IsSelected="True"/>
+                                        <ComboBoxItem Content="FH"/>
+                                        <ComboBoxItem Content="TRACK"/>
+                                    </ComboBox>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="SETUP GAIN / LOSS *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="40"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="RadarGainTextBox2"
+                                         Text="0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <TextBox Grid.Column="1"
+                                         Text="dB"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                            </Grid>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="POWER TRANSMITTED *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="50"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBox x:Name="RadarPowerTextBox2"
+                                         Text="60"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                                <TextBox Grid.Column="1"
+                                         Text="dBm"
+                                         Margin="4,0,0,0"
+                                         Style="{StaticResource EditorTextBoxStyle}"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="BANDWIDTH *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="RadarBandwidthTextBox2"
+                                 Text="3"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                        <ComboBox x:Name="RadarBandwidthUnitComboBox2"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                            <ComboBoxItem Content="KHz"/>
+                                            <ComboBoxItem Content="MHz"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <TextBlock Text="FREQUENCY *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="60"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox x:Name="RadarFrequencyTextBox2"
+                                 Text="1000"
+                                 Style="{StaticResource EditorTextBoxStyle}"/>
+
+                                        <ComboBox x:Name="RadarFrequencyUnitComboBox2"
+                                  Grid.Column="1"
+                                  Margin="4,0,0,0"
+                                  Height="34"
+                                  Background="#021522"
+                                  Foreground="White"
+                                  BorderBrush="#5A7388"
+                                  SelectedIndex="0">
+                                            <ComboBoxItem Content="MHz"/>
+                                            <ComboBoxItem Content="GHz"/>
+                                            <ComboBoxItem Content="KHz"/>
+                                        </ComboBox>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="ANTENNA TYPE *"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="RadarAntennaTypeTextBox2"
+                                     Text="DEFAULT"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="POLARIZATION"
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       Margin="0,0,0,6"/>
+                                            <TextBox x:Name="RadarPolarizationTextBox2"
+                                     Text="VERTICAL"
+                                     Style="{StaticResource EditorTextBoxStyle}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="SCAN RATE"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+
+                                    <TextBox x:Name="RadarScanRateTextBox2"
+                             Text="0"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,20"/>
+                                </StackPanel>
+                            </ScrollViewer>
+
+                            <!-- TACTICAL TAB -->
+                            <ScrollViewer x:Name="RadarTacticalScrollViewer2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          Background="#032238"
+                          Visibility="Collapsed">
+                                <StackPanel Margin="10">
+
+                                    <TextBlock Text="CALL SIGN NAME *"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                    <TextBox x:Name="RadarCallSignTextBox2"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+
+                                    <TextBlock Text="EMITTER DURATION (HH:MM:SS)"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               Margin="0,0,0,6"/>
+                                    <TextBox x:Name="RadarDurationTextBox2"
+                             Text="00:10:00"
+                             Style="{StaticResource EditorTextBoxStyle}"
+                             Margin="0,0,0,16"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+
+                        <Border Grid.Row="2" Background="#0C3144">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="140"/>
+                                    <ColumnDefinition Width="90"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="1"
+                        Content="SAVE AS TEMPLATE"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"/>
+
+                                <Button x:Name="CreateRadarButton2"
+                        Grid.Column="2"
+                        Content="ADD"
+                        Style="{StaticResource BottomActionButtonStyle}"
+                        Foreground="#21B3AE"
+                        Click="CreateRadar_Click"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
 
 
 
@@ -2423,18 +3743,7 @@
                 </Border>
             </Grid>
 
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            <!-- RIGHT VISUALIZATION -->
+          <!-- RIGHT VISUALIZATION -->
             <Grid Grid.Column="2" Background="Black">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="36"/>

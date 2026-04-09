@@ -1,6 +1,4 @@
-
-    <!-- BUTTON STYLE -->
-    <Page x:Class="EWTSS_DESKTOP.Presentation.Views.Dashboard.ScenarioDashboardView"
+<Page x:Class="EWTSS_DESKTOP.Presentation.Views.Dashboard.ScenarioDashboardView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="#021522"
@@ -37,40 +35,61 @@
             </Setter>
         </Style>
 
-    <Style x:Key="NewScenarioButtonStyle" TargetType="Button">
-    <Setter Property="Height" Value="48"/>
-    <Setter Property="Margin" Value="0,10,0,10"/>
-    <Setter Property="Background" Value="#1B9C95"/>
-    <Setter Property="Foreground" Value="Black"/>
-    <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Cursor" Value="Hand"/>
+        <Style x:Key="NewScenarioButtonStyle" TargetType="Button">
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="0,10,0,10"/>
+            <Setter Property="Background" Value="#1B9C95"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderBrush="#1B9C95"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Padding="2">
+                            <Border BorderBrush="Black"
+                                    BorderThickness="1"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"/>
+                            </Border>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    <Setter Property="Template">
-        <Setter.Value>
-            <ControlTemplate TargetType="Button">
-                
-                <!-- Outer Cyan Border -->
-                <Border BorderBrush="#1B9C95"
-                        BorderThickness="2"
-                        Background="Transparent"
-                        Padding="2">
-
-                    <!-- Inner Black Border -->
-                    <Border BorderBrush="Black"
-                            BorderThickness="1"
-                            Background="{TemplateBinding Background}">
-
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-
-                    </Border>
-                </Border>
-
-            </ControlTemplate>
-        </Setter.Value>
-    </Setter>
-</Style>
+        <Style x:Key="UserMenuItemStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="MenuItemBorder" Background="Transparent">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="MenuItemBorder" Property="Background" Value="#0B2C45"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="MenuItemBorder" Property="Background" Value="#0B2C45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="260"/>
@@ -146,12 +165,12 @@
                                 Style="{StaticResource SidebarButtonStyle}"
                                 Click="IpConfiguration_Click"/>
 
-    <Grid Margin="-6,10,-6,0">
-    <Button Content="+ NEW SCENARIO"
-            Style="{StaticResource NewScenarioButtonStyle}"
-            HorizontalAlignment="Stretch"
-            Command="{Binding NewScenarioCommand}"/>
-</Grid>
+                        <Grid Margin="-6,10,-6,0">
+                            <Button Content="+ NEW SCENARIO"
+                                    Style="{StaticResource NewScenarioButtonStyle}"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding NewScenarioCommand}"/>
+                        </Grid>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
@@ -178,20 +197,71 @@
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>
 
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Margin="0,0,15,0">
-                    <TextBlock Text="{Binding LoggedInUserName}"
-                               Foreground="White"
-                               FontSize="14"
-                               VerticalAlignment="Center"
-                               Margin="0,0,10,0"/>
-                    <Ellipse Width="24"
-                             Height="24"
-                             Fill="#B9C37A"/>
-                </StackPanel>
+                <Grid Grid.Column="1"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Margin="0,0,15,0">
+
+                    <Border x:Name="UserMenuButton"
+                            Width="170"
+                            Height="30"
+                            Background="Transparent"
+                            Cursor="Hand"
+                            MouseLeftButtonUp="UserMenuButton_Click">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="34"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding LoggedInUserName}"
+                                       Foreground="White"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Right"
+                                       Margin="0,0,10,0"/>
+
+                            <Ellipse Grid.Column="1"
+                                     Width="24"
+                                     Height="24"
+                                     Fill="#B9C37A"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+
+                    <Popup x:Name="UserDropdownPopup"
+                           PlacementTarget="{Binding ElementName=UserMenuButton}"
+                           Placement="Bottom"
+                           StaysOpen="False"
+                           AllowsTransparency="True"
+                           PopupAnimation="Fade">
+
+                        <Border Width="190"
+                                Background="#031929"
+                                BorderBrush="#00D7D7"
+                                BorderThickness="1"
+                                CornerRadius="3">
+                            <StackPanel>
+                   
+
+                                <Button Content="Change Password"
+                                        Style="{StaticResource UserMenuItemStyle}"
+                                        Click="ChangePassword_Click"/>
+
+                                <Button Content="SG Config"
+                                        Style="{StaticResource UserMenuItemStyle}"
+                                        Click="SGConfig_Click"/>
+
+                                <Button Content="Logout"
+                                        Style="{StaticResource UserMenuItemStyle}"
+                                        Click="Logout_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </Popup>
+                </Grid>
             </Grid>
 
             <!-- PAGE HOST -->

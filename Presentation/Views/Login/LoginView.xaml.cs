@@ -1,6 +1,11 @@
+using EWTSS_DESKTOP.Core.Models;
+using EWTSS_DESKTOP.Infrastructure.Data;
+using EWTSS_DESKTOP.Infrastructure.Repositories;
+using EWTSS_DESKTOP.Infrastructure.Services;
+using EWTSS_DESKTOP.Presentation.ViewModels;
+using EWTSS_DESKTOP.Presentation.Views.Dashboard;
 using System.Windows;
 using System.Windows.Controls;
-using EWTSS_DESKTOP.Presentation.ViewModels;
 
 namespace EWTSS_DESKTOP.Presentation.Views.Login
 {
@@ -8,10 +13,34 @@ namespace EWTSS_DESKTOP.Presentation.Views.Login
     {
         private bool _isPasswordVisible = false;
         private bool _isInternalUpdate = false;
+        private readonly LoginViewModel _viewModel;
 
         public LoginView()
         {
             InitializeComponent();
+
+            var dbContext = new AppDbContext();
+            var userRepository = new UserRepository(dbContext);
+            var userService = new UserService(userRepository);
+
+            _viewModel = new LoginViewModel(userService);
+            _viewModel.LoginSucceeded += OnLoginSucceeded;
+
+            DataContext = _viewModel;
+        }
+
+        private void OnLoginSucceeded(User user)
+        {
+            var stkEngineService = new StkEngineService();
+
+            if (System.Windows.Application.Current.MainWindow is MainWindow mainWindow && mainWindow.MainFrame != null)
+            {
+                mainWindow.MainFrame.Navigate(new ScenarioDashboardView(user, stkEngineService));
+            }
+            else
+            {
+                NavigationService?.Navigate(new ScenarioDashboardView(user, stkEngineService));
+            }
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -60,14 +89,14 @@ namespace EWTSS_DESKTOP.Presentation.Views.Login
                 TextBoxVisible.Text = PasswordBox.Password;
                 TextBoxVisible.Visibility = Visibility.Visible;
                 PasswordBox.Visibility = Visibility.Collapsed;
-                BtnTogglePassword.Content = "\uE8F5"; // hide icon
+                BtnTogglePassword.Content = "\uE8F5";
             }
             else
             {
                 PasswordBox.Password = TextBoxVisible.Text;
                 PasswordBox.Visibility = Visibility.Visible;
                 TextBoxVisible.Visibility = Visibility.Collapsed;
-                BtnTogglePassword.Content = "\uE722"; // view icon
+                BtnTogglePassword.Content = "\uE722";
             }
 
             _isInternalUpdate = false;

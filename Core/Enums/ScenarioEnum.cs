@@ -20,7 +20,9 @@ namespace EWTSS_DESKTOP.Core.Models
         COMMEMITTER,
         EMITTER,
         RED_LINE_RADAR,
-        BLUE_LINE_RADAR
+        BLUE_LINE_RADAR,
+        RADAREMITTERALLIED
+
     }
 
     public enum PlatformType
